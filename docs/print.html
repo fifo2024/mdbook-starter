@@ -1,0 +1,3092 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>React Hooks学习</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>React学习</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="前言"><a class="header" href="#前言">前言</a></h1>
+<blockquote>
+<p>以下信息更新于 2020.11.10</p>
+<p>最近学习了 JS 原型链、数据结构与算法，以及在思否编程课上，看了一些 卡颂(微信公众号：魔术师卡颂) 录制的《<a href="https://ke.sifou.com/course/1650000023864436">自顶向下学 React 源码</a>》课程，对 React 又有了更深的认识。</p>
+<p>此时再回顾我半年前写的这系列文章，有几点现需要补充说明一下：</p>
+<ol>
+<li>强烈建议你在学习 hook 之前，先学习了解一下：JS 原型链、数据与结构中的 “链” 和 “树”。<br />
+补充强调一点：在 react 源码中，并不是使用 TypeScript，而是使用和 TS 非常类似的 flow 语法，flow 是 facebook 推出的一种 JS 静态类型检查器。我之前一直误会以为 React 源码是用 TS 写的。</li>
+<li>强烈推荐你先阅读我的另外一篇文章：<a href="https://github.com/puxiao/notes/blob/master/%E3%80%8A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E5%AD%A6%E4%B9%A0React%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md">《自顶向下学习React源码》学习笔记#第一章：理念篇</a> ，不需要精读，只需要大体了解一下 React 设计理念，会更加容易让你去理解 React 的渲染逻辑，利于理解 hook 。</li>
+<li>本系列文章中，每一个 hook 中所列出来的该 hook 源码虽然出自 React 官方源码，但实际并不是真的 hook 源码，而仅仅是对 hook 实现的简单引用。</li>
+</ol>
+<p>以上信息更新于 2020.11.10</p>
+</blockquote>
+<h2 id="我是谁"><a class="header" href="#我是谁">我是谁？</a></h2>
+<p>你好，欢迎你来阅读我写的关于React Hook相关的文章。</p>
+<p>我是2020年4月才开始接触学习React的，起初摆在我面前的问题是该学习Vue还是React？</p>
+<p>网上关于Vue和React，有以下2条论断：<br />
+1、Vue相当于扩展了html、而React相当于扩展了js。<br />
+2、如果你希望快速构建应用，那么应选择Vue、如果你希望构建复杂的应用，那么应选择React。</p>
+<p>在做了一些了解后，我决定选择学习React。不是Vue不好，而是据我了解，国内一线大厂使用React的更多一些。</p>
+<h2 id="学习-react-hook-过程"><a class="header" href="#学习-react-hook-过程">学习 React Hook 过程</a></h2>
+<p>当我决定开始学习React时，我先下载了一些React视频教程，对React、类组件开发有了基础的掌握，这个时候我接触到了 React Hook，当我稍微深入了解之后，发现 React Hook 函数组件开发才是 React 的最新主流趋势。</p>
+<blockquote>
+<p>备注：React Hook 是 React 2019年2月在16.8版本中才正式发布的。</p>
+</blockquote>
+<p>当我满怀激动准备学习 React Hook 时才发现相关教程非常少。</p>
+<p>最具权威的React官方文档 翻译腔 比较重，对于 Hook 的讲解看了2遍之后依然懵懵懂懂，不明所以。 思否、掘金、雀语上面相关的文章不仅少，而且也不系统全面。</p>
+<p>此时我通过科学上网，在YouTube上找到了 Codevolution 专栏下的一套 “React Hooks Tutorial” 课程，开始了 React Hook 系统学习。</p>
+<p>其中useState、useEffect、useContext、useReducer、useCallback、useMemo、useRef、自定义Hook这些知识都来自这门课程。</p>
+<p>后期学习的useImperativeHandle、useLayoutEffect、useDebugValue这些知识来自于 Bitovi 专栏下的 “React Hooks — The Weird Ones” 视频课程。</p>
+<h2 id="为什么要写"><a class="header" href="#为什么要写">为什么要写？</a></h2>
+<p>在学习每一个Hook过程中，通常我是这样进行的：<br />
+1、看一遍视频教程<br />
+2、看一遍React官网文档<br />
+3、敲一遍示例代码<br />
+4、遇到理解不了的，去各大技术站点搜索一下<br />
+5、最后再以教给别人的口吻，写下对应Hook的教程文章</p>
+<p>通过这种方式，我对 React Hook 有了系统的学习，我把我写的教程文章分享出去，如果你正在准备学习 React Hook，希望能够帮助到你。</p>
+<h2 id="文章目录"><a class="header" href="#文章目录">文章目录</a></h2>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/00%20%E5%89%8D%E8%A8%80.md">00 前言</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/01%20React%20Hook%20%E7%AE%80%E4%BB%8B.md">01 React Hook 简介</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/02%20useState%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">02 useState基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/03%20useState%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">03 useState高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/04%20useEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">04 useEffect基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/05%20useEffect%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">05 useEffect高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/06%20useContext%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">06 useContext基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/07%20useContext%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">07 useContext高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/08%20useReducer%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">08 useReducer基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/09%20useReducer%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">09 useReducer高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/10%20useCallback%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">10 useCallback基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/11%20useMemo%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">11 useMemo基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/12%20useRef%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">12 useRef基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/13%20useImperativeHandle%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">13 useImperativeHandle基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/14%20useLayoutEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">14 useLayoutEffect基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/15%20useDebugValue%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">15 useDebugValue基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/16%20%E8%87%AA%E5%AE%9A%E4%B9%89hook.md">16 自定义hook</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/17%20React%20Hook%20%E6%80%BB%E7%BB%93.md">17 React Hook 总结</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/18%20%E7%A4%BA%E4%BE%8B%EF%BC%9AReact%E4%BD%BF%E7%94%A8Echarts%E6%89%80%E7%94%A8%E5%88%B0%E7%9A%84hooks.md">18 示例：React使用Echarts所用到的hooks</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/%E9%99%8401%EF%BC%9AReact%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">附01：React基础知识</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/%E9%99%8402%EF%BC%9AReact%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB.md">附02：React扩展阅读</a></p>
+<h2 id="重要说明"><a class="header" href="#重要说明">重要说明</a></h2>
+<p>本系列 React Hook 教程里的观点、思维、解释、代码 均出自我个人学习 Hook 之后的感悟和总结，难免有不准确的地方。</p>
+<p>甚至个别的地方掺杂了我个人的一些习惯用语和思维模式，对于 hook 的有些概念解释，我使用了自己的语言习惯，这会和React官网文档的解释略有不同，但是这些不同地方我认为是没有问题的。</p>
+<p>恰恰是这些不同之处，有助你更加多角度理解 React Hook。</p>
+<p>我写的这些教程只能作为你学习React Hook 众多参考资料中的其中一种。</p>
+<h2 id="文章版权"><a class="header" href="#文章版权">文章版权</a></h2>
+<p>该系列文章没有任何版权，任何人都可以在不注明出处的情况下自由转载。</p>
+<h2 id="信息反馈"><a class="header" href="#信息反馈">信息反馈</a></h2>
+<p>若有错误欢迎指正，本人微信同QQ (78657141)，或通过邮件联系：yangpuxiao@gmail.com</p>
+<p>本系列文章在Github中的地址为：<a href="https://github.com/puxiao/react-hook-tutorial">https://github.com/puxiao/react-hook-tutorial</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="01-react-hook-简介"><a class="header" href="#01-react-hook-简介">01 React Hook 简介</a></h1>
+<p>首先，欢迎你来学习React Hook，通过本教程你会了解到React Hook工作原理以及我们推荐使用Hook的理由。</p>
+<h2 id="学习前提"><a class="header" href="#学习前提">学习前提</a></h2>
+<p>在学习本课程之前，需要你对以下知识点有基础的了解：<br />
+1、React基础原理；<br />
+2、函数组件(Functional components)和类组件(class components)，属性传参(props)，自定义内部数据(state)，生命周期函数等；<br />
+3、使用谷歌浏览器且安装了“React Developer Tools”调试工具。</p>
+<p>本系列文章适合有一定React开发基础的人，若是React新手，建议先从阅读React官方中文文档学起。</p>
+<p>接下来正式开始本教程。</p>
+<h2 id="什么是hooks"><a class="header" href="#什么是hooks">什么是Hooks？</a></h2>
+<p>Hook是React 16.8版本中新增的一个新特性，丰富扩展了原有函数组件的功能，让函数组件拥有了像类组件一样的相似特性。</p>
+<p>在之前版本中函数组件不能使用React生命周期函数，Hook本身单词意思是“钩子”，作用就是“勾住某些生命周期函数或某些数据状态，并进行某些关联触发调用”。</p>
+<p>不同的Hook(钩子)有不同的作用，可以勾住不同的“点”，比如“勾住组件更新完成对应的生命周期函数”、“勾住某props值的变化”等。</p>
+<p>正因为React有多个内置Hook，所以本小节的标题才是“什么是Hooks？”，没错，用到了Hook的复数单词Hooks。</p>
+<h5 id="特别提醒在react官网中使用的是hook而在有些教程中使用的是hooks在本教程中hook和hooks是同一个意思不要纠结什么时候用单数什么时候是复数"><a class="header" href="#特别提醒在react官网中使用的是hook而在有些教程中使用的是hooks在本教程中hook和hooks是同一个意思不要纠结什么时候用单数什么时候是复数">特别提醒：在React官网中使用的是Hook，而在有些教程中使用的是Hooks。在本教程中Hook和Hooks是同一个意思，不要纠结什么时候用单数什么时候是复数。</a></h5>
+<h5 id="请注意"><a class="header" href="#请注意">请注意：</a></h5>
+<p>1、尽管函数组件拥有了类组件多大多数的相似特性，但有一点除外：函数组件中没有类组件中“自定义state”的特性，因此你无法在函数组件中使用“this.state.xx”这样的代码。</p>
+<p>没有不代表功能的缺失，恰恰相反，因为当你充分了解Hooks之后，你会发现函数组件内部自定义数据状态功能远远超出类组件。</p>
+<p>2、Hooks只能运行在函数组件中，不能运行在类组件中。<br />
+补充：准确来说，Hooks只能运行在函数组件的“内部顶层中”，不能运行在if/for等其他函数的代码体内，不允许被if/for等包裹住。</p>
+<p>3、Hooks函数必须为纯函数，所谓纯函数就是函数内部不能修改可能影响执行结果的任意参数，确保每次执行的代码结果都是一样的。</p>
+<h2 id="为什么要用hooks"><a class="header" href="#为什么要用hooks">为什么要用Hooks？</a></h2>
+<p>先说一下类组件的一些缺点：</p>
+<h5 id="缺点一复杂且不容易理解的this"><a class="header" href="#缺点一复杂且不容易理解的this">缺点一：复杂且不容易理解的“this”</a></h5>
+<p>例如事件绑定处理函数，都需要bind(this)才可以正确执行。<br />
+例如想获取某些自定义属性，都需要使用this.state.xx或this.props.xx。</p>
+<p>这样造成代码不够精简，并且有些时候热更新不能正常运行。</p>
+<h5 id="缺点二组件数据状态逻辑不能重用组件之间传值过程复杂"><a class="header" href="#缺点二组件数据状态逻辑不能重用组件之间传值过程复杂">缺点二：组件数据状态逻辑不能重用、组件之间传值过程复杂</a></h5>
+<p>“组件数据状态逻辑不能重用”，详细解释如下：<br />
+“组件数据状态”是由：定义数据、默认赋值、获取数据、修改数据、数据逻辑几个环节构成。 由于类组件中的组件数据状态state必须写在该组件构造函数内部，无法将state抽离出组件，因此别的组件如果有类似state逻辑，也必须内部自己实现一次，所以才得出“组件数据状态逻辑不能重用”的结论。</p>
+<p>“组件之间传值过程复杂”，详细解释如下：<br />
+React本身为单向数据流，即父组件可以传值给子组件，但子组件不允许直接修改父组件中的数据状态。</p>
+<p>子组件为了达到修改父组件中的数据状态，通常采用“高阶组件(HOC)”或“父组件暴露修改函数给子组件(render props)”这2种方式。 这2种方式都会让组件变得复杂且降低可复用性。</p>
+<h5 id="缺点三复杂场景下代码难以组织在一起"><a class="header" href="#缺点三复杂场景下代码难以组织在一起">缺点三：复杂场景下代码难以组织在一起</a></h5>
+<p>复杂场景下，比如数据获取(dade fetching)和事件订阅(event listeners)，相关代码难以组织在一起。</p>
+<p>“相关代码难以组织在一起”，详细解释如下：</p>
+<p>第1个“难以组织”的原因：数据获取和事件订阅被分散在不同生命周期函数中。</p>
+<p>例如数据获取：组件第一次被挂载(componentDidMount)、组件每次更新完毕(componentDidUpdate)<br />
+例如事件监听：组件第一次被挂载(componentDidMount)、组件即将被卸载(componentWillUnmount)</p>
+<p>第2个“难以组织”的原因：内部state数据只能是整体，无法被拆分更细致</p>
+<p>类组件中所有内部数据都被储存在this.state中，例如某个组件定义有2个内部数据 name,age，那么永远都是this.state.name、this.state.age。 name和age永远都只是this.state中的一个属性，无法做到将name和age拆分成独立对象个体。</p>
+<p>所有内部数据都储存在this.state中，当内部数据复杂时，势必增加维护this.state的难度和复杂性。</p>
+<p>“复杂场景下代码难以组织在一起”会造成另外一个延伸性问题：加大了代码自动测试难度。</p>
+<h5 id="hooks是如何解决上述类组件的缺点"><a class="header" href="#hooks是如何解决上述类组件的缺点">Hooks是如何解决上述类组件的缺点？</a></h5>
+<p>如果你现在迫切想知道答案，我想对你说：恭喜你，欢迎进入Hooks的世界。</p>
+<p>类组件缺点一：复杂且不容易理解的“this”<br />
+Hooks解决方式：函数组件和普通JS函数非常相似，在普通JS函数中定义的变量、方法都可以不使用“this.”，而直接使用该变量或函数，因此你不再需要去关心“this”了。</p>
+<p>类组件缺点二：组件数据状态逻辑不能重用<br />
+Hooks解决方式：<br />
+通过自定义Hook，可以数据状态逻辑从组件中抽离出去，这样同一个Hook可以被多个组件使用，解决组件数据状态逻辑并不能重用的问题。</p>
+<p>类组件缺点二：组件之间传值过程复杂、缺点三：复杂场景下代码难以组织在一起<br />
+Hooks解决方式：<br />
+通过React内置的useState()函数，可以将不同数据分别从"this.state"中独立拆分出去。降低数据复杂度和可维护性，同时解决类组件缺点三中“内部state数据只能是整体，无法被拆分更细”的问题。</p>
+<p>通过React内置的useEffect()函数，将componentDidMount、componentDidUpdate、componentWillUncount 3个生命周期函数通过Hook(钩子)关联成1个处理函数，解决事件订阅分散在多个生命周期函数的问题。</p>
+<h5 id="最为关键的是hook还能实现一些类组件根本不能实现的功能比如全局共享数据代替redux"><a class="header" href="#最为关键的是hook还能实现一些类组件根本不能实现的功能比如全局共享数据代替redux">最为关键的是，hook还能实现一些类组件根本不能实现的功能，比如全局共享数据，代替Redux。</a></h5>
+<p>如果阅读过上面文字，你依然一头雾水，不要着急，你现在只需要对Hooks有一个大体了解即可。<br />
+随着后面的深入学习，你将逐个掌握Hooks的关键用法。</p>
+<h5 id="你只需记住一个结论忘掉类组件使用hook进行函数组件开发将是一个明智选择"><a class="header" href="#你只需记住一个结论忘掉类组件使用hook进行函数组件开发将是一个明智选择">你只需记住一个结论：忘掉类组件，使用Hook进行函数组件开发，将是一个明智选择。</a></h5>
+<br/>
+<blockquote>
+<p>以下内容更新于 2021.01.10</p>
+</blockquote>
+<p>下面讲解一下 React 的生命周期函数，面对如此复杂的生命周期函数，是没有必要过于了解和研究的，目前来说，一般只需学习使用 useEffect 这个 hook 即可。</p>
+<p>useEffect 这个 hook 会在稍后讲解。</p>
+<h2 id="react生命周期函数"><a class="header" href="#react生命周期函数">React生命周期函数</a></h2>
+<p>React 一次状态更新，一共分为 2 个阶段、4 个生命周期。</p>
+<p><strong>2 个阶段：</strong></p>
+<ol>
+<li>render阶段：包含Diff算法，计算出状态变化</li>
+<li>commit渲染阶段：ReactDom渲染器，将状态变化渲染在视图中</li>
+</ol>
+<p><strong>4个生命周期：</strong></p>
+<ol>
+<li>Mout(第一次挂载)</li>
+<li>Update(更新)</li>
+<li>Unmout(卸载)</li>
+<li>Error(子项发生错误)</li>
+</ol>
+<div class="table-wrapper"><table><thead><tr><th>生命周期函数</th><th>所属阶段</th><th>所属生命周期</th></tr></thead><tbody>
+<tr><td>constructor</td><td>Render阶段</td><td>Mount</td></tr>
+<tr><td>componentWillReceiveProps</td><td>Render阶段</td><td>Update</td></tr>
+<tr><td>getDerivedStateFromProps</td><td>Render阶段</td><td>并存于Moun、Update</td></tr>
+<tr><td>getDerivedStateFromError</td><td>Render阶段</td><td>Error</td></tr>
+<tr><td>shouldComponentUpdate</td><td>Render阶段</td><td>Update</td></tr>
+<tr><td>componentWillMount</td><td>Render阶段</td><td>Mount</td></tr>
+<tr><td>componentWillUpdate</td><td>Render阶段</td><td>Update</td></tr>
+<tr><td>render</td><td>Render阶段</td><td>并存于Mount、Update</td></tr>
+<tr><td>componentDidMount</td><td>Commit阶段</td><td>Mount</td></tr>
+<tr><td>getSnapshotBeforeUpdate</td><td>Commit阶段</td><td>Update</td></tr>
+<tr><td>componentDidUpdate</td><td>Commit阶段</td><td>Update</td></tr>
+<tr><td>componentWillUnmount</td><td>Commit阶段</td><td>Unmount</td></tr>
+<tr><td>componentDidCatch</td><td>Commit阶段</td><td>Error</td></tr>
+</tbody></table>
+</div>
+<p><strong>注意事情：</strong></p>
+<p>componentWillReceiveProps、componentWillMount、componentWillUpdate 这 3 个生命周期函数正在逐步被 React 官方放弃使用，不推荐继续使用这 3 个生命周期函数。</p>
+<p>与之对应的是 getDerivedStateFromProps、getDerivedStateFromError 这 2 个这是被推荐使用的。</p>
+<p>关于各个生命周期函数详细介绍，可以参考 React 官方文档：
+https://zh-hans.reactjs.org/docs/react-component.html#commonly-used-lifecycle-methods</p>
+<p><strong>补充说明：</strong></p>
+<p><strong>目前并不是所有的生命周期函数都对应有 hook 函数。</strong></p>
+<p>再次重复一遍，这些生命周期函数你只需大致了解，初学者只需学会 useEffect 这个 hook 即可。</p>
+<blockquote>
+<p>以上内容更新于 2021.01.10</p>
+</blockquote>
+<h2 id="本节小结"><a class="header" href="#本节小结">本节小结</a></h2>
+<p>1、Hook是React 16.8及以上版本才拥有的特性。<br />
+2、Hook只是React“增加”的概念和一些API，对原有React体系并没有任何破坏。<br />
+3、Hook有很多优势，比如不需要使用“this”、数据状态细致拆分、数据状态逻辑抽离出组件、代码组织更加自由灵活等。<br />
+4、Hook只能用于函数组件，不能用于类组件中。<br />
+5、Hook虽好，但React依然保留对类组件的支持，如果你就是不喜欢Hook，更偏向于继续使用类组件，那么也是可以的，只是你需要继续面对类组件的一些缺点。</p>
+<hr />
+<p>至此，你对Hook有了一个初步概念，接下来开始学习第1个Hook函数 useState。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/02%20useState%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useState基础用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="02-usestate基础用法"><a class="header" href="#02-usestate基础用法">02 useState基础用法</a></h1>
+<h2 id="usestate概念解释"><a class="header" href="#usestate概念解释">useState概念解释</a></h2>
+<p>我们第一个要学习的Hook(钩子函数)是useState，他的作用是“勾住”函数组件中自定义的变量。</p>
+<p>“勾住”？<br />
+回顾一下 “React Hook 简介” 文中那句话：Hook本身单词意思是“钩子”，作用就是“勾住某些生命周期函数或某些数据状态，并进行某些关联触发调用”。</p>
+<p>“如何勾住”？
+在React底层代码中，是通过自定义dispatcher，采用“发布订阅模式”实现的。</p>
+<p>关于“钩子”、“勾住”、“如何勾住”的概念以后在学习其他Hook函数时不再做解释。</p>
+<h2 id="usestate是来解决类组件什么问题的"><a class="header" href="#usestate是来解决类组件什么问题的">useState是来解决类组件什么问题的？</a></h2>
+<p>答：useState能够解决类组件 <strong>所有自定义变量只能存储在this.state</strong> 的问题。</p>
+<p>举例：若某组件需要有2个自定义变量name和age，那么在类组件中只能如下定义</p>
+<pre><code>constructor(props) {
+    super(props);
+    this.state = {
+      name:'puxiao',
+      age:34
+    }
+}
+</code></pre>
+<p>name和age只能作为this.state的一个属性。</p>
+<p>没有对比就没有伤害，看一下使用useState后，函数组件是如何实现上述需求的</p>
+<pre><code>const [name,setName] = useState('puxiao');
+const [age,setAge] = useState(34);
+</code></pre>
+<p>1、函数组件本身是一个函数，不是类，因此没有构造函数constructor(props)；<br />
+2、任何你想定义的变量都可以单独拆分出去，独立定义，互不影响；</p>
+<p>两段代码对比之下，你就会发现使用Hook的useState后，会让我们定义的变量相对独立，清晰简单，便于管理。</p>
+<p>接下来开始学习useState。</p>
+<h2 id="usestate函数源码"><a class="header" href="#usestate函数源码">useState函数源码：</a></h2>
+<p>首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useState&lt;S&gt;(
+  initialState: (() =&gt; S) | S,
+): [S, Dispatch&lt;BasicStateAction&lt;S&gt;&gt;] {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useState(initialState);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。之所以贴出源码只是为了显得本文比较有深度。^_^</p>
+<p><strong>更新于2020.11.10，这里强调一下：React 源码中使用的是 flow 语法，根本不是 TypeScript 语法，只不过 2 者实在是太像了，以至于让我之前一直误以为 React 源码中是 TS。不过你完全可以将 TS 的泛型知识去套用到 flow 中。在此特别说明一下，至于后续章节中就不再做提醒和修改了，你就当成 TS 语法去理解也行。</strong></p>
+<h5 id="补充一些typescript常识"><a class="header" href="#补充一些typescript常识">补充一些TypeScript常识：</a></h5>
+<p>1、react 本身采用TypeScript编写，还是补充点TS常识，方便对各个 hook 函数源码的理解。<br />
+2、对于useState以及以后要学习的其他hook函数源码，函数参数中会反复出现&lt;S&gt;、&lt;T&gt;、&lt;P&gt;、&lt;I&gt;、&lt;I&gt;，这些大写字母，react约定他们对应的单词如下：<br />
+state -&gt; S -&gt; 约定表示某种“数据”<br />
+type -&gt; T -&gt; 约定表示某种“类型”<br />
+props -&gt; P -&gt; 约定表示“属性传值对应的props”<br />
+initial -&gt; I -&gt; 约定表示某个“初始值”</p>
+<p>1、这种用&lt;X&gt;包裹起来的类型声明，在TS中成为“泛型”。理论上是可以使用任意单词的，上面那些缩写只是react自己约定单词缩写。<br />
+2、对于一段TS代码，如果出现了&lt;S&gt;，那么后面所有的&lt;S&gt;都将表示“某种相同类型的数据”。对于TypeScript的泛型相关知识，请自己百度学习。</p>
+<h2 id="usestate基本用法"><a class="header" href="#usestate基本用法">useState基本用法</a></h2>
+<p>useState(value)函数会返回一个数组，该数组包含2个元素：第1个元素为我们定义的变量，第2个元素为修改该变量对应的函数名称。</p>
+<h5 id="代码形式"><a class="header" href="#代码形式">代码形式：</a></h5>
+<pre><code>const [variable,setVariable] = useState(value);
+//....
+setVariable(newValue);//修改variable的值
+</code></pre>
+<h5 id="拆解说明"><a class="header" href="#拆解说明">拆解说明：</a></h5>
+<p>1、const [a,b] = [a,b] 这种形式为ES6的“解构赋值”；<br />
+2、'variable'为函数组件中自定义的变量名；<br />
+3、'setVariable'为修改'variable'对应的函数名；<br />
+4、'useState'为本次学习的Hook函数；<br />
+5、'value'为变量默认值<br />
+6、'setVariable(newValue)'为调用setVariable并将新的值newValue赋值给variable；</p>
+<h4 id="variable补充说明"><a class="header" href="#variable补充说明">'variable'补充说明</a></h4>
+<p>1、variable为变量名，实际使用中可以修改成任意变量名，比如name、age、count等等；<br />
+2、但是，函数组件接收父级组件属性传值的变量名为props，因此建议你不要将变量名定为props，以免混淆；<br />
+3、我不听话，我就非要将变量名定义成props，那又会怎么样？答案是不会有什么问题，不仅不会报错而且还会正常执行。</p>
+<h5 id="setvariable补充说明"><a class="header" href="#setvariable补充说明">'setVariable'补充说明：</a></h5>
+<p>1、该名称采用 "set"+"变量名" 的驼峰命名形式，只是为了提高代码可读性。<br />
+2、一般React项目都约定使用此种命名方式，所以推荐你也如此使用。<br />
+3、当然你也可以使用任意你喜欢的命名风格，但是切记不能以数字开头。</p>
+<h5 id="value补充说明"><a class="header" href="#value补充说明">'value'补充说明：</a></h5>
+<p>1、必填项，不可缺省，若缺省则实际运行时会提示变量名未定义；<br />
+2、值的类型可以是字符串、数字、数组、对象；<br />
+3、值还可以为null，但不可以为undefined；</p>
+<h5 id="newvalue补充说明非常重要"><a class="header" href="#newvalue补充说明非常重要">'newValue'补充说明(非常重要)：</a></h5>
+<p>setVariable采用 “异步直接赋值” 的形式，并不会像类组件中的setState()那样做“异步对比累加赋值”。</p>
+<p>“异步”？<br />
+这里的“异步”和类组件中setState中的异步是同一个意思，都是为了优化React渲染性能而故意为之。</p>
+<p>"直接赋值"？<br />
+1、在Hook中，对于简单类型数据，比如number、string类型，可以直接通过setVariable(newValue)直接进行赋值。<br />
+2、但对于复杂类型数据，比如array、object类型，若想修改其中某一个属性值而不影响其他属性，则需要先复制出一份，修改某属性后再整体赋值。具体如何做，请看下一篇“useState高级用法”中“数据类型为Objcet/Array修改方法”内容。</p>
+<p>如果新值和当前值完全一样，那么会引发React重新渲染吗？请看下一篇“useState高级用法”中“性能优化”内容。</p>
+<p>停！上面的信息量有点多，让我们把思绪先回到最基础的用法上。</p>
+<h2 id="usestate使用示例"><a class="header" href="#usestate使用示例">useState使用示例：</a></h2>
+<pre><code>//函数组件内定义变量name
+const [name,setName] = useState('nodejs'); //name默认值为nodejs
+
+//在函数组件内，某些事件交互处理函数中修改name的值，例如某次鼠标点击的处理函数handleClick
+const handleClick = () =&gt; {
+  setName('koa');
+  //请注意，setName('koa')是异步修改的，如果此时执行console.log(name) 输出的值依然是nodejs
+  //请留意下一篇文章 “03 useState高级用法” 中 “解决数据异步” 相关部分
+}
+</code></pre>
+<p>上述代码中，我们进行了以下操作：<br />
+1、声明一个变量name、修改name的方法setName、并将name默认值设置为'nodejs'；<br />
+2、通过setName将name值修改为'koa'；</p>
+<p>注意：在一个组件中，可以不限次数使用useState()，因此，我们可以声明多个变量，例如下面代码：</p>
+<pre><code>const [name,setName] = useState('puxiao');
+const [age,setAge] = useState(34);
+</code></pre>
+<p>在该代码片段中，我们分别定义了2个变量：name、age 以及他们对应的修改函数setName、setAge。</p>
+<h2 id="练习题"><a class="header" href="#练习题">练习题</a></h2>
+<p>用useState实现一个计数器，默认为0，每次点击+1。</p>
+<h5 id="完整示例"><a class="header" href="#完整示例">完整示例：</a></h5>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+
+  const [count, setCount] = useState(0);
+
+  function clickHandler(){
+    setCount(count+1);
+  }
+
+  return &lt;div onClick={clickHandler}&gt;
+    {count}
+  &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>请注意上述代码中，没有用到this，这就是函数组件中使用Hook的魅力之一，再也不用去关心烦人的this到底指向谁这个问题了。</p>
+<p>实际代码中，本人更加倾向于使用箭头函数来定义方法，所以上述 function clickHandler() 会写成：</p>
+<pre><code>const clickHandler = () =&gt; {
+  setCount(count+1);
+}
+</code></pre>
+<hr />
+<p>至此，关于useState基础用法已经讲完。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/03%20useState%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">useState高级用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="03-usestate高级用法"><a class="header" href="#03-usestate高级用法">03 useState高级用法</a></h1>
+<p>所谓高级用法，只不过是一些深层知识点和实用技巧，你甚至可以把本章当做对前面知识点的一个巩固和学习。</p>
+<h2 id="恢复默认值"><a class="header" href="#恢复默认值">恢复默认值</a></h2>
+<p>组件需求：实现一个计数器，有3个按钮，点击后分别实现：恢复默认值、点击+1、点击-1</p>
+<p>实现代码：</p>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+  const initCount = 0;
+  const [count, setCount] = useState(initCount);
+
+  return &lt;div&gt;
+    {count}
+    &lt;button onClick={() =&gt; {setCount(initCount)}}&gt;init&lt;/button&gt;
+    &lt;button onClick={() =&gt; {setCount(count+1)}}&gt;+1&lt;/button&gt;
+    &lt;button onClick={() =&gt; {setCount(count-1)}}&gt;-1&lt;/button&gt;
+  &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>代码分析：<br />
+1、通过额外定义一个变量initCount=0，作为count的默认值；<br />
+2、任何时候想恢复默认值，直接将initCount赋值给count；</p>
+<h2 id="解决数据异步"><a class="header" href="#解决数据异步">解决数据异步</a></h2>
+<p>还是基于上面那个示例，假设现在新增1个按钮，点击该按钮后执行以下代码：</p>
+<pre><code>for(let i=0; i&lt;3; i++){
+  setCount(count+1);
+}
+</code></pre>
+<p>通过for循环，执行了3次setCount(count+1)，那么你觉得count会 +3 吗？<br />
+答案是：肯定不会</p>
+<p>无论for循环执行几次，最终实际结果都将是仅仅执行一次 +1。</p>
+<p>为什么？<br />
+类组件中setState赋值过程是异步的，同样在Hook中 setXxx 赋值也是异步的，比如上述代码中的setCount。</p>
+<p>虽然执行了3次setCount(count+1)，可是每一次修改后的count并不是立即生效的。当第2次和第3次执行时获取到count的值和第1次获取到的count值是一样的，所以最终其实相当于仅执行了1次。</p>
+<h5 id="解决办法"><a class="header" href="#解决办法">解决办法：</a></h5>
+<p>你肯定第一时间想到的是这样解决方式：</p>
+<pre><code>let num = count;
+for(let i=0; i&lt;3; i++){
+  num +=1;
+}
+setCount(num);
+</code></pre>
+<p>这样做肯定没问题，只不过有更简便、性能更高的方式。</p>
+<p>和类组件中解决异步的办法类似，就是不直接赋值，而是采用“箭头函数返回值的形式”赋值。</p>
+<p>把代码修改为：</p>
+<pre><code>for(let i=0; i&lt;3; i++){
+  setCount(prevData =&gt; {return prevData+1});
+  //可以简化为 setCount(prevData =&gt; prevData+1);
+}
+</code></pre>
+<p>代码分析：<br />
+1、prevData为我们定义的一个形参，指当前count应该的值；<br />
+2、{return prevData+1} 中，将 prevData+1，并将运算结果return出去。当然也非常推荐使用更加简化的写法：setCount(prevData =&gt; prevData+1)；<br />
+3、最终将prevData赋值给count；</p>
+<p>补充说明：你可以将prevData修改成任意你喜欢的变量名称，比如prev，只需要确保和后面return里的一致即可。</p>
+<h2 id="数据类型为objcet的修改方法"><a class="header" href="#数据类型为objcet的修改方法">数据类型为Objcet的修改方法</a></h2>
+<p>之前的示例中，每个useState对应的值都是简单的string或number，如果对应的值是object，又该如何处理呢？</p>
+<p>例如：</p>
+<pre><code>const [person, setPerson] = useState({name:'puxiao',age:34});
+</code></pre>
+<p>若想将age的值修改为18，该怎么写？</p>
+<p>如果你有类组件编程经验，你肯定第一时间想是这样的：</p>
+<pre><code>setPerson({age:18});
+</code></pre>
+<p>在类组件中，setState是执行的是“异步对比累加赋值”，何为“对比”？  就是先对比之前数据属性中是否有age，如果有则修改age值，同时不会影响到其他属性的值。我猜测react是使用ES6中新增加的Object.assign()这个函数来实现这一步的。</p>
+<p>但是，用useState定义的修改函数 setXxxx，例如setPerson中，执行的是 “异步直接赋值”。</p>
+<p>请看实际执行的结果：</p>
+<pre><code>console.log(person);//{name:'puxiao',age:34}
+setPerson({age:18});
+console.log(person);//{age:18}
+</code></pre>
+<p>没错，虽然只是希望修改age的值，但是由于是“直接赋值”，导致{age:18}替换了整个{name:'puxiao',age:34}</p>
+<h5 id="正确的做法"><a class="header" href="#正确的做法">正确的做法：</a></h5>
+<p>我们需要先将person拷贝一份，修改之后再进行赋值。</p>
+<pre><code>let newData = {...person};
+newData.age = 18;
+setPerson(newData);
+</code></pre>
+<p>以上代码还有一种简写形式：</p>
+<pre><code>setPerson({...person,age:18}); //这种简写是解构赋值带来的，并不是React提供的
+</code></pre>
+<p>代码分析：<br />
+1、先通过...person，将原有person做一次解构，得到一份复制品(浅拷贝)；<br />
+2、修改age的值；<br />
+3、将修改过后的新数据，通过setPerson赋值给person；</p>
+<p>完整示例：</p>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+
+  const [person, setPerson] = useState({name:'puxiao',age:34});
+
+  const nameChangeHandler = (eve) =&gt; {
+    setPerson({...person,name:eve.target.value});
+  }
+
+  const ageChangeHandler = (eve) =&gt; {
+    setPerson({...person,age:eve.target.value});
+  }
+
+  return &lt;div&gt;
+    &lt;input type='text' value={person.name} onChange={nameChangeHandler} /&gt;
+    &lt;input type='number' value={person.age} onChange={ageChangeHandler} /&gt;
+    {JSON.stringify(person)}
+  &lt;/div&gt;
+}
+export default Component;
+</code></pre>
+<h2 id="数据类型为array的修改方法"><a class="header" href="#数据类型为array的修改方法">数据类型为Array的修改方法</a></h2>
+<p>和数据类型为Object相似，都是需要通过先拷贝一次，修改后再整体赋值。</p>
+<p>这里举一个简单的小例子，以下代码实现了一个类似学习计划列表的功能组件。</p>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+
+  const [str, setStr] = useState('');
+  const [arr, setArr] = useState(['react', 'Koa']);
+
+  const inputChangeHandler = (eve) =&gt; {
+    setStr(eve.target.value);
+  }
+
+  const addHeadHandler = (eve) =&gt; {
+    setArr([str,...arr]);//添加至头
+    setStr('');
+  }
+
+  const addEndHandler = (eve) =&gt; {
+    setArr([...arr, str]);//添加至尾
+    setStr('');
+  }
+
+  const delHeadHandler = (eve) =&gt; {
+    let new_arr = [...arr];
+    new_arr.shift();//从头删除1项目
+    setArr(new_arr);
+  }
+
+  const delEndHandler = (eve) =&gt; {
+    let new_arr = [...arr];
+    new_arr.pop();//从尾删除1项目
+    setArr(new_arr);
+  }
+
+  const delByIndex = (eve) =&gt; {
+    let index = eve.target.attributes.index.value;
+    let new_arr = [...arr];
+    new_arr.splice(index,1);//删除当前项
+    setArr(new_arr);
+  }
+
+  return &lt;div&gt;
+    &lt;input type='text' value={str} onChange={inputChangeHandler} /&gt;
+    &lt;button onClick={addHeadHandler} &gt;添加至头&lt;/button&gt;
+    &lt;button onClick={addEndHandler} &gt;添加至尾&lt;/button&gt;
+    &lt;button onClick={delHeadHandler} &gt;从头删除1项&lt;/button&gt;
+    &lt;button onClick={delEndHandler} &gt;从尾删除1项&lt;/button&gt;
+    &lt;ul&gt;
+        {arr.map(
+            (item, index) =&gt; {
+                return &lt;li key={`item${index}`}&gt;学习{index} -  {item}
+                    &lt;span index={index} onClick={delByIndex} style={{ cursor: 'pointer' }}&gt;删除&lt;/span&gt;
+                &lt;/li&gt;
+            }
+        )}
+    &lt;/ul&gt;
+  &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<h2 id="性能优化"><a class="header" href="#性能优化">性能优化</a></h2>
+<p>通过 setXxx 设置新值，但是如果新值和当前值完全一样，那么会引发React重新渲染吗？</p>
+<p>通过React官方文档可以知道，当使用 setXxx 赋值时，Hook会使用Object.is()来对比当前值和新值，结果为true则不渲染，结果为flash就会重新渲染。</p>
+<pre><code>let str='a';
+Object.is(str,'a'); //true
+
+let str='18';
+Object.is(str,18); //str为String类型，18为Number类型，因此结果为false
+
+let obj={name:'a'};
+Object.is(obj,{name:'a'}); //false
+//虽然obj和{name:'a'}字面上相同，但是obj==={name:'a'}为false，并且在Object.is()运算下认为两者不是同一个对象
+//事实上他们确实不是同一个对象，他们各自占用了一份内存
+
+let obj={name:'a'};
+let a=obj;
+let b=obj;
+Object.is(a,b); //因为a和b都指向obj，因此结果为true
+</code></pre>
+<p>由上面测试可以看出：<br />
+1、对于简单类型的值，例如String、Number 新旧值一样的情况下是不会引起重新渲染的；<br />
+2、对于复杂类型的值，即使新旧值 “看上去是一样的” 也会引起重新渲染。除非新旧值指向同一个对象，或者可以说成新旧值分别是同一个对象的引用；</p>
+<p>采用复杂类型的值不是不可以用，很多场景下都需要用到，但是请记得上面的测试结果。</p>
+<p>为了可能存在的性能问题，如果可以，最好避免使用复杂类型的值。</p>
+<h2 id="自定义hook"><a class="header" href="#自定义hook">自定义Hook</a></h2>
+<p>所谓自定义Hook，就是将Hook函数从函数组件中抽离，抽离之后多个函数组件可以共用该自定义Hook，共享该Hook的逻辑。</p>
+<p>因为目前仅学习了useState，再多学习几个Hook函数后，会单独拿出一个篇章来讲解如何自定义Hook。</p>
+<hr />
+<p>至此，关于useState高级用法已经讲完，相信你已经掌握了useState的使用方法。</p>
+<p>useState是本系列文章讲解的第一个Hook函数，同时也是使用频率最高的Hook，甚至可以说useState是函数组件开发的基石，因此本章稍显啰嗦，但目的就是希望你能理解透彻。</p>
+<p>在后面讲解其他Hook函数时，将会尽量使用简洁、高冷的文章风格。</p>
+<p>接下来学习第2个Hook函数useEffect。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/04%20useEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useEffect基本用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="04-useeffect基础用法"><a class="header" href="#04-useeffect基础用法">04 useEffect基础用法</a></h1>
+<h2 id="useeffect概念解释"><a class="header" href="#useeffect概念解释">useEffect概念解释</a></h2>
+<p>我们第二个要学习的Hook(钩子函数)是useEffect，他的作用是“勾住”函数组件中某些生命周期函数。</p>
+<p>都能勾住哪些生命周期函数？<br />
+答：componentDidMount(组件被挂载完成后)、componentDidUpdate(组件重新渲染完成后)、componentWillUnmount(组件即将被卸载前)</p>
+<p>为什么是这3个生命周期函数？<br />
+答：因为修改数据我们可以使用前面学到的useState，数据变更会触发组件重新渲染，上面3个就是和组件渲染关联最紧密的生命周期函数。</p>
+<p>那其他生命周期函数呢？<br />
+答：该问题的回答，引用<a href="https://react.docschina.org/docs/hooks-faq.html#do-hooks-cover-all-use-cases-for-classes">React官方中文文档FAQ</a>，如下</p>
+<blockquote>
+<p>我们给 Hook 设定的目标是尽早覆盖 class 的所有使用场景。目前暂时还没有对应不常用的 getSnapshotBeforeUpdate，getDerivedStateFromError 和 componentDidCatch 生命周期的 Hook 等价写法，但我们计划尽早把它们加进来。</p>
+</blockquote>
+<h2 id="useeffect是来解决类组件什么问题的"><a class="header" href="#useeffect是来解决类组件什么问题的">useEffect是来解决类组件什么问题的？</a></h2>
+<p>答：useEffect是来解决类组件 <strong>某些执行代码被分散在不同的生命周期函数中</strong> 的问题。</p>
+<p>举例1：若某类组件中有变量a，默认值为0，当组件第一次被挂载后或组件重新渲染后，将网页标题显示为a的值。<br />
+那么在类组件里，我们需要写的代码是：</p>
+<pre><code>//为了更加清楚看到每次渲染，我们在网页标题中 a 的后面再增加一个随机数字
+componentDidMount(){
+    document.title = `${this.state.a} - ${Math.floor(Math.random()*100)}`;
+}
+componentDidUpdate(){
+    document.title = `${this.state.a} - ${Math.floor(Math.random()*100)}`;
+}
+</code></pre>
+<p>从上面这种代码里你会看到，为了保证第一次被挂载、组件重新渲染后都执行修改网页标题的行为，相同的代码我们需要分别在componentDidMount、componentDidUpdate中写2次。</p>
+<p>举例2：假设需要给上面那个组件新增一个功能，当组件第一次被挂载后执行一个自动累加器 setInterval，每1秒 a 的值+1。为了防止内存泄露，我们在该组件即将被卸载前清除掉该累加器。<br />
+那么在类组件里，我们需要写的代码是：</p>
+<pre><code>timer = null;//新增一个可内部访问的累加器变量(注：类组件定义属性时前面无法使用 var/let/const)
+componentDidMount(){
+    document.title = `${this.state.a} - ${Math.floor(Math.random()*100)}`;
+    this.timer = setInterval(() =&gt; {this.setState({a:this.state.a+1})}, 1000);//添加累加器
+}
+componentDidUpdate(){
+    document.title = `${this.state.a} - ${Math.floor(Math.random()*100)}`; 
+}
+componentWillUnmount(){
+    clearInterval(this.timer);//清除累加器
+}
+</code></pre>
+<p>从上面代码可以看到，增加累加器和清除累加器这2个相关的执行代码被分别定义在componentDidMount、componentWillUnmount这两个生命周期函数中。</p>
+<p>举例3：假设给上面的组件再新增一个变量 b，当 b 的值发生变化后也会引发组件重新渲染，然后呢？有什么隐患吗？<br />
+答：b 的值改变引发组件重新渲染，然后肯定是会触发componentDidUpdate函数，这时会让修改网页标题的代码再次执行一次，尽管此时a的值并没有发生任何变化。</p>
+<p>再来回顾一下上面的3个例子：<br />
+1、举例1中，相同的代码可能需要在不同生命周期函数中写2次；<br />
+2、举例2中，相关的代码可能需要在不同生命周期函数中定义；<br />
+3、举例3中，无论是哪个原因引发的组件重新渲染，都会触发生命周期函数的执行，造成一些不必要的代码执行；</p>
+<p>以上就是 类组件“某些执行代码被分散在不同的生命周期函数中”引发的问题具体表现，而useEffect就是来解决这些问题的。</p>
+<p>接下来开始学习useState。</p>
+<h2 id="useeffect函数源码"><a class="header" href="#useeffect函数源码">useEffect函数源码：</a></h2>
+<p>回到useEffect的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useEffect(
+  create: () =&gt; (() =&gt; void) | void,
+  deps: Array&lt;mixed&gt; | void | null,
+): void {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useEffect(create, deps);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。之所以贴出源码只是为了让你以后也可以给面试官吹嘘你读过React源码。^_^</p>
+<h2 id="useeffect基本用法"><a class="header" href="#useeffect基本用法">useEffect基本用法</a></h2>
+<p>useEffect(effect,[deps])函数可以传入2个参数，第1个参数为我们定义的执行函数、第2个参数是依赖关系(可选参数)。若一个函数组件中定义了多个useEffect，那么他们实际执行顺序是按照在代码中定义的先后顺序来执行的。</p>
+<p>具体说明如下：<br />
+第1个值effect是一个function，用来编写useEffect对应的执行代码。<br />
+还记得本文开头提到的useEffect能勾住哪3个生命周期函数吗？<br />
+componentDidMount、componentDidUpdate、componentWillUnmount ，当上述3个生命周期函数执行后，就会触发useEffect函数，进而执行而第1个参数 effect 中的内容。</p>
+<p>组件挂载后(componentDidMount)与组件重新渲染后(componentDidUpdate)对应的代码合并为一个函数这个容易理解，可是组件卸载前(componentWillUnmount)也能融入进来？<br />
+答：是的，通过在 effect 中 return 一个函数来实现的。</p>
+<p>关于第2个参数 [deps] ，先知道这个是可选参数，是Hook用来向React表明useEffect依赖关系的即可。关于它的用法会在useEffect高级用法中有更多详细讲述。</p>
+<h5 id="代码形式-1"><a class="header" href="#代码形式-1">代码形式：</a></h5>
+<pre><code>useEffect(() =&gt; {
+    //此处编写 组件挂载之后和组件重新渲染之后执行的代码
+    ...
+
+    return () =&gt; {
+        //此处编写 组件即将被卸载前执行的代码
+        ...
+    }
+},[deps])
+</code></pre>
+<p>之前说过useEffect第1个参数 effect 是个 function，只是这个 function 稍显复杂。</p>
+<h5 id="拆解说明-1"><a class="header" href="#拆解说明-1">拆解说明：</a></h5>
+<p>1、effect 函数主体内容中的代码，就是组件挂载之后和组件重新渲染之后你需要执行的代码；<br />
+2、effect 函数 return 出去的返回函数主体内容中的代码，就是组件即将被卸载前你需要执行的代码；<br />
+3、第2个参数 [deps]，为可选参数，若有值则向React表明该useEffect是依赖哪些变量发生改变而触发的；</p>
+<h4 id="effect补充说明"><a class="header" href="#effect补充说明">'effect'补充说明</a></h4>
+<p>1、若你不需要在组件卸载前执行任何代码，那么可以忽略不写 effect 中的 return相关代码；</p>
+<h5 id="deps补充说明"><a class="header" href="#deps补充说明">'[deps]'补充说明：</a></h5>
+<p>1、若缺省，则组件挂载、组件重新渲染、组件即将被卸载前，每一次都会触发该useEffect；<br />
+3、若传值，则必须为数组，数组的内容是函数组件中通过useState自定义的变量或者是父组件传值过来的props中的变量，告诉React只有数组内的变量发生变化时才会触发useEffect；<br />
+4、若传值，但是传的是空数组 []，则表示该useEffect里的内容仅会在“挂载完成后和组件即将被卸载前”执行一次；</p>
+<h2 id="useeffect使用示例"><a class="header" href="#useeffect使用示例">useEffect使用示例：</a></h2>
+<p>还记得本文上面关于 类组件“某些执行代码被分散在不同的生命周期函数中”引发的问题时，所举的3个例子吗？<br />
+我们用Hook来依次分别实现举例1、举例2、举例3，通过3个功能的代码示例，让你明白useEffect的具体用法。</p>
+<p>举例1：若某类组件中有变量a，默认值为0，当组件第一次被挂载后或组件重新渲染后，将网页标题显示为a的值。<br />
+补充说明：<br />
+1、为了让 a 的值可以发生变化，我们在组件中添加一个按钮，每次点击 a 的值 +1<br />
+2、为了更加清楚看到每次渲染，我们在网页标题中 a 的后面再增加一个随机数字</p>
+<pre><code>import React, { useState,useEffect} from 'react';
+
+function Component() {
+  const [a, setA] = useState(0);//定义变量a，并且默认值为0
+  useEffect(() =&gt; {
+      //无论是第一次挂载还是以后每次组件更新，修改网页标题的执行代码只需要在这里写一次即可
+      document.title = `${a} - ${Math.floor(Math.random()*100)}`;
+  })
+  const clickAbtHandler = (eve) =&gt;{
+      setA(a+1);
+  }
+  return &lt;div&gt;
+      {a}
+      &lt;button onClick={clickAbtHandler}&gt;a+1&lt;/button&gt;
+    &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>从上述代码可以看出，“类组件中相同的代码可能需要在不同生命周期函数中写2次”这个问题已通过Hook useEffect已解决。</p>
+<p>这里只是实现列 举例1 中的功能，是useEffect最基础的用法。举例2、举例3 中的功能实现我们放到 useEffect 高级用法 中来讲解。</p>
+<hr />
+<p>至此，关于useEffect基础用法已经讲完。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/05%20useEffect%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">useEffect高级用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="05-useeffect高级用法"><a class="header" href="#05-useeffect高级用法">05 useEffect高级用法</a></h1>
+<p>所谓高级用法，只不过是一些深层知识点和实用技巧，你甚至可以把本章当做对前面知识点的一个巩固和学习。</p>
+<h2 id="让useeffect只在挂载后和卸载前执行一次"><a class="header" href="#让useeffect只在挂载后和卸载前执行一次">让useEffect只在挂载后和卸载前执行一次</a></h2>
+<p>让我们实现 “04 useEffect基础用法” 中 举例2 提到的功能。</p>
+<p>组件需求：<br />
+1、若某类组件中有变量a，默认值为0，当组件第一次被挂载后或组件重新渲染后，将网页标题显示为a的值。<br />
+2、当组件第一次被挂载后执行一个自动累加器 setInterval，每1秒 a 的值+1。为了防止内存泄露，我们在该组件即将被卸载前清除掉该累加器。</p>
+<p>需求分析：<br />
+关于自动累加器的操作，只关联 “组件挂载后和组件卸载前” 这2个生命周期函数中，那useEffect还包含了每次组件重新渲染后，这该怎么办？</p>
+<p>答：useEffect函数的第2个参数表示该依赖关系，<strong>将useEffect的第2个参数，设置为空数组 []</strong>，即表示告诉React，这个useEffect不依赖任何变量的更新所引发的组件重新渲染，以后此组件再更新也不需要调用此useEffect。</p>
+<p>这样就可以实现只在第一次挂载后和卸载前调用此useEffect的目的。</p>
+<pre><code>import React, { useState,useEffect} from 'react';
+
+function Component() {
+  const [a, setA] = useState(0);//定义变量a，并且默认值为0
+
+  //定义第1个useEffect，专门用来处理自动累加器
+  useEffect(() =&gt; {
+    let timer = setInterval(() =&gt; {setA(a+1)},1000);// &lt;-- 请注意这行代码，暗藏玄机
+    return () =&gt; {
+        clearInterval(timer);
+    }
+  }, []);//此处第2个参数为[]，告知React以后该组件任何更新引发的重新渲染都与此useEffect无关
+
+  //定义第2个useEffect，专门用来处理网页标题更新
+  useEffect(() =&gt; {
+    document.title = `${a} - ${Math.floor(Math.random()*100)}`;
+  },[a])
+  return &lt;div&gt; {a} &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>以上代码实际运行正确吗？<br />
+答：不正确！</p>
+<p>？<br />
+小朋友，脸上是否有很多问号？？？</p>
+<p>实际运行会发现，当组件挂载后，确实会执行一次 setA(a+1)，a 的值修改为了 1，然后... a 的值一直为 1，并没有继续累加。</p>
+<p>上述代码会收到react的一个错误警告提示：Either include it or remove the dependency array. You can also do a functional update 'setA(a =&gt; ...)' if you only need 'a' in the 'setA' call.<br />
+该错误警告意思是：如果你确认你传入的第2个参数是空数组，那么你可能会用到 setA(a =&gt; ...) 这种方式来更新a的值。</p>
+<p>问题出在哪里？</p>
+<p>让我们再看看那行有玄机的代码：</p>
+<pre><code>let timer = setInterval(() =&gt; {setA(a+1)},1000);  
+</code></pre>
+<p>再看看 react 给我们的错误警告提示：You can also do a functional update 'setA(a =&gt; ...)' if you only need 'a' in the 'setA' call.  你可能会用到 setA(a =&gt; ...) 这种方式来更新a的值。</p>
+<p>setA(a =&gt; ...)  这是在 “03 useState高级用法”中，解决数据异步 时讲的更新方式。</p>
+<p>那我们就按照提示，将那行代码修改为：</p>
+<pre><code>let timer = setInterval(() =&gt; {setA(a =&gt; a+1)},1000);  
+</code></pre>
+<p>再次执行，错误提示警告没有了，组件也完全按照我们的预期来执行了。react自带的语法检查真的好智能。</p>
+<h5 id="为什么会有这个问题"><a class="header" href="#为什么会有这个问题">为什么会有这个问题？</a></h5>
+<p>关于刚才setInterval中累加 a 的值遇到的问题，React官方文档中也有类似示例，只不过他们用的变量是count，而我们这里用的变量是 a。</p>
+<p>我们看看从React官方文档中引用的话：</p>
+<blockquote>
+<p>有时候，你的 effect 可能会使用一些频繁变化的值。你可能会忽略依赖列表中 state，但这通常会引起 Bug，传入空的依赖数组 []，意味着该 hook 只在组件挂载时运行一次，并非重新渲染时。但如此会有问题，在 setInterval 的回调中，count 的值不会发生变化。因为当 effect 执行时，我们会创建一个闭包，并将 count 的值被保存在该闭包当中，且初值为 0。每隔一秒，回调就会执行 setCount(0 + 1)，因此，count 永远不会超过 1。</p>
+</blockquote>
+<p>再次重复一遍：如果useEffect函数第2个参数为空数组，那么react会将该useEffect的第1个参数 effect 建立一个闭包，该闭包里的变量 a 被永远设定为当初的值，即 0。尽管setInterval正常工作，每次都“正常执行了”，可是 setA(a+1)中 a 的值一直没变化，一直都是当初的0，所以造成 0 + 1 一直都等于 1 的结果。</p>
+<p>而如果修改成 setA(a =&gt; a+1) 的形式，那么就解决了 a 数据异步的问题，每次都是读取最新当前 a 的值。</p>
+<p>这个点是使用 useEffect 很容易掉进去的一个坑，切记切记。</p>
+<p>或者以后养成都用异步更新数据的习惯。</p>
+<h2 id="性能优化-1"><a class="header" href="#性能优化-1">性能优化</a></h2>
+<p>通过上面的例子，我们其实已经实现了 前文中 举例2 和举例3 的效果。</p>
+<p>咦~ 刚才讲的是举例2，没有将举例3啊... 因为举例3中提到的类组件中有多个变量数据，在函数组件中这个问题本身是靠useState来解决的，跟useEffect无关。</p>
+<p>接下来讲一下useEffect函数第2个参数提高性能的正确用法。</p>
+<p>举例：若一个组件中有一个自定义变量obj，obj有两个属性a、b，当a发生变化时，网页标题也跟着a发生变化。<br />
+补充说明：<br />
+1、我们为了让a、b都可以发生变化，将在组件中创建2个按钮，点击之后分别可以修改a、b的值；<br />
+2、为了更加清楚看到每次渲染，我们在网页标题中 a 的后面再增加一个随机数字；</p>
+<p>我们首先看以下代码：</p>
+<pre><code>import React, { useState,useEffect} from 'react';
+function Component() {
+  const [obj,setObj] = useState({a:0,b:0});
+  useEffect(() =&gt; {
+    document.title = `${obj.a} - ${Math.floor(Math.random()*50)}`;
+  }); //注意此时我们并未设置useEffect函数的第2个参数
+
+  //如果下面代码看不懂，你需要重新去温习useState高级用法中的“数据类型为Objcet，修改方法”
+  return &lt;div&gt;
+    {JSON.stringify(obj)}
+    &lt;button onClick={() =&gt; {setObj({...obj,a:obj.a+1})}}&gt;a+1&lt;/button&gt; 
+    &lt;button onClick={() =&gt; {setObj({...obj,b:obj.b+1})}}&gt;b+1&lt;/button&gt;
+  &lt;/div&gt;
+}
+export default Component;
+</code></pre>
+<p>由于我们在网页标题中添加了随机数，因此实际运行你会发现即使修改b的值，也会引发网页标题重新“变更一次”。</p>
+<p>理由显而易见，修改b的值也会触发组件重新渲染，进而触发useEffect中的代码。</p>
+<p>正确的做法应该是我们给useEffect添加上第2个参数：[obj.a]，明确告诉React，只有当obj.a变更引发的重新渲染才执行本条useEffect。</p>
+<pre><code>useEffect(() =&gt; {
+   document.title = `${obj.a} - ${Math.floor(Math.random()*50)}`;
+ },[obj.a]); //第2个参数为数组，该数组中可以包含多个变量
+</code></pre>
+<p>添加过[obj.a]之后，再次运行，无论obj.b或者其他数据变量引发的组件重新渲染，都不会执行该useEffect。</p>
+<p>因此达到提高性能的目的。</p>
+<hr />
+<p>至此，关于useEffect高级用法已经讲完，相信useState和useEffect的组合使用，已经能够让你写出一些简单的React Hook 组件。</p>
+<p>接下来学习第3个Hook函数useContext。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/06%20useContext%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useContext基本用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="06-usecontext基础用法"><a class="header" href="#06-usecontext基础用法">06 useContext基础用法</a></h1>
+<h2 id="usecontext概念解释"><a class="header" href="#usecontext概念解释">useContext概念解释</a></h2>
+<p>我们第三个要学习的Hook(钩子函数)是useContext，他的作用是“勾住”获取由React.createContext()创建、&lt;XxxContext.Provider&gt;添加设置的共享数据value值。useContext可以替代&lt;XxxContext.Consumer&gt;标签，简化获取共享数据的代码。</p>
+<p>我们知道，原本不同级别的组件之间传递属性值，必须逐层传递，即使中间层的组件不需要这些数据。<br />
+注意：这里说的组件指React所有组件，包含类组件和函数组件。</p>
+<p>数据层层传递增加了组件的复杂性，降低了可复用性。为了解决这个问题，我们可以使用以下方式：<br />
+1、在组件顶层或单独的模块中，由React.createContext()创建一个共享数据对象；<br />
+2、在父组件中添加共享数据对象的引用，通过且只能通过&lt;XxxContext.provider value={{xx:'xxx'}}&gt;&lt;/XxxContext.provider&gt;的形式将数据传递给子组件。请注意传值必须使用value={obj}这种形式；<br />
+3、若下一层的子组件用不到共享数据对象中的数据，则可以不做任何属性标签传递；<br />
+4、若某一层的子组件需要用到共享数据对象的数据，则可通过&lt;XxxContext.Consumer&gt;&lt;/XxxContext.Consumer&gt;获取到数据；<br />
+5、在类组件中除了&lt;XxxContext.Consumer&gt;标签，还有另外一种获取共享数据方式：static xxx = XxxContext; 但是这种形式在函数组件中无法使用。</p>
+<p>简而言之&lt;XxxContext.Provider&gt;用来添加共享数据、&lt;XxxContext.Consumer&gt;用来获取共享数据。<br />
+备注：provider单词本意为供应者、consumer单词本意为消费者，刚好对应他们相对于共享数据的关系。</p>
+<p>上面简单描述了React.createContext()的用法，由于本系列文章主要讲Hook的使用方法，React本身的知识点并不是重点讲解对象。若你对React.createContext()、&lt;XxxContext.Provider&gt;、&lt;XxxContext.Consumer&gt;的用法还不太明白，请通过其他途径自行学习。</p>
+<p>让我们回到useContext学习中。</p>
+<h2 id="usecontext是来解决什么问题的"><a class="header" href="#usecontext是来解决什么问题的">useContext是来解决什么问题的？</a></h2>
+<p>答：useContext是&lt;XxxContext.Consumer&gt;的替代品，可以大量简化获取共享数据值的代码。</p>
+<p>补充说明：<br />
+1、函数组件和类组件，对于&lt;XxxContext.Provider&gt;、&lt;XxxContext.Consumer&gt;使用方式没有任何差别。<br />
+2、你可以在函数组件中不使用useContext，继续使用&lt;XxxContext.Consumer&gt;，这都没问题。只不过使用useContext后，可以让获取共享数据相关代码简单一些。</p>
+<h2 id="usecontext函数源码"><a class="header" href="#usecontext函数源码">useContext函数源码：</a></h2>
+<p>回到useContext的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useContext&lt;T&gt;(
+  Context: ReactContext&lt;T&gt;,
+  unstable_observedBits: number | boolean | void,): T {
+  const dispatcher = resolveDispatcher();
+  if (__DEV__) {
+    if (unstable_observedBits !== undefined) {
+      console.error(
+        'useContext() second argument is reserved for future ' +
+        'use in React. Passing it is not supported. ' +
+        'You passed: %s.%s',
+        unstable_observedBits,
+        typeof unstable_observedBits === 'number' &amp;&amp; Array.isArray(arguments[2])
+        ? '\n\nDid you call array.map(useContext)? ' +
+          'Calling Hooks inside a loop is not supported. ' +
+          'Learn more at https://fb.me/rules-of-hooks'
+        : '',
+      );
+  }
+
+  // TODO: add a more generic warning for invalid values.
+  if ((Context: any)._context !== undefined) {
+    const realContext = (Context: any)._context;
+    // Don't deduplicate because this legitimately causes bugs
+    // and nobody should be using this in existing code.
+    if (realContext.Consumer === Context) {
+      console.error(
+        'Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be ' +
+          'removed in a future major release. Did you mean to call useContext(Context) instead?',
+      );
+    } else if (realContext.Provider === Context) {
+      console.error(
+        'Calling useContext(Context.Provider) is not supported. ' +
+          'Did you mean to call useContext(Context) instead?',
+      );
+    }
+  }
+}
+  return dispatcher.useContext(Context, unstable_observedBits);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。之所以贴出源码只是想让你看懂以后告诉我，反正我是没看懂。^_^</p>
+<h2 id="usecontext基本用法"><a class="header" href="#usecontext基本用法">useContext基本用法</a></h2>
+<p>useContext(context)函数可以传入1个参数，该参数为共享数据对象的实例，useContext函数会返回该共享对象实例的value值。</p>
+<h5 id="代码形式-2"><a class="header" href="#代码形式-2">代码形式：</a></h5>
+<pre><code>import GlobalContext from './global-context'; //引入共享数据对象
+
+function Component(){
+  const global = useContext(GlobalContext); //在函数组件中声明一个变量来代表该共享数据对象的value值
+
+  //若想获取共享数据对象中的属性xxx的值，直接使用global.xxx即可
+  return &lt;div&gt;
+    {global.xxx}
+  &lt;/div&gt;
+}
+</code></pre>
+<h5 id="拆解说明-2"><a class="header" href="#拆解说明-2">拆解说明：</a></h5>
+<p>1、子组件(函数组件)需要先引入共享数据对象GlobalContext；<br />
+2、内部定义一个常量global，用来接收useContext函数返回GlobalContext的value值；<br />
+3、函数组件在return时，可以不使用&lt;GlobalCount.Customer&gt;标签，而是直接使用global.xx来获取共享数据；<br />
+4、请注意，这里执行的依然是单向数据流，只可以获取global.xx，不可以直接更改global.xx;</p>
+<h4 id="引入globalcontext补充说明"><a class="header" href="#引入globalcontext补充说明">'引入GlobalContext'补充说明</a></h4>
+<p>示例中是通过import方式引入的，如果直接把GlobalContext定义在该组件内部，那不是就不用import了吗？<br />
+答：是的，你可以这么做。只不过定义在外部单独的模块中，各个组件都可以引用。</p>
+<h4 id="global补充说明"><a class="header" href="#global补充说明">'global'补充说明</a></h4>
+<p>为了代码语义化，上述代码中使用到了global这个单词，但是请注意，该单词和原生JS中global(全局变量)无任何关联。实际项目中你可以使用任意具有语义的相关单词。比如定义用户共享数据你可以定义为UserContext、新闻共享数据你可以定义为NewsContext等。</p>
+<h2 id="usecontext使用示例"><a class="header" href="#usecontext使用示例">useContext使用示例：</a></h2>
+<p>举例：若某React组件一共由3层组件嵌套而成，从外到里分别是AppComponent、MiddleComponent、ChildComponent。AppComponent需要传递数据给ChildComponent。</p>
+<p>若使用useContext来实现，代码示例如下：</p>
+<pre><code>//global-context.js
+import React from 'react';
+const GlobalContext = React.createContext(); //请注意，这里还可以给React.createContext()传入一个默认值
+//例如：const GlobalContext = React.createContext({name:'Yang',age:18})
+//假如&lt;GlobalContext.Provider&gt;中没有设置value的值，就会使用上面定义的默认值
+export default GlobalContext;
+
+...
+
+//component.js
+import React, { useContext } from 'react';
+import GlobalContext from './global-context';
+
+function AppComponent() {
+  //标签&lt;GlobalContext.Provider&gt;中向下传递数据，必须使用value这个属性，且数据必须是键值对类型的object
+  //如果不添加value，那么子组件获取到的共享数据value值是React.createContext(defaultValues)中的默认值defaultValues
+  return &lt;div&gt;
+    &lt;GlobalContext.Provider value={{name:'puxiao',age:34}}&gt;
+        &lt;MiddleComponent /&gt;
+    &lt;/GlobalContext.Provider&gt;
+  &lt;/div&gt;
+}
+
+function MiddleComponent(){
+  //MiddleComponent 不需要做任何 “属性数据传递接力”，因此降低该组件数据传递复杂性，提高组件可复用性
+  return &lt;div&gt;
+    &lt;ChildComponent /&gt;
+  &lt;/div&gt;
+}
+
+function ChildComponent(){
+  const global = useContext(GlobalContext); //获取共享数据对象的value值
+  //忘掉&lt;GlobalContext.Consumer&gt;标签，直接用global获取需要的值
+  return &lt;div&gt;
+    {global.name} - {global.age}
+  &lt;/div&gt;
+}
+
+export default AppComponent;
+</code></pre>
+<p>假如ChildComponent不使用useContext，而是使用&lt;GlobalContext.Consumer&gt;标签，那么代码相应修改为：</p>
+<pre><code>function ChildComponent(){
+  return &lt;GlobalContext.Consumer&gt;
+    {
+        global =&gt; {
+            return &lt;div&gt;{global.name} - {global.age}&lt;/div&gt;
+        }
+    }
+  &lt;/GlobalContext.Consumer&gt;
+}
+</code></pre>
+<p>使用useContext可以大大降低获取数据代码复杂性。</p>
+<p>请注意：useContext只是简化了获取共享数据value的代码，但是对于&lt;XxxContext.Provider&gt;的使用没有做任何改变，如果组件需要设置2个XxxContext，那么依然需要进行&lt;XxxContext.Provider&gt;嵌套。</p>
+<p>上述代码中AppComponent只向下传递出去1个共享数据对象value值，那如果需要同时传递多个共享数据对象的value值，那该如何实现？<br />
+关于这个问题，会在 useContext高级用法中讲解。</p>
+<hr />
+<p>至此，关于useContext基础用法已经讲完。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/07%20useContext%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">useContext高级用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="07-usecontext高级用法"><a class="header" href="#07-usecontext高级用法">07 useContext高级用法</a></h1>
+<p>所谓高级用法，只不过是一些深层知识点和实用技巧，你甚至可以把本章当做对前面知识点的一个巩固和学习。</p>
+<h2 id="同时传递多个共享数据值给1个子组件"><a class="header" href="#同时传递多个共享数据值给1个子组件">同时传递多个共享数据值给1个子组件</a></h2>
+<p>实现以下组件需求：<br />
+1、有2个共享数据对象 UserContext、NewsContext；<br />
+2、父组件为AppComponent、子组件为ChildComponent；<br />
+3、父组件需要同时将UserContext、NewsContext的数据同时传递给子组件；</p>
+<p>实现代码：</p>
+<pre><code>import React,{ useContext } from 'react'
+
+const UserContext = React.createContext();
+const NewsContext = React.createContext();
+
+function AppComponent() {
+  return (
+    &lt;UserContext.Provider value={{name:'puxiao'}}&gt;
+        &lt;NewsContext.Provider value={{title:'Hello React Hook.'}}&gt;
+            &lt;ChildComponent /&gt;
+        &lt;/NewsContext.Provider&gt;
+    &lt;/UserContext.Provider&gt;
+  )
+}
+
+function ChildComponent(){
+  const user = useContext(UserContext);
+  const news = useContext(NewsContext);
+  return &lt;div&gt;
+    {user.name} - {news.title}
+  &lt;/div&gt;
+}
+
+export default AppComponent;
+</code></pre>
+<p>代码分析：<br />
+1、父组件同时要实现传递2个共享数据对象value值，需要使用&lt;XxxContext.Provider value={obj}&gt;标签进行2次嵌套。<br />
+2、子组件使用了useContext，他可以自由随意使用父组件传递过来的共享数据value，并不需要多次嵌套获取。</p>
+<h2 id="同时将1个共享数据值传递给多个子组件"><a class="header" href="#同时将1个共享数据值传递给多个子组件">同时将1个共享数据值传递给多个子组件</a></h2>
+<p>使用&lt;XxxContext.Provider&gt;&lt;/XxxContext.Provider&gt;标签将多个子组件包裹起来，即可实现。</p>
+<pre><code>&lt;XxxContext.Provider value={{name:'puxiao'}}&gt;
+    &lt;ComponentA /&gt;
+    &lt;ComponentB /&gt;
+    &lt;ComponentC /&gt;
+&lt;/XxxContext.Provider&gt;
+</code></pre>
+<p>3个子组件&lt;ComponentA /&gt;、&lt;ComponentB /&gt;、&lt;ComponentC /&gt;都可使用useContext获取共享数据值。</p>
+<h2 id="为什么不使用redux"><a class="header" href="#为什么不使用redux">为什么不使用Redux？</a></h2>
+<p>在Hook出现以前，React主要负责视图层的渲染，并不负责组件数据状态管理，所以才有了第三方Redux模块，专门来负责React的数据管理。</p>
+<p>但是自从有了Hook后，使用React Hook 进行函数组件开发，实现数据状态管理变得切实可行。只要根据实际项目需求，使用useContext以及下一章节要学习的useReducer，一定程度上是可以满足常见需求的。</p>
+<p>毕竟使用Redux会增大项目复杂度，此外还要花费学习Redux成本。</p>
+<p>具体需求具体分析，不必过分追求Redux。</p>
+<hr />
+<p>至此，关于useContext高级用法已经讲完，useContext降低了组件之间数据传递的复杂性，让我们编写代码更加心情愉悦，而不用去关心层层嵌套问题。</p>
+<p>接下来学习第4个Hook函数useReducer。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/08%20useReducer%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useReducer基本用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="08-usereducer基础用法"><a class="header" href="#08-usereducer基础用法">08 useReducer基础用法</a></h1>
+<h2 id="usereducer概念解释"><a class="header" href="#usereducer概念解释">useReducer概念解释</a></h2>
+<p>我们第四个要学习的Hook(钩子函数)是useReducer，他的作用是“勾住”某些自定义数据对应的dispatch所引发的数据更改事件。useReducer可以替代useState，实现更为复杂逻辑的数据修改。</p>
+<p>在React 16.8版本以前，通常需要使用第三方Redux来管理React的公共数据，但自从 React Hook 概念出现以后，可以使用 useContext + useRedux 轻松实现 Redux 相似功能。这一部分会在 “useReducer高级用法” 中做详细讲解。</p>
+<p>让我们回到useContext基础学习中。</p>
+<h2 id="usereducer是来解决什么问题的"><a class="header" href="#usereducer是来解决什么问题的">useReducer是来解决什么问题的？</a></h2>
+<p>答：useReducer是useState的升级版(实际上应该是原始版)，可以实现复杂逻辑修改，而不是像useState那样只是直接赋值修改。</p>
+<p>补充说明：<br />
+1、在React源码中，实际上useState就是由useReducer实现的，所以useReducer准确来说是useState的原始版。<br />
+2、无论哪一个Hook函数，本质上都是通过事件驱动来实现视图层更新的。</p>
+<h2 id="usereducer函数源码"><a class="header" href="#usereducer函数源码">useReducer函数源码：</a></h2>
+<p>回到useReducer的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useReducer&lt;S, I, A&gt;(
+  reducer: (S, A) =&gt; S,
+  initialArg: I,
+  init?: I =&gt; S,
+): [S, Dispatch&lt;A&gt;] {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useReducer(reducer, initialArg, init);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。之所以贴出源码只是想让你重点看一下useReducer函数的第3个参数。一般我们只传2个参数，如果有一天你看到有人为了某些不常用的目的传了3个参数，你应该理解，第3个参数其实只是第1和第2个参数的某种转化。事实上你可以完全忽略这个问题，每次值传2个参数即可。^_^</p>
+<h2 id="usereducer基本用法"><a class="header" href="#usereducer基本用法">useReducer基本用法</a></h2>
+<p>useReducer(reducer,initialValue)函数通常传入2个参数，第1个参数为我们定义的一个“由dispatch引发的数据修改处理函数”，第2个参数为自定义数据的默认值，useReducer函数会返回自定义变量的引用和该自定义变量对应的“dispatch”。</p>
+<p>请注意，当你看到了dispatch，肯定想到了原生JS中的EventEimtter，事实上React Hook帮我们做了底层的事件驱动处理，我们拿到的dispatch以及“事件处理函数”reducer，都时被React Hook 封装过后的，并不是真正的抛出和事件处理函数。</p>
+<p>但是为了更容易让你理解，本文依然会在讲解useReducer时使用到“事件抛出、事件处理函数”等文字。</p>
+<p>如果你了解事件驱动，使用过EventEimtter，或者你使用过Redux，那么你会很容易理解useReducer的用法。</p>
+<h5 id="代码形式-3"><a class="header" href="#代码形式-3">代码形式：</a></h5>
+<pre><code>import React, { useReducer } from 'react'; //引入useReducer
+
+//定义好“事件处理函数” reducer
+function reducer(state, action) {
+  switch (action) {
+    case 'xx':
+        return xxxx;
+    case 'xx':
+        return xxxx;
+    default:
+        return xxxx;
+  }
+}
+
+function Component(){
+  //声明一个变量xxx，以及对应修改xxx的dispatch
+  //将事件处理函数reducer和默认值initialValue作为参数传递给useReducer
+  const [xxx, dispatch] = useReducer(reducer, initialValue); 
+
+  //若想获取xxx的值，直接使用xxx即可
+  
+  //若想修改xxx的值，通过dispatch来修改
+  dispatch('xx');
+}
+
+//请注意，上述代码中的action只是最基础的字符串形式，事实上action可以是多属性的object，这样可以自定义更多属性和更多参数值
+//例如 action 可以是 {type:'xx',param:xxx}
+</code></pre>
+<h5 id="拆解说明-3"><a class="header" href="#拆解说明-3">拆解说明：</a></h5>
+<p>1、具体讲解已在上面示例代码中做了多项注释，此处不再重复；</p>
+<h4 id="reducer补充说明"><a class="header" href="#reducer补充说明">'reducer'补充说明</a></h4>
+<p>1、reducer英文单词本身意思是“减速器、还原剂”，但是本文中一直把reducer称呼为“事件处理函数”，但事实上reducer确实扮演一个事件处理函数。<br />
+2、千万不要把useReducer中的reducer 和 原生JS中的Array.prototype.reduce()弄混淆，他们两个只是刚好都使用了这个reduce单词而已，两者本身没有任何内在关联。</p>
+<h4 id="xxx补充说明"><a class="header" href="#xxx补充说明">'xxx'补充说明</a></h4>
+<p>假设我们定义的变量名为xxx，那么只能通过dispatch来修改xxx，不要尝试通过 xxx = newValue 这种形式直接修改变量的值，React 不允许这样做。</p>
+<h4 id="dispatch补充说明"><a class="header" href="#dispatch补充说明">'dispatch'补充说明</a></h4>
+<p>再次强调，dispacth并不是真正的Event.dispatch，但是你完全可以把它当成Event.dispatch来理解，只不过useReducer中的dispacth(xxx)函数抛出内容不是event，而是一个包含修改信息的对象，该对象不仅可以是字符串，还可以是复杂对象。</p>
+<h4 id="initialvalue补充说明"><a class="header" href="#initialvalue补充说明">'initialValue'补充说明</a></h4>
+<p>initialValue是我们自定义变量的默认值，该值可以是简单类型(number、string)，也可以是复杂类型(object、array)。<br />
+推荐建议：即使该值是简单类型，也建议单独定义出来而不是直接将值写在useReducer函数中，因为单独定义可以让我们更加清晰读懂数据结构，尤其是initialValue为复杂类型时。</p>
+<h2 id="usereducer使用示例1"><a class="header" href="#usereducer使用示例1">useReducer使用示例1：</a></h2>
+<p>举例：若某React组件内部有一个变量count，默认值为0，有3个button，点击之后分别可以修改count的值。3个按钮具体的功能为：第1个button点击之后count+1，第2个button点击之后count -1，第3个button点击之后 count x 2 (翻倍)。</p>
+<p>若使用useState来实现，那肯定没问题，每个button点击之后分别运算得到对应的新值，将该值直接通过setCount赋予给count。</p>
+<p>若使用useReducer来实现相同功能，代码示例如下：</p>
+<pre><code>import React, { useReducer } from 'react';
+
+function reducer(state,action){
+  switch(action){
+    case 'add':
+        return state + 1;
+    case 'sub':
+        return state - 1;
+    case 'mul':
+        return state * 2;
+    default:
+        console.log('what?');
+        return state;
+  }
+}
+
+function CountComponent() {
+  const [count, dispatch] = useReducer(reducer,0);
+
+  return &lt;div&gt;
+    {count}
+    &lt;button onClick={() =&gt; {dispatch('add')}} &gt;add&lt;/button&gt;
+    &lt;button onClick={() =&gt; {dispatch('sub')}} &gt;sub&lt;/button&gt;
+    &lt;button onClick={() =&gt; {dispatch('mul')}} &gt;mul&lt;/button&gt;
+  &lt;/div&gt;;
+}
+
+export default CountComponent;
+</code></pre>
+<p>代码分析：<br />
+3个按钮点击之后，不再具体去直接修改count的值，而是采用 dispatche('xxx')的形式 “抛出修改count的事件”，事件处理函数reducer“捕获到修改count的事件后”，根据该事件携带的命令类型来进一步判断，并真正执行对count的修改。</p>
+<p>请注意上面这句话中加引号的语句，本文只是以事件驱动的语言来描述整个过程，目的希望你能更加容易理解。</p>
+<p>3个按钮只是负责通知reducer“我希望做什么事情”，具体怎么做完全由reducer来执行。这样实现了修改数据具体执行逻辑与按钮点击处理函数的抽离。</p>
+<p>如果不使用useReducer，而是使用之前学习过的useState，那么对count的每一种修改逻辑代码，都必须分散写在每个按钮的点击事件处理函数中。</p>
+<p>若只是修改count的功能，那么useReducer的优势还未全部体现出来，我们接着看另外一个示例。</p>
+<h2 id="usereducer使用示例2"><a class="header" href="#usereducer使用示例2">useReducer使用示例2</a></h2>
+<p>举例：在示例1中对count 执行的修改，数值变动都是固定的，即 +1、-1、x 2。假设我们希望按钮点击之后，能够自主控制增加多少、减多少、或乘以几，这个效果该怎么实现呢？</p>
+<p>很简单，我们将dispatch('xxx')中的xxx由字符串改为obj，obj可以携带更多属性作为参数传给reducer。 比如之前对 "加"的命令 dispatch('add')，修改为 dispatch({type:'add',param:2})。 reducer可以通过action.type来区分是哪种命令、通过action.param来获取对应的参数。</p>
+<p>为了简化代码，我们将在点击按钮后，随机产生一个数字，并将该数字作为 param 的值，传递给reducer。</p>
+<p>修改后的代码为：</p>
+<pre><code>import React, { useReducer } from 'react';
+
+function reducer(state,action){
+  //根据action.type来判断该执行哪种修改
+  switch(action.type){
+    case 'add':
+      //count 最终加多少，取决于 action.param 的值
+      return state + action.param;
+    case 'sub':
+      return state - action.param;
+    case 'mul':
+      return state * action.param;
+    default:
+      console.log('what?');
+      return state;
+  }
+}
+
+function getRandom(){
+  return Math.floor(Math.random()*10);
+}
+
+function CountComponent() {
+  const [count, dispatch] = useReducer(reducer,0);
+
+  return &lt;div&gt;
+    {count}
+    &lt;button onClick={() =&gt; {dispatch({type:'add',param:getRandom()})}} &gt;add&lt;/button&gt;
+    &lt;button onClick={() =&gt; {dispatch({type:'sub',param:getRandom()})}} &gt;sub&lt;/button&gt;
+    &lt;button onClick={() =&gt; {dispatch({type:'mul',param:getRandom()})}} &gt;mul&lt;/button&gt;
+  &lt;/div&gt;;
+}
+
+export default CountComponent;
+</code></pre>
+<p>同样的道理，我们可以把示例中的count由简单类型改为复杂类型，来储存更多的变量。 但是，建议不要把 useReducer 对应的变量设计的过于复杂。</p>
+<p>使用useReducer，可以让我们使用比较复杂的逻辑和参数对内部变量进行修改。</p>
+<p>不过你是否发现，示例1和示例2中所有的变量都是在同一个组件内定义和修改的，现实项目中肯定牵扯到不同模块组件之间共享并修改某个变量，那又该怎么办呢？<br />
+在下一章节 useReducer高级用法 中，我们会详细讲述如何用 useReducer + useContext 来实现全局不同层级组件共享并修改某变量。</p>
+<hr />
+<p>至此，关于useReducer基础用法已经讲完。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/09%20useReducer%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">useReducer高级用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="09-usereducer高级用法"><a class="header" href="#09-usereducer高级用法">09 useReducer高级用法</a></h1>
+<p>所谓高级用法，只不过是一些深层知识点和实用技巧，你甚至可以把本章当做对前面知识点的一个巩固和学习。</p>
+<br>
+<h2 id="使用usereducer来管理复杂类型的数据"><a class="header" href="#使用usereducer来管理复杂类型的数据">使用useReducer来管理复杂类型的数据</a></h2>
+<p>举例，若某组件内通过ajax请求数据，获取最新一条站内短信文字，需要组件显示整个ajax过程及结果：<br />
+1、当ajax开始请求时，界面显示“loading...”；<br />
+2、当ajax请求发生错误时，界面显示“wrong!”;<br />
+3、当ajax请求成功获取数据时，界面显示获取到的数据内容；</p>
+<p>如果我们使用useState来实现上述功能，伪代码如下：</p>
+<pre><code>function Component() {
+  const [loading,setLoading] = useState(true); //是否ajax请求中，默认为true
+  const [result,setResult] = useState(''); //请求数据内容，默认为''
+  const [error,setError] = useState(false); //请求是否发生错误，默认为false
+
+  {
+      //ajax请求成功
+      setLoading(false);
+      setResult('You have a good news!');//请注意，这是一行伪代码，只是为了演示，并不是真正ajax获取的结果
+      setError(false);
+
+      //ajax请求错误
+      setLoading(false);
+      setError(true);
+  }
+
+  return &lt;div&gt;
+    {loading ? 'loading...' : result}
+    {error ? 'wrong!' : null}
+  &lt;/div&gt;
+}
+</code></pre>
+<p>如果我们使用useReducer来实现，则可将上述3个变量都放在我们定义的变量state中，伪代码如下：</p>
+<pre><code>const initralData = {loading: true,result: '',error: false};
+
+const reducer = (state, action) =&gt; {
+  switch (action.type) {
+    case 'succes':
+        return {loading:false,result:action.res,error:false}
+    case 'error':
+        return {loading:false,error:true}
+  }
+}
+
+function Component() {
+  const [state, dispatch] = useReducer(reducer, initralData);
+
+  {
+      //ajax请求成功
+      dispatch({type:'succes',res:'You have a good news!'});
+
+      //ajax请求错误
+      dispatch({type:'error'});
+  }
+
+  return &lt;div&gt;
+    {state.loading ? 'loading...' : state.result}
+    {state.error ? 'wrong!' : null}
+  &lt;/div&gt;
+}
+</code></pre>
+<p>你可能会有疑问？<br />
+1、为什么看上去使用useReducer后代码变得更多？<br />
+答：因为使用useReducer，我们将修改数据拆分为2个部分，即“抛出修改事件和事件修改处理函数”。虽然代码增多了，但是逻辑更加清晰。</p>
+<p>2、为什么不使用useState，同时把它对应的变量也做成一个obj，就像useReducer的initralData那种？<br />
+答：单纯从1次ajax请求很难看出使用useState或useReducer的差异，但是试想一下多次且ajax返回值在结构类型上容易发生变更，那么使用useReducer这种更加利于代码阅读、功能扩展。</p>
+<br>
+<h2 id="使用usecontext和usereducer实现操作全局共享数据"><a class="header" href="#使用usecontext和usereducer实现操作全局共享数据">使用useContext和useReducer实现操作全局共享数据</a></h2>
+<p>试想一下，如果想实现以下组件需求：<br />
+1、父组件中定义某变量xx；<br />
+2、任何层级下的子组件都可以轻松获取变量xx、并且可以“修改”变量xx；</p>
+<p>注意这里的修改是加引号的，因为事实上你永远无法以直接赋值的方式进行修改，永远都需要调用父级组件提供的方法来修改。</p>
+<h4 id="需求分析"><a class="header" href="#需求分析">需求分析</a></h4>
+<p>激动的心，颤抖的手，忘掉Redux，拥抱 React Hook！</p>
+<p>首先这个功能是类组件无法做到的，也是React 16.8版本以前根本不能实现的，今天，当你使用Hook可轻松实现类似 Redux 共享数据管理功能。</p>
+<h4 id="实现原理"><a class="header" href="#实现原理">实现原理</a></h4>
+<p>用 useContext 实现“获取全局数据”<br />
+用 userReducer 实现“修改全局数据”</p>
+<h4 id="实现思路"><a class="header" href="#实现思路">实现思路</a></h4>
+<p>1、用React.createContext()定义一个全局数据对象；<br />
+2、在父组件中用 userReducer 定义全局变量xx和负责抛出修事件的dispatch；<br />
+3、在父组件之外，定义负责具体修改全局变量的处理函数reducer，根据修改xx事件类型和参数，执行修改xx的值；<br />
+4、在父组件中用 &lt;XxxContext.Provider value={{xx,dispathc}}&gt; 标签把 全局共享数据和负责抛出修改xx的dispatch 暴露给子组件；<br />
+5、在子组件中用 useContext 获取全局变量；<br />
+6、在子组件中用 xxContext.dispatch 去抛出修改xx的事件，携带修改事件类型和参数；</p>
+<h4 id="补充说明"><a class="header" href="#补充说明">补充说明</a></h4>
+<p>上面一直提到了 “抛出事件” “事件处理函数” "dispacth" 都是字面上的，不是真正意义上的事件驱动。  这些都只是 React 暴露给我们的函数或形参。 真正的事件驱动是由 React Hook 底层为我们完成的。</p>
+<p>以上观点仅为个人理解，不能保证100%正确。</p>
+<h4 id="伪代码演示"><a class="header" href="#伪代码演示">伪代码演示</a></h4>
+<p>假设React组件需求为：<br />
+1、有全局数据变量count；<br />
+2、不同层级的子组件均可获取并修改全局变量count；</p>
+<p>共享对象 代码如下：</p>
+<pre><code>import React from 'react';
+const CountContext = React.createContext();
+export default CountContext;
+</code></pre>
+<p>父组件 代码如下：</p>
+<pre><code>import React, { useReducer } from 'react';
+import CountContext from './CountContext';
+import ComponentA from './ComponentA';
+import ComponentB from './ComponentB';
+import ComponentC from './ComponentC';
+
+const initialCount = 0; //定义count的默认值
+
+//修改count事件处理函数，根据修改参数进行处理
+function reducer(state, action) {
+//注意这里先判断事件类型，然后结合携带的参数param 来最终修改count
+switch (action.type) {
+    case 'add':
+        return state + action.param;
+    case 'sub':
+        return state - action.param;
+    case 'mul':
+        return state * action.param;
+    case 'reset':
+        return initialCount;
+    default:
+        console.log('what?');
+        return state;
+}
+}
+
+function ParentComponent() {
+  //定义全局变量count，以及负责抛出修改事件的dispatch
+  const [count, dispatch] = useReducer(reducer, initialCount);
+
+  //请注意：value={{count,dispatch} 是整个代码的核心，把将count、dispatch暴露给所有子组件
+  return &lt;CountContext.Provider value={{count,dispatch}}&gt;
+    &lt;div&gt;
+        ParentComponent - count={count}
+        &lt;ComponentA /&gt;
+        &lt;ComponentB /&gt;
+        &lt;ComponentC /&gt;
+    &lt;/div&gt;
+  &lt;/CountContext.Provider&gt;
+}
+
+export default ParentComponent;
+</code></pre>
+<p>子组件A 代码如下：</p>
+<pre><code>import React,{ useState, useContext } from 'react';
+import CountContext from './CountContext';
+
+function CopmpoentA() {
+  const [param,setParam] = useState(1);
+  //引入全局共享对象，获取全局变量count，以及修改count对应的dispatch
+  const countContext = useContext(CountContext);
+
+  const inputChangeHandler = (eve) =&gt; {
+    setParam(eve.target.value);
+  }
+
+  const doHandler = () =&gt; {
+    //若想修改全局count，先获取count对应的修改抛出事件对象dispatch，然后通过dispatch将修改内容抛出
+    //抛出的修改内容为：{type:'add',param:xxx}，即告诉count的修改事件处理函数，本次修改的类型为add，参数是param
+    //这里的add和param完全是根据自己实际需求自己定义的
+    countContext.dispatch({type:'add',param:Number(param)});
+  }
+
+  const resetHandler = () =&gt; {
+    countContext.dispatch({type:'reset'});
+  }
+
+  return &lt;div&gt;
+        ComponentA - count={countContext.count}
+        &lt;input type='number' value={param} onChange={inputChangeHandler} /&gt;
+        &lt;button onClick={doHandler}&gt;add {param}&lt;/button&gt;
+        &lt;button onClick={resetHandler}&gt;reset&lt;/button&gt;
+    &lt;/div&gt;
+}
+
+export default CopmpoentA;
+</code></pre>
+<p>总结：<br />
+1、3个子组件他们主要区别是组件内 doHandler 函数，对count进行不同形式的修改；<br />
+2、3个子组件分别可以实现对全局变量 count 的获取与修改；<br />
+3、当任何一个子组件对count进行了修改，都会立即反映在其他子组件中，实现子组件之间的数据共享。</p>
+<p>至此，实现了比较简单的，类似 Redux 全局数据管理效果。</p>
+<br>
+<h2 id="为什么不使用redux-1"><a class="header" href="#为什么不使用redux-1">为什么不使用Redux？</a></h2>
+<p>这个问题以前提出过，现在可以明确回答：因为我自己使用 useReducer + useContext 自己可以轻松实现，干嘛还要用Redux。<br />
+再见 Redux。</p>
+<br>
+<br>
+<blockquote>
+<p>以下内容更新于 2021.05.18</p>
+</blockquote>
+<h2 id="忘掉-redux忘掉-usereducerusecontext拥抱-recoil-吧"><a class="header" href="#忘掉-redux忘掉-usereducerusecontext拥抱-recoil-吧">忘掉 Redux，忘掉 useReducer+useContext，拥抱 Recoil 吧！</a></h2>
+<p>强烈推荐使用 React 开发人员针对 Hooks 函数组件推出的新一代状态管理库：Recoil</p>
+<p>Recoil 官方网站：https://recoiljs.org/</p>
+<p>我写的 Recoil 教程：https://github.com/puxiao/recoil-tutorial</p>
+<blockquote>
+<p>以上内容更新于 2021.05.18</p>
+</blockquote>
+<br>
+<br>
+<h2 id="什么时候用usestate什么时候用usereducer"><a class="header" href="#什么时候用usestate什么时候用usereducer">什么时候用useState？什么时候用useReducer？</a></h2>
+<p>本人的建议是：组件自己内部的简单逻辑变量用useState、多个组件之间共享的复杂逻辑变量用useReducer。</p>
+<hr />
+<p>至此，关于useReducer高级用法已经讲完，useReducer可以让我们实现复杂逻辑的数据修改，结合useContext更能做到全局数据共享和修改。</p>
+<p>目前已经学习过的4个Hook函数useState、useEffect、useContext、useReducer，他们都是用来实现组件某些具体业务功能的，而接下来要学习的Hook函数则是用来提高组件整体性能的，例如第5个Hook函数useCallback和第6个Hook函数useMemo。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/10%20useCallback%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useCallback基本用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="10-usecallback基础用法"><a class="header" href="#10-usecallback基础用法">10 useCallback基础用法</a></h1>
+<h2 id="usecallback概念解释"><a class="header" href="#usecallback概念解释">useCallback概念解释</a></h2>
+<p>我们第五个要学习的Hook(钩子函数)是useCallback，他的作用是“勾住”组件属性中某些处理函数，创建这些函数对应在react原型链上的变量引用。useCallback第2个参数是处理函数中的依赖变量，只有当依赖变量发生改变时才会重新修改并创建新的一份处理函数。</p>
+<h5 id="react原型链"><a class="header" href="#react原型链">react原型链？</a></h5>
+<p>我对react原型链也不太懂，你可以简单得把 react原型链 理解成 “react定义的一块内存”。我们使用某些 hook 定义的“变量或函数”都存放在这块内存里。这块内存里保存的变量或函数，并不会因为组件重新渲染而消失。<br />
+1、当我们需要使用时可以“对象的引用名”从该内存里获取，例如useContext<br />
+2、当希望更改某些变量时，可以通过特定的函数来修改该内存中变量的值，例如useState中的setXxxx()<br />
+2、当某些函数依赖变量发生改变时，react可以重新生成、并修改该内存中对应的函数，例如useReducer、useCallback</p>
+<blockquote>
+<p>此处更新与2020年10月13日<br />
+今天学习了一下 JS 原型链：每一个对象或者说由 function 创建的对象，他们都有一个属性 <code>__proto__</code>，该属性值为创建该对象的构造函数的原型对象，又称 隐式原型，而这一层的隐式原型也有 <code>__proto__</code> 属性，即 <code>__proto__.__proto__</code> 属性值为 Object.prototype，还可以继续再往下深入 <code>__proto__.__proto__.__proto__</code>为了避免死循环，最终到此，即 <code>Object.prototype.__proto__</code> 为 null。作为构造函数对象，有属性 prototype，属性值为该函数的显示原型对象。constructor 则表示原型对象的构造函数本身。</p>
+<pre><code>const arr = [1, 2, 3]
+console.log(arr.__proto__ === Array.prototype) // true
+console.log(arr.__proto__.__proto__ === Object.prototype) // true
+console.log(Object.prototype.__proto__ === null) // true
+
+function MyFun() { this.name = 'puxiao' }
+const myFun = new MyFun()
+console.log(myFun.__proto__ === MyFun.prototype) // true
+console.log(MyFun.__proto__ === Function.prototype) // true
+console.log(myFun.__proto__.__proto__ === Object.prototype) // true
+console.log(myFun.__proto__.__proto__.__proto__) // null
+console.log(Object.prototype.__proto__) // null
+</code></pre>
+</blockquote>
+<blockquote>
+<p>要想更加容易理解上面代码，就需要明白，所谓 object 是指 { }，而 Object 其实是 JS 内置的对象函数。同理 所谓 array 是指 []，而 Array 其实是 JS 内置的 数组函数</p>
+</blockquote>
+<blockquote>
+<p>正是 JS 中 <code>__prototype__(隐式原型)</code> <code>prototype(显式原型)</code> <code>constructor(原型对象所在的构造函数本身)</code> 这 3个概念，最终组合成了 庞大的 JS 功能。我们平时定义的任何 类、对象、函数 都出在这种 链条 中，以及对 这个链条中某个环节属性功能的扩展，这种组织形式就叫 JS 原型链。</p>
+</blockquote>
+<blockquote>
+<p>JS 原型还有一个原则就是可以无限得去扩展自身属性，当前级别的原型扩展属性之后，下层级别的对象自动就拥有该属性。</p>
+<p>那么我们可以大概推理出来，React就是巧妙利用了这种 JS 原型链的原则，将底层模块需要用到的处理函数提升到更高(或者说更加原始)的级别中。这样即使底层中发生了变化，但是他依然拥有高层中定义好的函数引用。</p>
+</blockquote>
+<p>请重点留意“修改”这个词，因为“修改”牵扯到react最为隐秘却极其重要的一层概念。<br />
+“修改”有3种情况：<br />
+1、用完全不一样的新值去替换之前的旧值 ——&gt; 这会触发react重新渲染 ——&gt; 例如{age:34}去替换{age:18}<br />
+2、用和旧值看似一模一样的新值去替换之前的旧值 ——&gt; 这依然会触发react重新渲染，因为react底层对新旧值做对比时使用的是 Object.is判断，字面上看似一模一样没有用，react依然会认为这是2个对象，依然会触发react重新渲染 ——&gt; 例如{age:18}去替换{age:18}<br />
+3、用旧值的引用去替换旧值 ——&gt; 这次就不会触发重新渲染 ——&gt; 例如let obj={age:18}; let obj2=obj，用obj2去替换obj</p>
+<p>为了提高react性能，就需要用旧值的引用去替换旧值，从而阻止本次无谓的渲染。</p>
+<p>问题的关键就在于“如何获取旧值的引用”？<br />
+答：对于函数来说可以使用useCallback。</p>
+<p>在本章或以后的章节中，我依然会使用 react原型链 这个词，你都按照我刚才说的“react定义的一块内存”概念去理解就好了。</p>
+<p>懵圈了没？我已经尽量总结得让你容易理解了，如果你似懂非懂没有关系，本文后面会通过示例代码会让你明白如何使用。</p>
+<p>让我们先忘掉useCallback，先来学习一下以下2个知识点。</p>
+<h5 id="第1个知识点reactmemo-的用法"><a class="header" href="#第1个知识点reactmemo-的用法">第1个知识点：React.memo() 的用法</a></h5>
+<p>首先我们知道，默认情况下如果父组件重新渲染，那么该父组件下的所有子组件都会随着父级的重新渲染而重新渲染。<br />
+1、无论子组件是类组件或是函数组件。<br />
+2、无论子组件在本次渲染过程中，子组件是否有任何相关的数据变化。</p>
+<p>举例，假设某父组件中有3个子组件：子组件A、子组件B、子组件C。若因为子组件A发生了某些操作，引发父组件重新渲染，这时即使子组件B和子组件C没有任何需要更改的地方，但是默认他们两个也会重新被渲染一次。</p>
+<p>为了减少这个不必要的重新渲染，如果是类组件，可以在组件shouldComponentUpdate(准备要开始更新前)生命周期函数中，通过比较props和state中前后两次的值，如果完全相等则跳过本次渲染，改为直接使用上一次渲染结果，以此提高性能提升。</p>
+<p>伪代码如下：</p>
+<pre><code>shouldComponentUpdate(nextProps,nextStates){
+  //判断xxx值是否相同，如果相同则不进行重新渲染
+  return (nextProps.xxx !== this.props.xxx); //注意是 !== 而不是 !=
+}
+</code></pre>
+<p>为了简化我们这一步操作，可以将类组件由默认继承自React.Component改为React.PureComponent。React.PureComponent默认会帮我们完成上面的浅层对比，以跳过本次重新渲染。</p>
+<p>请注意：React.PureComponent会对props上所有可枚举属性做一遍浅层对比。而不像 shouldComponentUpdate中可以有针对性的只对某属性做对比。</p>
+<p>上面讲的都是类组件，与之对应的是React.memo()，这个是针对函数组件的，作用和React.PureComponent完全相同。</p>
+<p>React.memo()的使用方法很简单，就是把要导出的函数组件包裹在React.memo中即可。</p>
+<p>伪代码如下：</p>
+<pre><code>import React from 'react'
+function Xxxx() {
+  return &lt;div&gt;xx&lt;/div&gt;;
+}
+export default React.memo(Xxxx); //使用React.memo包裹住要导出的函数组件
+</code></pre>
+<p>请记住以下2点：<br />
+1、React.memo()只会帮我们做浅层对比，例如props.name='puxiao'或props.list=[1,2,3]，如果是props中包含复杂的数据结构，例如props.obj.list=[{age:34}]，那么有可能达不到你的预期，因为不会做到深层次对比。<br />
+2、使用React.memo仅仅是让该函数组件具备了可以跳过本次渲染的基础，若组件在使用的时候属性值中有某些处理函数，那么还需要配合useCallback才可以做到跳过本次重新渲染。</p>
+<p>呵，话题又回到useCallback上面了。</p>
+<h5 id="第2个知识点-等比运算"><a class="header" href="#第2个知识点-等比运算">第2个知识点：=== 等比运算</a></h5>
+<p>在原生JS中，你认为<br />
+1、{}==={} 为true还是false？<br />
+2、{a:2}==={a:2} 为true还是false？</p>
+<p>这是一道很简单却很容易迷惑人的题目，若你对原生JS中 === 等比运算不够深入了解，你很容易会认为结果是true。</p>
+<p>如果你轻松回答出来：以上均为false，那么恭喜你是个明白人。<br />
+如果你疑惑了一下或者你的答案是true，那么你可以自己去JS里测试一下看结果是什么。</p>
+<p>答案是2者均是false。</p>
+<p>以{}==={}为例，虽然从字面上 === 左右两侧完全相同的，但是实际上在JS中 左右两侧分别为独立的{}对象，各自占有各自的内存空间，因此他们对比的结果是false。</p>
+<p>相反，看下面的代码：</p>
+<pre><code>let obj = {};
+let obj2 = obj;
+obj2.name='react';
+console.log(obj===obj2); //true
+</code></pre>
+<p>上面输出结果为true，为何obj===obj2为true？  因为 obj和obj2都是对同一个对象的引用，所以对比结果为true，因为他们最终指向同一个对象。</p>
+<p>还记得本文开头对于useCallback概念解释中的那段文字吗？useCallback的作用是“勾住”组件属性中某些处理函数，创建这些函数对应在react原型链上的变量引用。</p>
+<p>呵，话题又回到useCallback上面了。</p>
+<p>划重点：记住“useCallback”和“原型链上处理函数的引用”这两个关键词，基本上你就对useCallback的原理理解一大半了。</p>
+<p>让我们回到useCallback基础学习中。</p>
+<h2 id="usecallback是来解决什么问题的"><a class="header" href="#usecallback是来解决什么问题的">useCallback是来解决什么问题的？</a></h2>
+<p>答：useCallback是通过获取函数在react原型链上的引用，当即将重新渲染时，用旧值的引用去替换旧值，配合React.memo，达到“阻止组件不必要的重新渲染”。</p>
+<p>详细解释：<br />
+useCallback可以将组件的某些处理函数挂载到react底层原型链上，并返回该处理函数的引用，当组件每次即将要重新渲染时，确保props中该处理函数为同一函数(因为是同一对象引用，所以===运算结果一定为true)，跳过本次无意义的重新渲染，达到提高组件性能的目的。当然前提是该组件在导出时使用了React.memo()。</p>
+<p>补充说明：<br />
+假设某组件使用到了myfun这个处理函数，回忆一下前面提到的JS中===运算规则，考虑一下。</p>
+<p>默认不使用useCallback，其实组件执行了以下伪代码：</p>
+<pre><code>let obj = {}; //上一次渲染时创建的props
+obj.myfun={xxx}; //props中的myfun属性值，实为独立创建的{xxx}
+
+let obj2 = {}; //本次渲染时创建的props
+obj2.myfun={xxx}; //props中的myfun属性值，实为独立创建的{xxx}
+
+if(obj.myfun === obj2.myfun){
+  //跳过本次重新渲染，改为使用上一次渲染结果即可
+}
+</code></pre>
+<p>由于obj.myfun 和 obj2.myfun 为分别独立创建的函数{xxx}，所以对比结果为false，也就意味着无法跳过本次重新渲染，尽管函数{xxx}字面相同。</p>
+<p>相反，如果使用useCallback，其实组件执行了以下伪代码：</p>
+<pre><code>let myfun = {xxx}; //独立定义处理函数myfun
+
+let obj = {}; //上一次渲染时创建的props
+obj.myfun = myfun; //props中的myfun属性值，实为myfun的引用
+
+let obj2 = {}; //本次渲染时创建的props
+obj2.myfun = myfun; //props中的myfun属性值，实为myfun的引用
+
+if(obj.myfun === obj2.myfun){
+  //跳过本次重新渲染，改为使用上一次渲染结果即可
+}
+</code></pre>
+<p>此时 obj.myfun 和 obj2.myfun 均为myfun的引用，因此该对比结果为true，也就意味着可以顺利跳过本次渲染，达到提高组件性能的目的。</p>
+<p>以上是代码仅仅是为了示意默认子组件为什么会被迫重新渲染，以及useCallback作用机理。</p>
+<p>只有理解了这个机理，才会明白何时使用useCallback。  切记不要滥用useCallback。</p>
+<p>多说一句：你是否觉得React Hook 很绕？ 对，这就是Hook学习起来难度大的一些原因，但当你充分理解React的编程哲学思想后，用起来会如鱼得水。加油！</p>
+<h2 id="usecallback函数源码"><a class="header" href="#usecallback函数源码">useCallback函数源码：</a></h2>
+<p>回到useCallback的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useCallback&lt;T&gt;(
+  callback: T,
+  deps: Array&lt;mixed&gt; | void | null,
+): T {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useCallback(callback, deps);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^<br />
+不过请注意第2个参数，deps为该函数依赖的数据变量，值为Array<mixed> 或 void 或 null。 意味着如果该函数没有依赖的情况下，可以传入空数组[]或void或null。个人建议是传入空数组。</p>
+<p>补充一点TypeScript知识(因为我最近刚学了TypeScript)：<br />
+像 &lt;T&gt;(callback:T):T 这种类型定义称为“泛型”，里面 T 的含义为“一模一样的同类型”。<br />
+举例：<br />
+1、若T为function，即参数callback类型为function，那么函数返回值也为function。<br />
+2、若T为object，即参数callback类型为object，那么函数返回值也为object。</p>
+<h2 id="usecallback基本用法"><a class="header" href="#usecallback基本用法">useCallback基本用法</a></h2>
+<p>useCallback(callback,deps)函数通常传入2个参数，第1个参数为我们定义的一个“处理函数”，通常为一个箭头函数。第2个参数为该处理函数中存在的依赖变量，请注意凡是处理函数中有的数据变量都需要放入deps中。如果处理函数没有任何依赖变量，可以传入一个空数组[]。</p>
+<p>特别强调一下：useCallback中的第2个依赖变量数组和useEffect中第2个依赖变量数组，作用完全不相同。<br />
+useEffect中第2个依赖变量数组是真正起作用的，是具有关键性质的。而useCallback中第2个依赖变量数组目前作用来说仅仅是起到一个辅助作用。</p>
+<p>仅仅是辅助？辅助什么了？甚至你还可能会有一个疑问，既然处理函数中所有的依赖变量都需要做为第2个参数的内容，为啥React不智能一些，让我们不传第2个参数，省略掉这一步？</p>
+<p>在React官方文档中，针对第2个参数有以下这段话：</p>
+<blockquote>
+<p>注意：依赖项数组不会作为参数传给回调函数。虽然从概念上来说它表现为：所有回调函数中引用的值都应该出现在依赖项数组中。未来编译器会更加智能，届时自动创建数组将成为可能。</p>
+</blockquote>
+<p>自己体会吧，你品，你细品。</p>
+<h5 id="代码形式-4"><a class="header" href="#代码形式-4">代码形式：</a></h5>
+<pre><code>import Button from './button'; //引入我们自定义的一个组件&lt;Button&gt;
+
+//组件内部声明一个age变量
+const [age,setAge] = useState(34);
+
+//通过useCallback，将鼠标点击处理函数保存到React底层原型链中，并获取该函数的引用，将引用赋值给clickHandler
+const clickHandler = useCallback(() =&gt; {
+    setAge(age+1);
+  },[age]);
+//由于该处理函数中使用到了age这个变量，因此useCallback的第2个参数中，需要将age添加进去
+
+//使用该处理函数，实为使用该处理函数的在React底层原型链上的引用
+return &lt;Button clickHandler={clickHandler}&gt;&lt;/Button&gt;
+</code></pre>
+<h5 id="拆解说明-4"><a class="header" href="#拆解说明-4">拆解说明：</a></h5>
+<p>1、具体讲解已在上面示例代码中做了多项注释，此处不再重复；</p>
+<h4 id="age补充说明"><a class="header" href="#age补充说明">'age'补充说明</a></h4>
+<p>1、上述代码示例中，age为该组件通过useState创建的内部变量，事实上也可以是父组件通过属性传值的props.xx中的变量。<br />
+2、只要依赖变量不发生变化，那么重新渲染时就可以一直使用之前创建的那个函数，达到阻止本次渲染，提升性能的目的。但是如果依赖变量发生变化，那么下次重新渲染时根据变量重新创建一份处理函数并替换React底层原型链上原有的处理函数。</p>
+<h4 id="clickhandler补充说明"><a class="header" href="#clickhandler补充说明">'clickHandler'补充说明</a></h4>
+<p>再次强调，clickHandler实际上是真正的处理函数在React底层原型链上的引用。</p>
+<h4 id="button补充说明"><a class="header" href="#button补充说明">'&lt;Button&gt;'补充说明</a></h4>
+<p>&lt;Button&gt;为我们自定义的一个组件，在上述代码中相当于“子组件”。</p>
+<p>上面的示例伪代码仅仅是为了演示useCallback的使用方法，实际组件运用中，如果父组件中只有1个子组件，那其实完全没有必要使用useCallback。只有父组件同时有多个子组件时，才有必要去做性能优化，防止某一个子组件引发的重新渲染也导致其他子组件跟着重新渲染。</p>
+<h2 id="usecallback使用示例"><a class="header" href="#usecallback使用示例">useCallback使用示例：</a></h2>
+<p>若我们有一个自定组件&lt;Button&gt;，代码如下：</p>
+<pre><code>import React from 'react'
+function Button({label,clickHandler}) {
+    //为了方便我们查看该子组件是否被重新渲染，这里增加一行console.log代码
+    console.log(`rendering ... ${label}`);
+    return &lt;button onClick={clickHandler}&gt;{label}&lt;/button&gt;;
+}
+export default React.memo(Button); //使用React.memo()包裹住要导出的组件
+</code></pre>
+<p>现在，我们要实现一个组件，功能如下：<br />
+1、组件内部有2个变量age，salary<br />
+2、有2个自定义组件Button，点击之后分别可以修改age，salary值</p>
+<p>若我们不使用useCallback，代码示例如下：</p>
+<pre><code>import React,{useState,useCallback,useEffect} from 'react';
+import Button from './button';
+
+function Mybutton() {
+  const [age,setAge] = useState(34);
+  const [salary,setSalary] = useState(7000);
+
+  useEffect(() =&gt; {
+    document.title = `Hooks - ${Math.floor(Math.random()*100)}`;
+  });
+
+  const clickHandler01 = () =&gt; {
+    setAge(age+1);
+  };
+
+  const clickHandler02 = () =&gt; {
+    setSalary(salary+1);
+  };
+
+  return (
+    &lt;div&gt;
+        {age} - {salary}
+        &lt;Button label='Bt01' clickHandler={clickHandler01}&gt;&lt;/Button&gt;
+        &lt;Button label='Bt02' clickHandler={clickHandler02}&gt;&lt;/Button&gt;
+    &lt;/div&gt;
+  )
+}
+</code></pre>
+<p>实际运行中你会发现，无论点击哪个按钮，都会收到：<br />
+rendering ... Bt01<br />
+rendering ... Bt02</p>
+<p>你只是点击操作了其中一个按钮，另外一个按钮也要跟着重新渲染一次，试想一下如果该组件中有100个子组件都要跟着重新渲染，那真的是性能浪费。</p>
+<p>我们再看一下如果使用useCallback，代码示例如下：</p>
+<pre><code>import React,{useState,useCallback,useEffect} from 'react';
+import Button from './button';
+
+function Mybutton() {
+  const [age,setAge] = useState(34);
+  const [salary,setSalary] = useState(7000);
+
+  useEffect(() =&gt; {
+    document.title = `Hooks - ${Math.floor(Math.random()*100)}`;
+  });
+
+  //使用useCallback()包裹住原来的处理函数
+  const clickHandler01 = useCallback(() =&gt; {
+    setAge(age+1);
+  },[age]);
+
+  //使用useCallback()包裹住原来的处理函数
+  const clickHandler02 = useCallback(() =&gt; {
+    setSalary(salary+1);
+  },[salary]);
+
+  return (
+    &lt;div&gt;
+        {age} - {salary}
+        &lt;Button label='Bt01' clickHandler={clickHandler01}&gt;&lt;/Button&gt;
+        &lt;Button label='Bt02' clickHandler={clickHandler02}&gt;&lt;/Button&gt;
+    &lt;/div&gt;
+  )
+}
+</code></pre>
+<p>修改后的代码，实际运行就会发现，当点击某个按钮时，仅仅是当前按钮重新做了一次渲染，另外一个按钮则没有重新渲染，而是直接使用上一次渲染结果。</p>
+<p>使用useCallback减少子组件没有必要的渲染目的达成。</p>
+<p>useCallback用法很简单，就是包裹住原本的处理函数。关键点在于你要理解useCallback背后的机理，才能知道在什么情况下可以使用useCallback。否则很容易滥用 useCallback，反而造成性能的浪费。</p>
+<h2 id="思考题"><a class="header" href="#思考题">思考题</a></h2>
+<p>假设上面示例代码中，做以下修改：每个按钮上新增一个属性：random={Math.floor(Math.random()*100)}</p>
+<pre><code>&lt;Button label='Bt01' clickHandler={clickHandler01}&gt;&lt;/Button&gt;
+&lt;Button label='Bt02' clickHandler={clickHandler02}&gt;&lt;/Button&gt;
+修改为
+&lt;Button label='Bt01' clickHandler={clickHandler01} random={Math.floor(Math.random()*100)}&gt;&lt;/Button&gt;
+&lt;Button label='Bt02' clickHandler={clickHandler02} random={Math.floor(Math.random()*100)}&gt;&lt;/Button&gt;
+</code></pre>
+<p>那么请问，此时我们针对性能优化而使用的useCallback还有意义吗？</p>
+<p>答：没有任何意义，虽然我们使用useCallback保证了每次clickHandler是相同的，可是 random 的值每次却是随机不一样的，尽管子组件&lt;Button&gt;并没有使用到 random 这个值，但是它的加入造成了 props 每次都不一样(其实是 props.random 不一样)，结果就是子组件每一次都会被重新渲染。所以此时useCallback已经失去了存在的意义。</p>
+<hr />
+<p>至此，关于useCallback基础用法已经讲完，没有高级用法，直接进入下一个Hook。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/11%20useMemo%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useMemo基础用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="11-usememo基础用法"><a class="header" href="#11-usememo基础用法">11 useMemo基础用法</a></h1>
+<h2 id="usememo概念解释"><a class="header" href="#usememo概念解释">useMemo概念解释</a></h2>
+<p>我们第六个要学习的Hook(钩子函数)是useMemo，他的作用是“勾住”组件中某些处理函数的返回值，创建这些返回值对应在react原型链上的索引。当组件重新渲染时，需要再次用到这些函数返回值，此时不再重新执行一遍运算，而是直接使用之前运算过的返回值。useMemo第2个参数是处理函数的变量依赖，只有当处理函数依赖的变量发生改变时才会重新计算并保存一次函数返回结果。</p>
+<p>假设你已经对React.memo，useCallback的运行机制充分了解，那么对你而言useMemo的用法非常好理解。</p>
+<p>useCallback是将某个函数“放入到react底层原型链上，并返回该函数的索引”，而useMemo是将某个函数返回值“放入到react底层原型链上，并返回该返回值的索引”。一个是针对函数，一个是针对函数返回值。</p>
+<p>网上有些人的文章里，会提到：useCallback(fn, deps) 相当于 useMemo(() =&gt; fn, deps)。</p>
+<p>这句话似乎是没有问题，但是他隐藏或者说忽略了几个重要关键点：<br />
+1、不是所有fn(函数)都适用的，必须是该函数有返回值，即函数有 return xx 才可以。<br />
+2、虽然都是fn，但是函数体内代码内容却相差很大，useCallback中的fn主要用来处理各种操作事务的代码，例如修改某变量值或加载数据等。而useMemo中的fn主要用来处理各种计算事务的代码。<br />
+3、useCallback和useMemo都是为了提升组件性能，但是他们两个的适用场景却不相同，不是谁是谁的替代品或谁是谁的简化版。</p>
+<p>再次强调一遍，useCallback中的函数是侧重“操作事务”，useMemo中的函数是侧重“计算结果”，永远不要在useMemo的函数中添加修改数据之类的代码。</p>
+<p>让我们回到useMemo基础学习中。</p>
+<h2 id="usememo是来解决什么问题的"><a class="header" href="#usememo是来解决什么问题的">useMemo是来解决什么问题的？</a></h2>
+<p>答：useMemo的目的是“减少组件重新渲染时不必要的函数计算”。<br />
+useMemo可以将某些函数的计算结果(返回值)挂载到react底层原型链上，并返回该函数返回值的索引。当组件重新渲染时，如果useMemo依赖的数据变量未发生变化，那么直接使用原型链上保存的该函数计算结果，跳过本次无意义的重新计算，达到提高组件性能的目的。</p>
+<p>补充说明：<br />
+1、useMemo并不需要子组件必须使用React.memo。<br />
+2、“不必要的函数计算”中的函数计算必须是有一定复杂度的，例如需要1000个for循环才能计算出的某个值。如果计算量本身很简单，例如1+2，那完全没有必要使用useMemo，就直接每次重新计算一遍也无所谓。</p>
+<h2 id="usememo函数源码"><a class="header" href="#usememo函数源码">useMemo函数源码：</a></h2>
+<p>回到useMemo的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useMemo&lt;T&gt;(
+  create: () =&gt; T,
+  deps: Array&lt;mixed&gt; | void | null,
+): T {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useMemo(create, deps);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^</p>
+<h2 id="usememo基本用法"><a class="header" href="#usememo基本用法">useMemo基本用法</a></h2>
+<p>useMemo(create,deps)函数通常传入2个参数，第1个参数为我们定义的一个“包含复杂计算且有返回值的函数”，第2个参数为该处理函数中存在的依赖变量，请注意凡是处理函数中有的数据变量都需要放入deps中。如果处理函数没有任何依赖变量，可以传入一个空数组[]。</p>
+<p>请注意：<br />
+1、useMemo只是理论上帮你进行组件计算性能优化，但是react并不能保证100%都是按照你的预期来执行的。比如说当你的网页处于离屏(休眠、挂起)等状态时，react底层原型链也许就会释放(删除)之前保存的函数返回值。等到下次网页重新被唤醒时，重新计算一次。<br />
+2、关于useMemo第2个参数，和useCallback一样，也许在未来版本中react会智能识别，不需要要我们再手工传入。</p>
+<h5 id="代码形式-5"><a class="header" href="#代码形式-5">代码形式：</a></h5>
+<pre><code>const xxxValue = useMemo(() =&gt; {
+    let result = xxxxx;
+    //经过复杂的计算后
+    return result;
+}, [xx]);
+</code></pre>
+<h5 id="拆解说明-5"><a class="header" href="#拆解说明-5">拆解说明：</a></h5>
+<p>1、使用useMemo()将计算函数包裹住，将计算函数中使用到的数据变量作为作为第2个参数。<br />
+2、计算函数体内，把计算结果以 return 形式返回出去。<br />
+3、xxxValue 为该函数返回值在react原型链上的引用。</p>
+<h2 id="usememo使用示例"><a class="header" href="#usememo使用示例">useMemo使用示例：</a></h2>
+<p>举例：若某React组件内部有2个number类型的变量num，random，有2个button，点击之后分别可以修改num，random的值。
+与此同时，该组件中还要求显示出num范围内的所有质数个数总和。</p>
+<p>补充说明：加入random纯粹是为了引发组件重新渲染，方便我们查看到useMemo是否启了作用。</p>
+<p>需求分析：<br />
+1、显示出num范围内的所有质数个数总和，这个就是本组件中的“复杂的计算”。<br />
+2、只要num的值未发生变化，质数总数是固定的，那么我们应该避免每次重新渲染时都需要计算一遍。<br />
+3、useMemo函数，就是帮我们解决这个问题。</p>
+<p>使用useMemo，代码示例如下：</p>
+<pre><code>import React,{useState,useMemo} from 'react'
+
+function UseMemo() {
+  const [num,setNum] = useState(2020);
+  const [random,setRandom] = useState(0);
+
+  //通过useMemo将函数内的计算结果(返回值)保存到react底层原型链上
+  //totalPrimes为react底层原型链上该函数计算结果的引用
+  const totalPrimes = useMemo(() =&gt; {
+    console.log('begin....'); //这里添加一个console.log，方便验证在重新渲染时是否重新执行了一遍计算
+
+    let total = 0; //声明质数总和对应的变量
+
+    //以下为计算num范围内所有质数个数总和的计算代码，不需要认真阅读，只需要知道这是一段“比较复杂的计算代码”即可
+    for(let i = 1; i&lt;=num; i++){
+        let boo = true;
+        for(let j = 2; j&lt;i; j++){
+            if(i % j === 0){
+                boo = false;
+                break;
+            }
+        }
+        if(boo &amp;&amp; i!==1){
+            total ++;
+        }
+    }
+    //复杂的计算代码到此结束
+
+    return total;//将质数总和作为返回值return出去
+  }, [num]);
+
+  const clickHandler01 = () =&gt; {
+    setNum(num+1);
+  }
+
+  const clickHandler02 = () =&gt; {
+    setRandom(Math.floor(Math.random()*100)); //修改random的值导致整个组件重新渲染
+  }
+
+  return (
+    &lt;div&gt;
+        {num} - {totalPrimes} - {random}
+        &lt;button onClick={clickHandler01}&gt;num + 1&lt;/button&gt;
+        &lt;button onClick={clickHandler02}&gt;random&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default UseMemo;
+</code></pre>
+<p>实际运行就会发现：<br />
+1、点击修改random的值会引发组件重新渲染，但是{totalPrimes}对应的计算函数却不需要重新计算一遍。<br />
+2、点击修改num的值，{totalPrimes}对应的计算函数肯定会重新执行一遍，因为num是该计算函数的依赖。</p>
+<p>通过这个案例，相信你对useMemo的机制和用法一定有所掌握。</p>
+<hr />
+<p>至此，关于useMemo基础用法已经讲完，没有高级用法，直接进入下一个Hook。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/12%20useRef%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useRef基础用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="12-useref基础用法"><a class="header" href="#12-useref基础用法">12 useRef基础用法</a></h1>
+<h2 id="useref概念解释"><a class="header" href="#useref概念解释">useRef概念解释</a></h2>
+<p>我们第七个要学习的Hook(钩子函数)是useRef，他的作用是“勾住”某些组件挂载完成或重新渲染完成后才拥有的某些对象，并返回该对象的引用。该引用在组件整个生命周期中都固定不变，该引用并不会随着组件重新渲染而失效。</p>
+<p>上面这段话，就算你认真读几遍，估计也是一头雾水，到底说的是啥？<br />
+我也实在想不出其他更加通俗的语言来描述useRef，不过经过下面的详细分解描述，相信能帮到你来理解useRef。</p>
+<h5 id="某些组件挂载完成或重新渲染完成后才拥有的某些对象"><a class="header" href="#某些组件挂载完成或重新渲染完成后才拥有的某些对象">“某些组件挂载完成或重新渲染完成后才拥有的某些对象”：</a></h5>
+<p>这句话中的“某些对象”主要分为3种：JSX组件转换后对应的真实DOM对象、在useEffect中创建的变量、子组件内自定义的函数(方法)。</p>
+<p><strong>第1：JSX组件转换后对应的真实DOM对象</strong>：<br />
+举例：假设在JSX中，有一个输入框&lt;input type='text' /&gt;，这个标签最终将编译转换成真正的html标签中的&lt;input type='text'/&gt;。<br />
+你应该知道以下几点：<br />
+1、JSX中小写开头的组件看似和原生html标签相似，但是并不是真的原生标签，依然是react内置组件。<br />
+2、什么时候转换？ 虚拟DOM转化为真实DOM<br />
+3、什么时候可访问？组件挂载完成或重新渲染完成后</p>
+<p>对于上面举例中的那个转换后的&lt;input/&gt; 真实DOM，只有组件挂载完成或重新渲染完成后才可以访问，它就就属于“某些组件挂载完成或重新渲染完成后才拥有的某些对象”。</p>
+<p>特别强调：useRef只适合“勾住”小写开头的类似原生标签的组件。如果是自定义的react组件(自定义的组件必须大写字母开头)，那么是无法使用useRef的。</p>
+<p>思考：如何获取这个 &lt;input/&gt; 真实DOM呢？<br />
+答：用useRef。</p>
+<p><strong>第2：在useEffect中创建的变量</strong>：<br />
+举例，请看以下代码：</p>
+<pre><code>useEffect(() =&gt; {
+    let timer = setInterval(() =&gt; {
+        setCount(prevData =&gt; prevData +1);
+    }, 1000);
+    return () =&gt; {
+        clearInterval(timer);
+    }
+},[]);
+</code></pre>
+<p>上述代码中，请注意这个timer是在useEffect中才定义的。</p>
+<p>思考：useEffect 以外的地方，该如何获取这个 timer 的引用？<br />
+答：用useRef</p>
+<p><strong>第3：子组件内自定义的函数(方法)</strong><br />
+由于需要结合useImperativeHandle才可以实现，而useImperativeHandle目前还未学习，所以本章中不讨论这个怎么实现。<br />
+本章只讲前2中应用场景。</p>
+<h5 id="并返回该对象的引用"><a class="header" href="#并返回该对象的引用">“并返回该对象的引用”：</a></h5>
+<p>上面的前2种情况，都提到用useRef来获取对象的引用。具体如何获取，稍后在useRef用法中会有演示。</p>
+<h5 id="该引用在组件整个生命周期中都固定不变"><a class="header" href="#该引用在组件整个生命周期中都固定不变">“该引用在组件整个生命周期中都固定不变”：</a></h5>
+<p>假设通过useRef获得了该对象的引用，那么当react组件重新渲染后，如何保证该引用不丢失？<br />
+答：react在底层帮我们做了这个工作，我们只需要相信之前的引用可以继续找到目标对象即可。</p>
+<p>请注意：React.createRef()也有useRef相似效果，但是React.createRef无法全部适用上面提到的3种情况。</p>
+<p>让我们回到useRef基础学习中。</p>
+<h2 id="useref是来解决什么问题的"><a class="header" href="#useref是来解决什么问题的">useRef是来解决什么问题的？</a></h2>
+<p>答：useRef可以“获取某些组件挂载完成或重新渲染完成后才拥有的某些对象”的引用，且保证该引用在组件整个生命周期内固定不变，都能准确找到我们要找的对象。<br />
+具体已经在useRef中做了详细阐述，这里不再重复。</p>
+<p>补充说明：<br />
+1、useRef是针对函数组件的，如果是类组件则使用React.createRef()。<br />
+2、React.createRef()也可以在函数组件中使用。<br />
+只不过React.createRef创建的引用不能保证每次重新渲染后引用固定不变。如果你只是使用React.createRef“勾住”JSX组件转换后对应的真实DOM对象是没问题的，但是如果想“勾住”在useEffect中创建的变量，那是做不到的。</p>
+<p>2者都想可以“勾住”，只能使用useRef。</p>
+<h2 id="注意注意"><a class="header" href="#注意注意">注意注意！</a></h2>
+<p>在后面useImperativeHandle的学习中，你会知道useRef还可以 “勾住并调用” 子组件内定义的函数(方法)。</p>
+<h2 id="useref函数源码"><a class="header" href="#useref函数源码">useRef函数源码：</a></h2>
+<p>回到useRef的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useRef&lt;T&gt;(initialValue: T): {|current: T|} {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useRef(initialValue);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^</p>
+<h2 id="useref基本用法"><a class="header" href="#useref基本用法">useRef基本用法</a></h2>
+<p>useRef(initialValue)函数只有1个可选参数，该参数为默认“勾住”的对象。绝大多数实际的情况是，默认“勾住”的对象在JSX未编译前(组件挂载或重新渲染后)根本不存在，所以更多时候都会传一个 null 作为默认值。如果不传任何参数，那么react默认将参数设置为undefined。</p>
+<p>就目前本人所理解的，日常使用过程中useRef(null)和useRef() 实际上是没有什么区别的。</p>
+<hr />
+<p>以下更新于 2020.12.10</p>
+<p><strong>补充一下 React + TypeScript 知识点：</strong></p>
+<p>useRef(null) 和 useRef() 在 React + TypeScript 项目中还是有差别的。</p>
+<p>假设我们要勾住一个 &lt;canvas /&gt; DOM元素，那么：</p>
+<pre><code>const canvasRef1 = useRef&lt;HTMLCanvasElement&gt;(null)
+const canvasRef2 = useRef&lt;HTMLCanvasElement&gt;()
+</code></pre>
+<p>上面代码中：</p>
+<ol>
+<li>canvasRef1.current 的类型为：HTMLCanvasElement | null</li>
+<li>canvasRef2.current 的类型为：HTMLCanvasElement | null | undefined</li>
+</ol>
+<p>以上更新于 2020.12.10</p>
+<hr />
+<p>第2遍强调：本文提到的组件，默认都是指小写开头的类似原生标签的组件，不可以是自定义组件。</p>
+<p>接下来具体说说useRef关联对象的2种用法：<br />
+1、针对 JSX组件，通过属性 ref={xxxRef} 进行关联。<br />
+2、针对 useEffect中的变量，通过 xxxRef.current 进行关联。</p>
+<h5 id="代码形式-6"><a class="header" href="#代码形式-6">代码形式：</a></h5>
+<pre><code>//先定义一个xxRef引用变量，用于“勾住”某些组件挂载完成或重新渲染完成后才拥有的某些对象
+const xxRef = useRef(null);
+
+//针对 JSX组件，通过属性 ref={xxxRef} 进行关联
+&lt;xxx ref={xxRef} /&gt;
+
+//针对 useEffect中的变量，通过 xxxRef.current 进行关联
+useEffect(() =&gt; {
+   xxRef.current = xxxxxx;
+},[]);
+</code></pre>
+<h5 id="拆解说明-6"><a class="header" href="#拆解说明-6">拆解说明：</a></h5>
+<p>1、具体讲解已在上面示例代码中做了多项注释，此处不再重复；</p>
+<h4 id="ref补充说明"><a class="header" href="#ref补充说明">'ref'补充说明</a></h4>
+<p>1、组件的 ref 为特殊属性名，他并不存在组件属性传值的 props 中。<br />
+2、如果给一个组件设定了 ref 属性名，但是对应的值却不是由 useRef 创建的，那么实际运行中会收到react的报错，无法正常渲染。</p>
+<h4 id="xxx补充说明-1"><a class="header" href="#xxx补充说明-1">'&lt;xxx&gt;'补充说明</a></h4>
+<p>1、useRef只能针对react中小写开头的类似原生标签的组件，所以这里用的是 &lt;xxx&gt; 而不是 &lt;Xxx&gt;。</p>
+<h4 id="xxxrefcurrent补充说明"><a class="header" href="#xxxrefcurrent补充说明">'xxxRef.current'补充说明</a></h4>
+<p>1、当需要使用“勾住”的对象时，也是通过xxRef.current来获取该对象的。</p>
+<h2 id="useref使用示例1"><a class="header" href="#useref使用示例1">useRef使用示例1：</a></h2>
+<p>若我们有一个组件，该组件只有一个输入框，我们希望当该组件挂载到网页后，自动获得输入焦点。</p>
+<p>需求分析：<br />
+1、我们可以很轻松使用&lt;input &gt;创建出这个输入框。<br />
+2、需要使用useRef “勾住”这个输入框，当它被挂载到网页后，通过操作原生html的方法，将焦点赋予该输入框上。</p>
+<p>完整代码如下：</p>
+<pre><code>import React,{useEffect,useRef} from 'react'
+
+function Component() {
+  //先定义一个inputRef引用变量，用于“勾住”挂载网页后的输入框
+  const inputRef = useRef(null);
+
+  useEffect(() =&gt; {
+    //inputRef.current就是挂载到网页后的那个输入框，一个真实DOM，因此可以调用html中的方法focus()
+    inputRef.current.focus();
+  },[]);
+
+  return &lt;div&gt;
+      {/* 通过 ref 属性将 inputRef与该输入框进行“挂钩” */}
+      &lt;input type='text' ref={inputRef} /&gt;
+    &lt;/div&gt;
+}
+export default Component
+</code></pre>
+<p>注意：<br />
+1、在给组件设置 ref 属性时，只需传入 inputRef，千万不要传入 inputRef.current。<br />
+2、在“勾住”渲染后的真实DOM输入框后，能且只能调用原生html中该标签拥有的方法。</p>
+<h2 id="useref使用示例2"><a class="header" href="#useref使用示例2">useRef使用示例2：</a></h2>
+<p>若我们有一个组件，该组件的功能需求如下：<br />
+1、组件中有一个变量count，当该组件挂载到网页后，count每秒自动 +1。<br />
+2、组件中有一个按钮，点击按钮可以停止count自动+1。</p>
+<p>需求分析：<br />
+1、声明内部变量count用 useState<br />
+2、可以在useEffect 通过setInterval创建一个计时器timer，实现count每秒自动 +1<br />
+3、当组件卸载前，需要通过 clearInterval 将timer清除<br />
+4、按钮点击处理函数中，也要通过 clearInterval 将timer清除</p>
+<p>假设我们不使用useRef，那该如何实现？</p>
+<p>为了确保timer可以被useEffect以外地方也能访问，我们通常做法是将timer声明提升到useEffect以外。<br />
+代码如下：</p>
+<pre><code>import React,{useState,useEffect} from 'react'
+
+function Component() {
+  const [count,setCount] = useState(0);
+  const [timer,setTimer] = useState(null); //单独声明定义timer，目的是为了让组件内所有地方都可以访问到timer
+
+  useEffect(() =&gt; {
+    //需要用setTimer()包裹住 setInterval()
+    setTimer(setInterval(() =&gt; {
+        setCount((prevData) =&gt; {return prevData +1});
+    }, 1000));
+    return () =&gt; {
+      //清除掉timer
+      clearInterval(timer);
+    }
+  },[]);
+
+  const clickHandler = () =&gt; {
+    //清除掉timer
+    clearInterval(timer);
+  };
+
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={clickHandler} &gt;stop&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Component
+</code></pre>
+<p>如果使用useRef，该如何实现？
+代码如下：</p>
+<pre><code>import React,{useState,useEffect,useRef} from 'react'
+
+function Component() {
+  const [count,setCount] =  useState(0);
+  const timerRef = useRef(null);//先定义一个timerRef引用变量，用于“勾住”useEffect中通过setIntervale创建的计时器
+
+  useEffect(() =&gt; {
+    //将timerRef.current与setIntervale创建的计时器进行“挂钩”
+    timerRef.current = setInterval(() =&gt; {
+        setCount((prevData) =&gt; { return prevData +1});
+    }, 1000);
+    return () =&gt; {
+        //通过timerRef.current，清除掉计时器
+        clearInterval(timerRef.current);
+    }
+  },[]);
+
+  const clickHandler = () =&gt; {
+    //通过timerRef.current，清除掉计时器
+    clearInterval(timerRef.current);
+  };
+
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={clickHandler} &gt;stop&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Component
+</code></pre>
+<p><strong>两种实现方式对比：</strong></p>
+<p>1、两种实现方式最主要的差异地方在于 如何创建组件内对计时器的引用。<br />
+2、两种创建引用的方式，分别是：用useState创建的timer、用useRef创建的timerRef<br />
+3、在使用setInterval时，相对来说timerRef.current更加好用简单，结构清晰，不需要像 setTimer那样需要再多1层包裹。<br />
+4、timer更像是一种react对计时器的映射，而timerRef直接就是真实DOM中计时器的引用，timerRef能够调用更多的原生html中的JS方法和属性。</p>
+<p><strong>结论：</strong><br />
+1、如果需要对渲染后的DOM节点进行操作，必须使用useRef。<br />
+2、如果需要对渲染后才会存在的变量对象进行某些操作，建议使用useRef。</p>
+<p>第3遍强调：useRef只适合“勾住”小写开头的类似原生标签的组件。如果是自定义的react组件(自定义的组件必须大写字母开头)，那么是无法使用useRef的。</p>
+<hr />
+<blockquote>
+<p>以下内容更新于2020.11.18</p>
+</blockquote>
+<h4 id="在-typescript-中使用-useref-创建计时器注意事项"><a class="header" href="#在-typescript-中使用-useref-创建计时器注意事项">在 TypeScript 中使用 useRef 创建计时器注意事项：</a></h4>
+<p>在上面代码示例中，请注意这一行代码：</p>
+<pre><code>timerRef.current = setInterval(() =&gt; {
+        setCount((prevData) =&gt; { return prevData +1});
+    }, 1000);
+</code></pre>
+<p>如果是在 TS 语法下，上面的代码会报错误：</p>
+<pre><code>不能将类型“Timeout”分配给类型“number”。
+</code></pre>
+<p><strong>Timeout ???</strong></p>
+<p>造成这个错误提示的原因是：</p>
+<ol>
+<li>TypeScript 是运行在 Nodejs 环境下的，TS 编译之后的代码是运行在浏览器环境下的。</li>
+<li>Nodejs 和浏览器中的 window 他们各自实现了一套自己的 setInterval</li>
+<li>原来代码 timerRef.current = setInterval( ... ) 中 setInterval 会被 TS 认为是 Nodejs 定义的 setInterval，而  Nodejs 中 setInterval 返回的类型就是 NodeJS.Timeout。</li>
+<li>所以，我们需要将上述代码修改为：timerRef.current = window.setInterval( ... )，明确我们调用的是 window.setInterval，而不是 Nodejs 的 setInterval。</li>
+</ol>
+<p><strong>附一个 TS 代码示例：</strong></p>
+<pre><code>import React, { useRef, useEffect } from 'react'
+
+const MyTemp = () =&gt; {
+    const timer = useRef&lt;number | undefined&gt;()
+
+    useEffect(() =&gt; {
+        timer.current = window.setInterval(() =&gt; {
+            console.log(0)
+        }, 1000)
+
+        return () =&gt; {
+            clearInterval(timer.current)
+        }
+    }, [])
+    return (
+        &lt;div&gt;&lt;/div&gt;
+    )
+}
+
+export default MyTemp
+</code></pre>
+<blockquote>
+<p>以上内容更新于2020.11.18</p>
+</blockquote>
+<hr />
+<blockquote>
+<p>以下内容更新于2020.12.03</p>
+</blockquote>
+<h4 id="在-typescript-中给-userefcurrent-赋值的注意事项"><a class="header" href="#在-typescript-中给-userefcurrent-赋值的注意事项">在 TypeScript 中给 useRef.current 赋值的注意事项</a></h4>
+<p>在 jsx 文件中，以下代码是不会有问题的。</p>
+<pre><code>const myRef = useRef(null)
+...
+myRef.current = xxxx
+</code></pre>
+<p>但是，在我们使用 TypeScript 之后，按照习惯改成以下代码：</p>
+<pre><code>const myRef = useRef&lt;Xxx&gt;(null)
+...
+myRef.current = xxx
+</code></pre>
+<p>此时，会收到 TypeScript 的报错：<strong>无法分配到 "current" ，因为 myRef.current 是只读属性。</strong></p>
+<p><strong>报错原因：</strong></p>
+<p>React 的作者并没有规定使用 useRef(null) 之后 myRef.current 就不可以再修改了。</p>
+<p>但是 TypeScript 的作者认为，若使用 useRef(null) 之后，myRef 就应该交由 React 来托管，外界不应该有权利去修改 myRef.current，因此此时会把 myRef.current 当做只读属性。</p>
+<p><strong>解决方式：</strong></p>
+<p>解决方式1：不给 useRef 设置 null 这个默认值</p>
+<pre><code>const myRef = useRef&lt;Xxx&gt;()
+</code></pre>
+<p>解决方式2：就是将原本的类型定义，修改成以下：</p>
+<pre><code>const myRef = useRef&lt;Xxx | null&gt;(null)
+
+//或者是
+
+const myRef = useRef&lt;Xxx | undefined&gt;()
+</code></pre>
+<p>myRef.current 的数据类型，除了 Xxx 之外，再加上 null 或 undefined ，这样 TypeScript 就认为  myRef.current 可能中途会发生修改，因此不会再将其设置为只读属性，此时再去执行 <code>myRef.current = xxx</code> 不再会报错。</p>
+<p><strong>验证一下：</strong></p>
+<p>我们再去看看上面 2020.11.18 更新的 TypeScript 代码示例中：</p>
+<p>由于将来需要执行 timer.current =  window.setInterval ( ... )，也就是说需要给 timer.current 赋值。</p>
+<p>所以在定义时就使用以下方式，以确保 timer.current 不会被 TS 认为是只读属性：</p>
+<pre><code>const timer = useRef&lt;number | undefined&gt;()
+</code></pre>
+<blockquote>
+<p>以上内容更新于2020.12.03</p>
+</blockquote>
+<hr />
+<h2 id="那如何勾住自定义组件中的小写开头的类似原生标签的组件"><a class="header" href="#那如何勾住自定义组件中的小写开头的类似原生标签的组件">那如何“勾住”自定义组件中的“小写开头的类似原生标签的组件”？</a></h2>
+<p>答：使用React.forwardRef()。</p>
+<h5 id="你是否思考过这个问题自定义组件到底是什么"><a class="header" href="#你是否思考过这个问题自定义组件到底是什么">你是否思考过这个问题：自定义组件到底是什么？</a></h5>
+<p>首先看一下“小写开头的类似原生标签的组件”，例如&lt;button&gt;、&lt;input &gt;，我们很容易理解他是react内置的类似原生DOM的组件，最终都将直接转换成对应的真实DOM。</p>
+<p>那自定义组件又该如何理解，如何定义呢？</p>
+<p>假设我们有一个自定义组件&lt;MyComponent&gt;，那么有以下几点是可以肯定的：<br />
+1、&lt;MyComponent&gt;内部return出去的，可以是小写开头的类似原生标签的组件，也可以是其他自定义组件。<br />
+2、无论嵌套多少次，最底层组件return出去的，一定是小写开头的类似原生标签的组件。<br />
+3、&lt;MyComponent&gt;内部一定创建了变量、处理函数等等。<br />
+4、挂载或渲染后的实际网页中，并不会存在&lt;MyComponent&gt;这个标签，存在的依然是各种原生html标签。</p>
+<p>为了简化更加容易理解，暂时姑且先把“小写开头的类似原生标签的组件”直接当做“原生html标签”。<br />
+那么“自定义组件”和“原生html标签”究竟区别在哪里呢？</p>
+<p>先不回答这个问题，再说另外一个问题：交互式html页面都有哪些构成？<br />
+答：有各种html标签 + JS对象(JS中定义的变量和函数)</p>
+<p>那我们使用react开发页面，“原生html标签”有了，那还缺什么？ 当然是 JS对象(JS中定义的变量和函数)。</p>
+<p>再回顾一下问题：“自定义组件”和“原生html标签”究竟区别在哪里呢？<br />
+答：“自定义组件”除了拥有“原生html标签”，还拥有JS对象(JS中定义的变量和函数)。</p>
+<p>再回顾一下开始的疑问：自定义组件到底是什么？<br />
+答：其实根本不存在自定义组件，所谓自定义组件，只不过是react给我们的各种语法糖，react并没有创造另外一门语言，react整体就是原生JS的语法糖。</p>
+<p>JSX语法 + Hook 组合起来，形成一个强大的语法糖，让你编写html标签和JS更加简便而已。
+语法糖的对象就是：原生html标签 + JS对象(JS中定义的变量和函数)。</p>
+<p>这就解释了为啥自定义组件 return 出去的内容，最外层必须有一个原生html标签。 说白了，无论你怎么定义，折腾这个自定义组件，本质上都要保证这个自定义组件最终都能转换成一段原生html代码。</p>
+<p>上面这一大段话都是“简单到不能再简单的道理”，但是你只有理解透这一层，理解自定义组件、理解react究竟是什么之后，你会对于学习React各种API和Hook才会更加容易理解和接受。</p>
+<p>让我们回到 那如何“勾住”自定义组件中的“小写开头的类似原生标签的组件”？ 这个问题上来。</p>
+<h5 id="reactforwardref-的具体用法"><a class="header" href="#reactforwardref-的具体用法">React.forwardRef() 的具体用法</a></h5>
+<p>React.forwardRef()包裹住要输出的组件，且将第2个参数设置为 ref 即可，示例代码：</p>
+<pre><code>import React from 'react'
+
+const ChildComponent = React.forwardRef((props,ref) =&gt; {
+  //子组件通过将第2个参数ref 添加到内部真正的“小写开头的类似原生标签的组件”中 
+  return &lt;button ref={ref}&gt;{props.label}&lt;/button&gt;
+});
+
+/* 上面的子组件直接在父组件内定义了，如果子组件是单独的.js文件，则可以通过
+   export default React.forwardRef(ChildComponent) 这种形式  */
+
+function Forward() {
+  const ref = React.useRef();//父组件定义一个ref
+  const clickHandle = () =&gt;{
+    console.log(ref.current);//父组件获得渲染后子组件中对应的DOM节点引用
+  }
+  return (
+    &lt;div&gt;
+        {/* 父组件通过给子组件添加属性 ref={ref} 将ref作为参数传递给子组件 */}
+        &lt;ChildComponent label='child bt' ref={ref} /&gt;
+        &lt;button onClick={clickHandle} &gt;get child bt ref&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+export default Forward;
+</code></pre>
+<hr />
+<p>至此，关于useRef()基础用法、React.forwardRef()已经讲完。 这2个函数的掌握，会对下一个要讲的Hook：useImperativeHandle 非常有用。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/13%20useImperativeHandle%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useImperativeHandle基础用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="13-useimperativehandle基础用法"><a class="header" href="#13-useimperativehandle基础用法">13 useImperativeHandle基础用法</a></h1>
+<h2 id="useimperativehandle概念解释"><a class="header" href="#useimperativehandle概念解释">useImperativeHandle概念解释</a></h2>
+<p>我们第八个要学习的Hook(钩子函数)是useImperativeHandle，他的作用是“勾住”子组件中某些函数(方法)供父组件调用。</p>
+<p>先回顾一下之前学到的。<br />
+第1个知识点：<br />
+react属于单向数据流，父组件可以通过属性传值，将父组件内的函数(方法)传递给子组件，实现子组件调用父组件内函数的目的。</p>
+<p>第2个知识点：<br />
+1、useRef 可以“勾住”某些本组件挂载完成或重新渲染完成后才拥有的某些对象。<br />
+2、React.forwardRef 可以“勾住”某些子组件挂载完成或重新渲染完成后才拥有的某些对象。<br />
+上面无论哪种情况，由于勾住的对象都是渲染后的原生html对象，父组件只能通过ref调用该原生html对象的函数(方法)。</p>
+<p>如果父组件想调用子组件中自定义的方法，该怎么办？<br />
+答：使用useImperativeHandle()。</p>
+<p>让我们回到useImperativeHandle基础学习中。</p>
+<h2 id="useimperativehandle是来解决什么问题的"><a class="header" href="#useimperativehandle是来解决什么问题的">useImperativeHandle是来解决什么问题的？</a></h2>
+<p>答：useImperativeHandle可以让父组件获取并执行子组件内某些自定义函数(方法)。本质上其实是子组件将自己内部的函数(方法)通过useImperativeHandle添加到父组件中useRef定义的对象中。</p>
+<p>补充说明：<br />
+1、useRef创建引用变量<br />
+2、React.forwardRef将引用变量传递给子组件<br />
+3、useImperativeHandle将子组件内定义的函数作为属性，添加到父组件中的ref对象上。</p>
+<p>因此，如果想使用useImperativeHandle，那么还要结合useRef、React.forwardRef一起使用。</p>
+<h2 id="useimperativehandle函数源码"><a class="header" href="#useimperativehandle函数源码">useImperativeHandle函数源码：</a></h2>
+<p>回到useImperativeHandle的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useImperativeHandle&lt;T&gt;(
+  ref: {|current: T | null|} | ((inst: T | null) =&gt; mixed) | null | void,
+  create: () =&gt; T,
+  deps: Array&lt;mixed&gt; | void | null,
+): void {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useImperativeHandle(ref, create, deps);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^</p>
+<h2 id="useimperativehandle基本用法"><a class="header" href="#useimperativehandle基本用法">useImperativeHandle基本用法</a></h2>
+<p>useImperativeHandle(ref,create,[deps])函数前2个参数为必填项，第3个参数为可选项。<br />
+第1个参数为父组件通过useRef定义的引用变量；<br />
+第2个参数为子组件要附加给ref的对象，该对象中的属性即子组件想要暴露给父组件的函数(方法)；<br />
+第3个参数为可选参数，为函数的依赖变量。凡是函数中使用到的数据变量都需要放入deps中，如果处理函数没有任何依赖变量，可以忽略第3个参数。</p>
+<p>请注意：<br />
+1、这里面说的“勾住子组件内自定义函数”本质上是子组件将内部自定义的函数添加到父组件的ref.current上面。<br />
+2、父组件若想调用子组件暴露给自己的函数，可以通过 res.current.xxx 来访问或执行。</p>
+<h5 id="代码形式-7"><a class="header" href="#代码形式-7">代码形式：</a></h5>
+<pre><code>const xxx = () =&gt; {
+    //do smoting...
+}
+useImperativeHandle(ref,() =&gt; ({xxx}));
+</code></pre>
+<p>上述代码中，useImperativeHandle(ref,() =&gt; ({xxx})) 其实是 useImperativeHandle(ref,() =&gt; {return {xxx:xxx}})的简写。</p>
+<p>特别注意：() =&gt; ({xxx}) 不可以再简写成 () =&gt; {xxx}，如果这样写会直接react报错。<br />
+因为这两种写法意思完全不一样：<br />
+1、() =&gt; ({xxx}) 表示 返回一个object对象，该对象为{xxx}<br />
+2、() =&gt; {xxx} 表示 执行 xxx 语句代码</p>
+<h5 id="拆解说明-7"><a class="header" href="#拆解说明-7">拆解说明：</a></h5>
+<p>1、子组件内部先定义一个 xxx 函数<br />
+2、通过useImperativeHandle函数，将 xxx函数包装成一个对象，并将该对象添加到父组件内部定义的ref中。<br />
+3、若 xxx 函数中使用到了子组件内部定义的变量，则还需要将该变量作为 依赖变量 成为useImperativeHandle第3个参数，上面示例中则选择忽略了第3个参数。<br />
+4、若父组件需要调用子组件内的 xxx函数，则通过：res.current.xxx()。<br />
+5、请注意，该子组件在导出时必须被 React.forwardRef()包裹住才可以。</p>
+<h2 id="useimperativehandle使用示例"><a class="header" href="#useimperativehandle使用示例">useImperativeHandle使用示例：</a></h2>
+<p>举例，若某子组件的需求为：<br />
+1、有变量count，默认值为0<br />
+2、有一个函数 addCount，该函数体内部执行 count+1<br />
+3、有一个按钮，点击按钮执行 addCount 函数</p>
+<p>父组件的需求为：<br />
+1、父组件内使用上述子组件<br />
+2、父组件内有一个按钮，点击执行上述子组件内定义的函数 addCount</p>
+<p>子组件的代码为：</p>
+<pre><code>import React,{useState,useImperativeHandle} from 'react'
+
+function ChildComponent(props,ref) {
+  const [count,setCount] =  useState(0); //子组件定义内部变量count
+  //子组件定义内部函数 addCount
+  const addCount = () =&gt; {
+    setCount(count + 1);
+  }
+  //子组件通过useImperativeHandle函数，将addCount函数添加到父组件中的ref.current中
+  useImperativeHandle(ref,() =&gt; ({addCount}));
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={addCount}&gt;child&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+//子组件导出时需要被React.forwardRef包裹，否则无法接收 ref这个参数
+export default React.forwardRef(ChildComponent);
+</code></pre>
+<p>父组件的代码为：</p>
+<pre><code>import React,{useRef} from 'react'
+import ChildComponent from './childComponent'
+
+function Imperative() {
+  const childRef = useRef(null); //父组件定义一个对子组件的引用
+
+  const clickHandle = () =&gt; {
+    childRef.current.addCount(); //父组件调用子组件内部 addCount函数
+  }
+
+  return (
+    &lt;div&gt;
+        {/* 父组件通过给子组件添加 ref 属性，将childRef传递给子组件，
+            子组件获得该引用即可将内部函数添加到childRef中 */}
+        &lt;ChildComponent ref={childRef} /&gt;
+        &lt;button onClick={clickHandle}&gt;child component do somting&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+
+export default Imperative;
+</code></pre>
+<h4 id="思考一下真的有必要使用useimperativehandle吗"><a class="header" href="#思考一下真的有必要使用useimperativehandle吗">思考一下真的有必要使用useImperativeHandle吗？</a></h4>
+<p>从实际运行的结果，无论点击子组件还是父组件内的按钮，都将执行 addCount函数，使 count+1。</p>
+<p>react为单向数据流，如果为了实现这个效果，我们完全可以把需求转化成另外一种说法，即：<br />
+1、父组件内定义一个变量count 和 addCount函数<br />
+2、父组件把 count 和 addCount 通过属性传值 传递给子组件<br />
+3、点击子组件内按钮时调用父组件内定义的 addCount函数，使 count +1。</p>
+<p>你会发现即使把需求中的 父与子组件 描述对调一下，“最终实际效果”是一样的。</p>
+<p>所以，到底使用哪种形式，需要根据组件实际需求来做定夺。</p>
+<h4 id="说一个有点绕的情况"><a class="header" href="#说一个有点绕的情况">说一个有点绕的情况</a></h4>
+<p>子组件导出时：<br />
+1、假设某个子组件为了提高性能，导出时需要用React.memo包裹。<br />
+2、可是他也需要暴露自己内部函数给父组件，导出时也需要用React.forwardRef包裹。</p>
+<p>子组件内部函数：<br />
+1、假设该组件内部函数为了性能，需要用到 useCallback包裹该函数。<br />
+2、同时为了让将该函数暴露给父级，也需要用 useImperativeHandle包裹。</p>
+<p>呵，该怎么办，层层包裹吗？  虽然性能提升了，可是那样的代码可读性还有多少，怎么办？<br />
+答：不知道，反正本系列文章只是单独来讲解某个hook怎么使用，这种复杂包裹的情况，你自己看着办吧。</p>
+<p>事实上这种情况出现的几率非常小，当我们开发react组件时，不应该为了使用某hook而使用。还是应该是依据单向数据流的原则来做设计方案。<br />
+就好像本章中示例代码，其实完全可以不用useImperativeHandle，而是继续使用最常见的父组件属性传值给子组件的方式。</p>
+<hr />
+<p>至此，关于useImperativeHandle基础用法已经讲完，没有高级用法，直接进入下一个Hook。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/14%20useLayoutEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useLayoutEffect基础用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="14-uselayouteffect基础用法"><a class="header" href="#14-uselayouteffect基础用法">14 useLayoutEffect基础用法</a></h1>
+<h2 id="uselayouteffect概念解释"><a class="header" href="#uselayouteffect概念解释">useLayoutEffect概念解释</a></h2>
+<p>我们第九个要学习的Hook(钩子函数)是useLayoutEffect，他的作用是“勾住”挂载或重新渲染完成这2个组件生命周期函数。useLayoutEffect使用方法、所传参数和useEffect完全相同。</p>
+<p>他们的不同点在于，你可以把useLayoutEffect等同于componentDidMount、componentDidUpdate，因为他们调用阶段是相同的。而useEffect是在componentDidMount、componentDidUpdate调用之后才会触发的。</p>
+<p>也就是说，当组件所有DOM都渲染完成后，同步调用useLayoutEffect，然后再调用useEffect。</p>
+<p>useLayoutEffect永远要比useEffect先触发完成。</p>
+<p>那通常在useLayoutEffect阶段我们可以做什么呢？<br />
+答：在触发useLayoutEffect阶段时，页面全部DOM已经渲染完成，此时可以获取当前页面所有信息，包括页面显示布局等，你可以根据需求修改调整页面。</p>
+<p>请注意，useLayoutEffect对页面的某些修改调整可能会触发组件重新渲染。如果是对DOM进行一些样式调整是不会触发重新渲染的，这点和useEffect是相同的。</p>
+<p>在react官方文档中，明确表示只有在useEffect不能满足你组件需求的情况下，才应该考虑使用useLayoutEffect。  官方推荐优先使用useEffect。</p>
+<p>请注意：如果是服务器渲染，无论useEffect还是useLayoutEffect 都无法在JS代码加载完成之前执行，因此都会收到错误警告。  服务器渲染时若想使用useEffect，解决方案不在本章中讨论。</p>
+<p>让我们回到useLayoutEffect基础学习中。</p>
+<h2 id="uselayouteffect是来解决什么问题的"><a class="header" href="#uselayouteffect是来解决什么问题的">useLayoutEffect是来解决什么问题的？</a></h2>
+<p>答：useLayoutEffect的作用是“当页面挂载或渲染完成时，再给你一次机会对页面进行修改”。</p>
+<p>如果你选择使用useLayoutEffect，对页面进行了修改，更改样式不会引发重新渲染，但是修改变量则会触发再次渲染。<br />
+如果你不使用useLayoutEffect，那么之后就应该调用useEffect。</p>
+<p>补充说明：<br />
+1、优先使用useEffect，useEffect无法满足需求时再考虑使用useLayoutEffect。<br />
+2、useLayoutEffect先触发，useEffect后触发。<br />
+3、useEffect和useLayoutEffect在服务器端渲染时，都不行，需要寻求别的解决方案。</p>
+<h2 id="uselayouteffect函数源码"><a class="header" href="#uselayouteffect函数源码">useLayoutEffect函数源码：</a></h2>
+<p>回到useLayoutEffect的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useLayoutEffect(
+  create: () =&gt; (() =&gt; void) | void,
+  deps: Array&lt;mixed&gt; | void | null,
+): void {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useLayoutEffect(create, deps);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^  你只需知道useLayoutEffect的用法和useEffect一模一样即可。</p>
+<h2 id="uselayouteffect基本用法"><a class="header" href="#uselayouteffect基本用法">useLayoutEffect基本用法</a></h2>
+<p>useLayoutEffect的用法和useEffect的用法相同，所以不再阐述。</p>
+<h2 id="uselayouteffect使用示例"><a class="header" href="#uselayouteffect使用示例">useLayoutEffect使用示例：</a></h2>
+<p>请原谅，目前竟然找不到一个useLayoutEffect合适的例子，因为能够想到的应用场景其实都可以用useEffect来代替。</p>
+<p>那只能贴出一段简单的代码，让你看确认一下，useLayoutEffect先于useEffect触发调用。</p>
+<p>代码示例如下：</p>
+<pre><code>import React,{useState,useEffect,useLayoutEffect} from 'react'
+
+function LayoutEffect() {
+  const [count,setCount] = useState(0);
+
+  useEffect(() =&gt; {
+    console.log('useEffect...');
+  },[count]);
+
+  useLayoutEffect(() =&gt; {
+    console.log('useLayoutEffect...');
+  },[count]);
+
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={() =&gt; {setCount(count+1)}}&gt;Click&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+export default LayoutEffect
+</code></pre>
+<p>实际运行就会发现：<br />
+无论是首次挂载，还是重新渲染，console面板中，输出顺序都是<br />
+useLayoutEffect...<br />
+useEffect...</p>
+<p>也就确认，先执行useLayoutEffect，后执行useEffect。</p>
+<hr />
+<p>至此，关于useLayoutEffect基础用法已经讲完，没有高级用法，直接进入下一个Hook。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/15%20useDebugValue%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useDebugValue基础用法</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="15-usedebugvalue基础用法"><a class="header" href="#15-usedebugvalue基础用法">15 useDebugValue基础用法</a></h1>
+<h2 id="usedebugvalue概念解释"><a class="header" href="#usedebugvalue概念解释">useDebugValue概念解释</a></h2>
+<p>我们第十个要学习的Hook(钩子函数)是useDebugValue，他的作用是“勾住”React开发调试工具中的自定义hook标签，让useDebugValue勾住的自定义hook可以显示额外的信息。</p>
+<h5 id="react开发调试工具是什么"><a class="header" href="#react开发调试工具是什么">“React开发调试工具”是什么？</a></h5>
+<p>答：谷歌浏览器中的一个扩展插件，名字叫“React Developer Tools”，方便我们在谷歌浏览器上进行react项目调试。</p>
+<p>如何安装？<br />
+答：可在Chrome扩展程序商店搜索并安装。由于国内网络原因，如果你不会科学上网，那么可以通过国内的一些Chrome扩展程序商店网站，下载“React Developer Tools”离线的crx安装文件进行安装。具体办法可以自己百度。</p>
+<p>“React开发调试工具”的使用简单说明：<br />
+如果该扩展程序安装成功，那么会有以下几种情况：<br />
+1、对于本机开发调试的项目网页，该插件图标会变成橘黄色，且图标中间有一个小虫子，表示可以进行react源码式的调试，当代码出现错误时会精准定位出错的代码位置。</p>
+<p>2、对于别人开发的项目网页，该插件图标会变成蓝色，表示该网页由react开发，当代码出现错误时不能精准定位出错的代码位置。<br />
+例如阿里云后台、腾讯云后台、百度翻译这些网页都是用react开发，访问这些网页你就会看到 调试工具图光标为蓝色。  这些大厂都用react，所以虽然学习过程中很痛苦，但是是值得的。</p>
+<p>3、对于没有使用react的网页，该插件图标会变成灰色。</p>
+<p>让我们回到useDebugValue基础学习中。</p>
+<h2 id="usedebugvalue是来解决什么问题的"><a class="header" href="#usedebugvalue是来解决什么问题的">useDebugValue是来解决什么问题的？</a></h2>
+<p>答：useDebugValue的目的是“在react开发者工具自定义hook标签中显示额外信息”，方便我们“一眼就能找到”对应的自定义hook。</p>
+<p>补充说明：<br />
+1、react官网文档中明确表示，在普通项目开发中不推荐使用useDebugValue，默认的调试输出已经很清晰可用了。<br />
+2、除非你的自定义 hook 是作为共享库中的一部分才有价值。这样其他人更容易注意到你自定义的hook状态变化。</p>
+<h5 id="自定义hook-1"><a class="header" href="#自定义hook-1">自定义hook？</a></h5>
+<p>你可能注意到本章中提到了“自定义hook”，没错。像之前学习的useState、useContext等等都是react自带的hook，这些默认的hook是我们项目开发所需要用到的各种钩子函数。</p>
+<p>但是实际开发中，我们需要借助这些基础的、默认的、自带的hook函数，通过组合以及添加业务逻辑代码，形成自己的hook函数。</p>
+<p>具体如何自定义hook，稍后会单独有一章如何“自定义hook”中详细讲述。</p>
+<h2 id="usedebugvalue函数源码"><a class="header" href="#usedebugvalue函数源码">useDebugValue函数源码：</a></h2>
+<p>回到useDebugValue的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useDebugValue&lt;T&gt;(
+  value: T,
+  formatterFn: ?(value: T) =&gt; mixed,
+): void {
+    if (__DEV__) {
+    const dispatcher = resolveDispatcher();
+    return dispatcher.useDebugValue(value, formatterFn);
+  }
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^</p>
+<h2 id="usedebugvalue基本用法"><a class="header" href="#usedebugvalue基本用法">useDebugValue基本用法</a></h2>
+<p>useDebugValue(value,formatterFn)函数第1个参数为我们要额外显示的内容变量。第2个参数是可选的，是对第1个参数值的数据化格式函数。</p>
+<p>请注意：<br />
+1、useDebugValue应该在自定义hook中使用，如果直接在组件内使用是无效的，不会报错也不会有任何额外信息展示。<br />
+1、一般调试不需要使用useDebugValue，除非你编写的hook是公共库中的一部分，实在是想凸显额外信息，引起别人注意。<br />
+2、如果使用useDebugValue，最好设置第2个参数，向react开发调试工具讲清楚如何格式化展示第1个参数。</p>
+<h5 id="代码形式-8"><a class="header" href="#代码形式-8">代码形式：</a></h5>
+<pre><code>useDebugValue(xxx, xxx =&gt; xxxxx)
+</code></pre>
+<h5 id="拆解说明-8"><a class="header" href="#拆解说明-8">拆解说明：</a></h5>
+<p>1、xxx 为我们要重点关注的变量。<br />
+2、xxx =&gt; xxxxx 是 (xxx) =&gt; {return xxxxx} 的简写。表明如何格式化变量xxx。</p>
+<h2 id="如何在react调试工具中查看usedebugvalue表现形式"><a class="header" href="#如何在react调试工具中查看usedebugvalue表现形式">如何在react调试工具中查看useDebugValue表现形式</a></h2>
+<p>前提条件：<br />
+1、在谷歌浏览器中成功安装了react开发调试工具<br />
+2、react项目中使用了自定义hook，且hook中使用了useDebugValue</p>
+<p>那么你可以进行一下步骤：<br />
+1、打开react调试网页，例如http://localhost:3000/<br />
+2、打开谷歌浏览器调试面板(快捷键为F12)<br />
+3、找到并点击“Components”一栏<br />
+4、在右侧窗口中，找到“hooks”，在“hooks”下就能看到自定义hook中useDebugValue自定义显示的信息。</p>
+<p>具体还是以下面实际例子来说明。</p>
+<h2 id="usedebugvalue使用示例"><a class="header" href="#usedebugvalue使用示例">useDebugValue使用示例：</a></h2>
+<p>举例：useTime是我们自定义的一个hook函数，那么在这个自定义hook中，可以通过useDebugValue对变量time进行额外信息展示。</p>
+<p>代码示例如下：</p>
+<pre><code>//自定义hook：useTime
+function useTime(date){
+  const [time,setTime] = useState(date);
+  useDebugValue(time,time =&gt; new Date(time));//请注意这一行代码
+  return [time,setTime];
+}
+
+//组件中使用useTime，伪代码片段
+const [time,setTime] = useTime(Date.now());//请注意此处使用的是自定义hook：useTime
+</code></pre>
+<p>代码分析：<br />
+1、我们在自定义hook中，使用了useDebugValue<br />
+2、useDebugValue第1个参数是time，向react开发调试工具表明要重点关注的变量是time。<br />
+3、第2个参数是对time的一个格式化函数。由于time实际为一个时间戳数字，通过time =&gt; new Date(time)将时间戳转化成具体的可读时间字符串，例如此时此刻：Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)</p>
+<h5 id="具体表现"><a class="header" href="#具体表现">具体表现</a></h5>
+<p>在谷歌浏览器调试面板的“Component”右侧，你会看到：</p>
+<pre><code>hooks  
+  time:Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)  
+    State:1589178459090  
+</code></pre>
+<p>假设不使用useDebuValue，默认看到的是：</p>
+<pre><code>hooks  
+  time: 
+    State:1589178459090  
+</code></pre>
+<p>“Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)  ”就是useDebugValue额外展示出的信息。</p>
+<p>你甚至还可以使用模板字符串，对格式化数据进行修改，比如将原本的第2个参数 time =&gt; new Date(time) 修改为：time =&gt; `看这里 ${new Date(time)}`</p>
+<p>在谷歌浏览器调试面板的“Component”右侧，你会看到：</p>
+<pre><code>hooks  
+  time:看这里 Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)  
+    State:1589178459090  
+</code></pre>
+<h5 id="再次强调对于一般性的项目开发是不需要使用usedebugvalue来额外标记某些变量的默认的调试输出足够我们使用了"><a class="header" href="#再次强调对于一般性的项目开发是不需要使用usedebugvalue来额外标记某些变量的默认的调试输出足够我们使用了">再次强调，对于一般性的项目开发，是不需要使用useDebugValue来额外标记某些变量的，默认的调试输出足够我们使用了。</a></h5>
+<hr />
+<p>至此，关于useDebugValue基础用法已经讲完，没有高级用法，直接进入下一个Hook。</p>
+<p>不！基于react 16.13版本的全部 hook，终于讲完了，没有下一个hook了。</p>
+<p>能坚持到现在，真的不容易，默认自带的 react hook 学完后，还需要学习如何自定义hook...<br />
+扶我起来，再坚持一下。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/16%20%E8%87%AA%E5%AE%9A%E4%B9%89hook.md">自定义hook</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="16-自定义hook"><a class="header" href="#16-自定义hook">16 自定义hook</a></h1>
+<h2 id="自定义hook概念解释"><a class="header" href="#自定义hook概念解释">自定义hook概念解释</a></h2>
+<p>像useState、useEffect、useContext、useReducer、useCallback、useMemo、useRef、useImperativeHandle、useLayoutEffect、useDebugValue这10个hook是react默认自带的hook，而所谓自定义hook就是由我们自己编写的hook。</p>
+<p>所谓自定义hook就是把原来写在函数组件内的hook相关代码抽离出来，单独定义成一个函数，而这个抽离出来的hook函数就称之为“自定义hook钩子函数”，简称“自定义hook”。</p>
+<h2 id="自定义hook是来解决什么问题的"><a class="header" href="#自定义hook是来解决什么问题的">自定义hook是来解决什么问题的？</a></h2>
+<p>答：自定义hook是将原来在组件中编写的相关hook代码抽离出组件，让hook相关代码独立存在，达到优化代码结构、相关hook代码可以重复使用的目的。</p>
+<p>补充说明：<br />
+1、如果你在别人的项目代码中，发现除了react默认自带的那10个hook以外，出现了 useXxx() 这样的看着像hook的函数，可以肯定那些就是自定义的hook。<br />
+2、随着react新版本发布，可能会出现更多新的、默认自带的hook。</p>
+<h2 id="自定义hook基本用法"><a class="header" href="#自定义hook基本用法">自定义hook基本用法</a></h2>
+<p>首先我们知道hook只能用在函数组件中，而函数组件本身是一个稍微特殊的函数，尽管稍微特殊但毕竟他也遵循一般函数的使用规律。 所谓“把原来写在函数组件内的hook相关代码抽离出来，单独定义成一个函数” 本质上就是把函数内部定义的变量或方法拿出来，放到函数外面单独定义成一个函数。</p>
+<p>这个抽离出来新定义的函数，遵循JS默认的函数用法，即函数参数可以任意设定，返回值也可以是任意内容。</p>
+<p>请注意：react规定所有的自定义hook函数命名时必须使用 useXxx 这种形式。</p>
+<p>举一个最简单的例子：假设我们有一个组件，组件内部有一个count的变量，我们的代码之前是这样的：</p>
+<pre><code>import React,{useState} from 'react'
+function CurrentComponent() {
+  const [count,setCount] = useState(0);//请注意这行代码，就是我们要即将抽离出去的hook
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={() =&gt; setCount(count+1)}&gt;add +1&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+export default CurrentComponent
+</code></pre>
+<p>在上面这个组件中，通过 const [count,setCount] = useState(0) 定义了组件内的变量count和修改count的方法。那我们现在将这行相关的hook抽离出函数组件。我们计划把抽离出来的、和count相关的函数，命名为useCount，修改后的代码如下：</p>
+<pre><code>//useState.js
+import {useState} from 'react'；
+function useCount(initialValue){
+
+  //依然使用 useState 创建countcount和setCount
+  //并且将参数initialValue的值赋予给count作为默认值
+  //将创建好的count和setCount作为函数返回值 return 出去
+
+  const [count,setCount] = useState(initialValue);
+  return [count,setCount];
+}
+export default useCount;
+
+//CurrentComponent.js
+import React from 'react'
+import useCount from './useCount';//引入useCount
+function CurrentComponent() {
+  const [count,setCount] = useCount(0);//请注意这里使用的是useCount，而不是useState
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={() =&gt; setCount(count+1)}&gt;add +1&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+export default CurrentComponent
+</code></pre>
+<h5 id="代码分析"><a class="header" href="#代码分析">代码分析：</a></h5>
+<p>1、我们将原本组件内定义的count相关代码抽离出组件，单独定义一个 useCount 函数。<br />
+2、组件需要使用 useCount，只需先引入useCount，然后把 useCount 当成普通函数使用就好了。<br />
+3、useCount就是我们自定义的hook。</p>
+<p>注意：一般自定义hook顶部是不需要引入React的，只需要引入使用到的 hook 函数即可。<br />
+例如上面 useCount 顶部，我们写的是 import {useState} from 'react' 而不是 import React,{useState} from 'react'；</p>
+<p>上面举例中的useCount非常简单，内部并没有过多逻辑，在实际开发中自定义hook内部肯定要有比较复杂的逻辑。</p>
+<p>由于是单独定义的，所以自定义hook可以同时被多个组件引入和使用，达到代码复用的目的。</p>
+<p>划重点，在实际项目中，通常自定义hook返回值有3种表现形式：<br />
+1、不带返回值的函数<br />
+2、带普通返回值的函数<br />
+3、带特殊结构返回值的函数</p>
+<p>以上3种不同返回值各有各的适用场景，下面就以实际示例来逐一说明。</p>
+<h2 id="不带返回值的自定义hook使用示例"><a class="header" href="#不带返回值的自定义hook使用示例">不带返回值的自定义hook使用示例：</a></h2>
+<p>举例：若父组件内有多个子组件，每个子组件内部都有不同的业务代码，但是所有子组件有一个相同的功能，就是当自身内部变量value发生变化时，将网页标题改为变量value的值。</p>
+<p>首先我们知道修改网页标题是在组件内部的useEffect()函数中修改，那结合上面的使用场景，我们可以将useEffect()单独抽离出来，作为一个自定义hook，命名为 useDocumentTitle，让所有子组件都复用这个useDocumentTitle。</p>
+<p>useDocumentTitle 代码如下：</p>
+<pre><code>import {useEffect} from 'react'
+function useDocumentTitle(value) {
+  useEffect(() =&gt; {
+    document.title = value;
+  },[value]);
+}
+export default useDocumentTitle;
+</code></pre>
+<p>假设我们其中一个子组件的功能为：<br />
+1、有1个number类型的变量count<br />
+2、有1个按钮，点击按钮后将count修改为一个随机数字<br />
+3、当组件重新渲染完成后，将网页标题修改为count的值</p>
+<p>子组件代码为：</p>
+<pre><code>import React,{useState} from 'react'
+import useDocumentTitle from './useDocumentTitle';
+function ChildComponent() {
+  const [count,setCount] = useState(0);
+  useDocumentTitle(count);//把内部变量count传给useDocumentTitle，既作为网页标题内容，同时也作为useEffect的变量依赖
+  return (
+    &lt;div&gt;
+        &lt;button onClick={() =&gt; setCount(Math.floor(Math.random()*1000))}&gt;click me&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+export default ChildComponent
+</code></pre>
+<p>其他子组件也使用useDocumentTitle，这样我们便将原本每个子组件都需要编写的useEffect改为统一的useDocumentTitle，实现了代码复用。</p>
+<p>应用场景小总结：<br />
+在这个示例中，useDocumentTitle函数并没有任何返回值，子组件使用useDocumentTitle时就好像原本那段useEffect代码本身就定义在那里似的。</p>
+<h2 id="带普通返回值的自定义hook使用示例"><a class="header" href="#带普通返回值的自定义hook使用示例">带普通返回值的自定义hook使用示例：</a></h2>
+<p>在本章最开始讲解“自定义hook基本用法”时，所举的useCount例子非常简单，这次我们将对useCount进行功能上的扩展。</p>
+<p>原本useCount只是定义了count和setCount，这次所谓的功能扩展，就是将setCount改为其他几种修改count的函数。<br />
+例如：<br />
+1、添加 add()<br />
+2、减去 sub()<br />
+3、相乘 mul()<br />
+4、恢复初始值 reset()</p>
+<p>修改后的useCount代码为：</p>
+<pre><code>import {useState} from 'react'
+function useCount(initialValue){
+  const [count,setCount] = useState(initialValue);
+  const add = param =&gt; {setCount(prev =&gt; prev + param);}
+  const sub = param =&gt; {setCount(prev =&gt; prev - param);}
+  const mul = param =&gt; {setCount(prev =&gt; prev * param);}
+  const reset = () =&gt; {setCount(() =&gt; initialValue);}
+  return [count,add,sub,mul,reset]; //将count和定义的4个方法作为返回值 return 出去
+}
+export default useCount;
+</code></pre>
+<p>请注意：为了避免4个修改函数中得到的是旧的count，所以我们采用的是 setCount(prev =&gt; xxxxx) 这种修改方式，而不是直接使用 setCount(count xxx)。</p>
+<p>CurrentComponent组件想使用useCount，代码为：</p>
+<pre><code>import React from 'react'
+import useCount from './useCount'
+
+function CurrentComponent() {
+  const [count,add,sub,mul,reset] = useCount(0); //使用useCount，并解构useCount的返回值
+  return (
+    &lt;div&gt;
+        {count}
+        &lt;button onClick={() =&gt; {add(1)}}&gt;+ 1&lt;/button&gt;
+        &lt;button onClick={() =&gt; {sub(1)}}&gt;- 1&lt;/button&gt;
+        &lt;button onClick={() =&gt; {mul(2)}}&gt;* 2&lt;/button&gt;
+        &lt;button onClick={() =&gt; {reset()}}&gt;reset&lt;/button&gt;
+    &lt;/div&gt;
+  )
+}
+export default CurrentComponent
+</code></pre>
+<p>对于上面这个效果，你是否觉得眼熟？  没错，在讲解useReducer时，就使用useReducer实现了类似的一个效果。  只不过这次是为了讲解自定义hook，而那次是讲解如何使用useReducer替代useState实现复杂的业务。</p>
+<p>应用场景小总结：<br />
+1、我们可以在自定义hook中编写相关业务逻辑函数(方法)，并通过返回值的形式 return 出去，供其他组件调用。</p>
+<h2 id="带特殊结构返回值的自定义hook使用示例"><a class="header" href="#带特殊结构返回值的自定义hook使用示例">带特殊结构返回值的自定义hook使用示例：</a></h2>
+<p>上一个代码示例讲解了“带普通返回值”的自定义hook，那这次要讲的“带特殊结构返回值”的自定义hook究竟差别在哪里？</p>
+<p>“带特殊结构返回值”中的特殊是指？<br />
+答：我们把组件需要用到的多项属性设置，合并为一个对象 并 return 出去，供组件使用。</p>
+<p>还是以示例来讲解会更容易理解，假设我们有一个登录组件，功能为：<br />
+1、有一个用户名输入框<br />
+2、有一个密码输入框<br />
+3、有一个提交按钮</p>
+<p>补充说明，为了简化代码，我们并不做真正的登录验证，点击提交按钮后：<br />
+1、仅仅是alert一下用户名和密码，即表示登录<br />
+2、同时清除用户名和密码输入框里的内容</p>
+<p>需求分析：<br />
+1、每个输入框都是一个&lt;input&gt;，都需要绑定一个变量，都需要设置onChange事件<br />
+2、每一个输入框都需要清空内容</p>
+<p>我们将定义一个自定义hook，命名为useInput，useInput来实现这2个输入框共有的业务逻辑。</p>
+<p>useInput的代码为：</p>
+<pre><code>import {useState} from 'react'
+function useInput(initialValue) {
+  const [value,setValue] = useState(initialValue); //定义输入框对应的值value
+  //定义reset函数，用来重置输入框
+  const reset = () =&gt; {
+    setValue(initialValue);
+  }
+  //定义一个 bind 对象，该对象有 value 和 onChange 2个属性
+  const bind = {
+    value,
+    onChange: eve =&gt; {
+        setValue(eve.target.value)
+    }
+  }
+  return [value,reset,bind];//将输入框的值、重置输入框函数、定义的bind对象作为返回值 return 出去
+}
+export default useInput
+</code></pre>
+<p>请注意：在useInput中，返回值 value、reset 我们很容易理解，但是 bind 是来做什么的？<br />
+答：这个 bind 就是我们前面提到的“带特殊结构返回值”，bind对象本身结构由2个属性value和onChange组成。<br />
+至于 bind 怎么用，很快揭晓。</p>
+<p>登录组件LoginForm的代码为：</p>
+<pre><code>import React from 'react'
+import useInput from './useInput';
+function LoginForm() {
+  const [usename,resetUsename,bindUsename] = useInput(''); //定义用户名输入框相关的变量
+  const [password,resetPassword,bindPassword] = useInput(''); //定义密码输入框相关的变量
+
+  const submitHandle = (eve) =&gt; {
+    eve.preventDefault(); //阻止form真正提交
+    alert(`usename:${usename}\rpassword:${password}`); //通过alert，弹出用户名和密码的值
+    resetUsename(); //重置用户名输入框
+    resetPassword(); //重置密码输入框
+  }
+
+  //请特别留意用户名和密码输入框中的 {...bindUsename}和{...bindPassword}
+  return (
+    &lt;form onSubmit={submitHandle}&gt;
+        &lt;label&gt;usename:&lt;/label&gt;
+        &lt;input type='text' {...bindUsename} /&gt;
+        &lt;label&gt;password:&lt;/label&gt;
+        &lt;input type='password' {...bindPassword} /&gt;
+        &lt;input type='submit' value='login' /&gt;
+    &lt;/form&gt;
+  )
+}
+export default LoginForm;
+</code></pre>
+<p>对于获取输入框的值、以及调用输入框对应的reset()函数，相信你很容易理解。</p>
+<p>下面对 {...bindUsename} 和 {...bindPassword} 做进一步说明：<br />
+1、首先我们知道 {...obj} 这种在原生JS中，相当于把obj对象进行解构，然后得到一个浅拷贝的新对象。<br />
+2、但是在上面的代码中并不是这个意思，千万不要被迷惑。 在JSX中的某组件，如果要添加某属性，格式为 xxx={xxx}。</p>
+<p>例如常见的给一个输入框绑定某变量，同时添加onChange事件，一般写法为：</p>
+<pre><code>&lt;input type='text' value={xx} onChange={xxxx} /&gt;
+</code></pre>
+<p>而我们本次代码中，采用的是：</p>
+<pre><code>&lt;input type='text' {...bindUsename} /&gt;
+&lt;input type='password' {...bindPassword} /&gt;
+</code></pre>
+<p>这里面的 {...bindUsename}  {...bindPassword} 其实相当于把 bindUsename 和 bindPassword 进行了解构，就好像直接写在这里似的。</p>
+<p>如果&lt;input&gt;中有非常多相同的属性，那么把这些相同属性提炼到 useInput 的 bind 中，这样可以简化组件里的代码。</p>
+<p>应用场景小总结：<br />
+1、在自定义hook中，将组件需要的多项属性合并成一个对象，供组件属性解构使用，会简化组件代码，提高代码复用率。</p>
+<p>相信通过上面3个示例，对自定义hook的返回值不同形式的演示，举一反三，会帮助你灵活的编写自定义hook。</p>
+<hr />
+<p>至此，关于自定义hook已经讲完。</p>
+<p>我们对之前所有学过的hook进行一次小总结。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/17%20React%20Hook%20%E6%80%BB%E7%BB%93.md">React Hook 总结</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="17-react-hook-总结"><a class="header" href="#17-react-hook-总结">17 React Hook 总结</a></h1>
+<p>首先，对你能够坚持到现在，表示深深的赞扬，学习React Hook之路不容易。</p>
+<p>我们快速的回顾一下之前学习过的各个hook。</p>
+<h2 id="react-hook-回顾"><a class="header" href="#react-hook-回顾">react hook 回顾</a></h2>
+<h5 id="定义变量"><a class="header" href="#定义变量">定义变量</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/02%20useState%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useState()</a>：定义普通变量<br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/08%20useReducer%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useReducer()</a>：定义有不同类型、参数的变量</p>
+<h5 id="组件传值"><a class="header" href="#组件传值">组件传值</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/06%20useContext%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useContext()</a>：定义和接收具有全局性质的属性传值对象，必须配合React.createContext()使用</p>
+<h5 id="对象引用"><a class="header" href="#对象引用">对象引用</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/12%20useRef%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useRef()</a>：获取渲染后的DOM元素对象，可调用该对象原生html的方法，可能需要配合React.forwardRef()使用<br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/13%20useImperativeHandle%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useImperativeHandle()</a>：获取和调用渲染后的DOM元素对象拥有的自定义方法，必须配合React.forwardRef()使用</p>
+<h5 id="生命周期"><a class="header" href="#生命周期">生命周期</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/04%20useEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useEffect()</a>：挂载或渲染完成后、即将被卸载前，调度<br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/14%20useLayoutEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useLayoutEffect()</a>：挂载或渲染完成后，同步调度</p>
+<h5 id="性能优化-2"><a class="header" href="#性能优化-2">性能优化</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/10%20useCallback%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useCallback()</a>：获取某处理函数的引用，必须配合React.memo()使用<br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/11%20useMemo%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useMemo()</a>：获取某处理函数返回值的副本</p>
+<h5 id="代码调试"><a class="header" href="#代码调试">代码调试</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/15%20useDebugValue%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useDebugValue()</a>：对react开发调试工具中的自定义hook，增加额外显示信息</p>
+<h5 id="自定义hook-2"><a class="header" href="#自定义hook-2">自定义hook</a></h5>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/16%20%E8%87%AA%E5%AE%9A%E4%B9%89hook.md">useCustomHook()</a>：将hook相关逻辑代码从组件中抽离，提高hook代码可复用性</p>
+<h2 id="react-hook-扩展阅读"><a class="header" href="#react-hook-扩展阅读">react hook 扩展阅读</a></h2>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/%E9%99%8401%EF%BC%9AReact%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">附01：React基础知识</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/%E9%99%8402%EF%BC%9AReact%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB.md">附02：React扩展阅读</a></p>
+<h2 id="信息反馈-1"><a class="header" href="#信息反馈-1">信息反馈</a></h2>
+<p>若有错误欢迎指正，本人微信同QQ (78657141)，或通过邮件联系：yangpuxiao@gmail.com</p>
+<hr />
+<p>至此，React Hook 你已学习完成。</p>
+<p>真心为你鼓掌，加油，在实践中去提升自己的 React Hook 战斗值吧。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="18-示例react使用echarts所用到的hooks"><a class="header" href="#18-示例react使用echarts所用到的hooks">18 示例：React使用Echarts所用到的hooks</a></h1>
+<p>本篇文章写于 2020年11月13日，距离前面文章已经过去半年，因此本文的讲述风格和示例代码，可能和前面的章节不同。</p>
+<h2 id="echarts简介"><a class="header" href="#echarts简介">Echarts简介</a></h2>
+<p>Echarts 是百度公司推出的，基于原生 JS 的图表库，免费开源 ，可用于数据可视化项目。</p>
+<p>官网地址：https://echarts.apache.org/zh/feature.html</p>
+<h2 id="echarts基础操作"><a class="header" href="#echarts基础操作">Echarts基础操作</a></h2>
+<p>1、<strong>Echarts 是基于原生 JS 的库，而不是 React 组件</strong>，需要将 “图表” 挂载到 DOM</p>
+<p>2、echarts.init(xxx-dom) 是创建 “图表” 的入口函数，该函数将创建创建真正的图表实例，并填充到 xxx-dom 中</p>
+<p>3、一个图表 对应一个 DOM，N 个图标需要 N 个 DOM</p>
+<p>4、图表实例通过 setOption(option) 来设置(更新)数据</p>
+<h2 id="针对以上echarts特性对应的-hooks"><a class="header" href="#针对以上echarts特性对应的-hooks">针对以上Echarts特性，对应的 hooks</a></h2>
+<p>1、使用 useRef 来勾住 jsx 中的某个 DOM</p>
+<p>2、使用 useEffect( () =&gt; {}, [] ) 来勾住 React 第一次挂载，并通过 echarts.init(xxx-dom) 创建出真正的图表</p>
+<p>3、使用 useState 来勾住 创建出的真正图表，以便以后做各种更新操作</p>
+<p>4、使用 useEffect( () =&gt; {}, [xxx-echart,option] ) 来不断监听组件传递过来的数据变化，并更新图表数据</p>
+<blockquote>
+<p>补充说明：尽管 NPM 中已经有 echarts-for-react 这个包，已经将 Echarts 封装成可直接使用的 React 组件，但是我并不是建议使用，因为毕竟 Echarts 并不是特别难，没有必要使用别人封装好的。学习本文后，你自己也可以轻松封装自己的 Echarts 组件，灵活方便。</p>
+</blockquote>
+<h2 id="使用封装echarts示例代码"><a class="header" href="#使用封装echarts示例代码">使用(封装)Echarts示例代码</a></h2>
+<blockquote>
+<p>细节不过多说，此处只演示 2 个组件源码，使用 TypeScript 编写</p>
+<ol>
+<li>子组件为一个图表，图表是什么类型，由 配置数据 option 中 xAxis.type 的值决定</li>
+<li>父组件负责调用子组件并传递图表配置数据</li>
+</ol>
+</blockquote>
+<p><strong>父组件：</strong></p>
+<pre><code>import React from 'react'
+import { EChartOption } from 'echarts'
+import Echart from '../../components/echart'
+
+import './index.scss'
+
+const option: EChartOption = {
+    xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [{
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line'
+    }]
+}
+
+const IndexPage: React.FC = () =&gt; {
+    return (
+        &lt;Echart option={option} /&gt;
+    )
+}
+
+export default IndexPage
+</code></pre>
+<p><strong>子组件：</strong></p>
+<pre><code>import React, { useState, useRef, useEffect } from 'react'
+import echarts, { EChartOption, ECharts } from 'echarts'
+
+import './index.scss'
+
+interface EchartProp {
+    option: EChartOption
+}
+
+const Echart: React.FC&lt;EchartProp&gt; = ({ option }) =&gt; {
+
+    const chartRef = useRef&lt;HTMLDivElement&gt;(null) //用来勾住渲染后的 DOM
+    const [echartsInstance, setEchartsInstance] = useState&lt;ECharts&gt;() //用来勾住生成后的 图表实例对象
+
+    //仅第一次挂载时执行，将 DOM 传递给 echarts，通过 echarts.init() 得到真正的图表 JS 对象
+    useEffect(() =&gt; {
+        if (chartRef.current) {
+            setEchartsInstance(echarts.init(chartRef.current))
+        }
+    }, [])
+
+    //监听依赖变化，并根据需要更新图表数据
+    useEffect(() =&gt; {
+        echartsInstance?.setOption(option)
+    }, [echartsInstance, option])
+
+    return (
+        &lt;div ref={chartRef} className='echarts' /&gt;
+    )
+}
+
+export default Echart
+</code></pre>
+<p>以上示例中，父组件功能相对简单，负责调用子组件，并将图表配置数据传递给子组件。</p>
+<p>真正需要关注的就是 子组件，在子组件中分别用到了 useRef、useState、useEffect 这 3 个 hook，尤其是 useEffect 还被使用了 2 次。</p>
+<p>本文其实出自我写的另外一篇学习笔记：<a href="https://github.com/puxiao/notes/blob/master/React-Typescript%E4%B8%AD%E4%BD%BF%E7%94%A8Echarts.md">React-Typescript中使用Echarts.md</a></p>
+<p>加油，打工人！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="react基础知识"><a class="header" href="#react基础知识">React基础知识</a></h1>
+<p>说明：以下这些基础知识适用于类组件和函数组件，并不是函数组件独有的。</p>
+<h2 id="安装react并初始化"><a class="header" href="#安装react并初始化">安装react并初始化</a></h2>
+<h5 id="1安装npm-install--g-create-react-app"><a class="header" href="#1安装npm-install--g-create-react-app">1、安装：npm install -g create-react-app</a></h5>
+<h5 id="2创建hello-react目录并初始化npx-create-react-app-hello-react"><a class="header" href="#2创建hello-react目录并初始化npx-create-react-app-hello-react">2、创建hello-react目录并初始化：npx create-react-app hello-react</a></h5>
+<p>注意：</p>
+<ol>
+<li>目录名不允许有大写字母</li>
+<li>初始化过程比较慢，甚至可能需要5-10分钟</li>
+<li>如果报错：npm ERR! Unexpected end of JSON input while parsing near '...n\r\nwsFcBAEBCAAQBQJd'， 解决方法：npm root -g 找到本机npm全局安装目录，cd 进入该目录，执行清除缓存：npm cache clean --force，然后再次初始化。</li>
+</ol>
+<h5 id="3启动项目cd-hello-reactnpm-start"><a class="header" href="#3启动项目cd-hello-reactnpm-start">3、启动项目：cd hello-react、npm start</a></h5>
+<p>默认将启动：http://localhost:3000</p>
+<h2 id="自定义组件基础知识"><a class="header" href="#自定义组件基础知识">自定义组件基础知识</a></h2>
+<p>1、自定义组件必须以大写字母开头、默认网页原生标签还以小写开头。请注意这里表述的"默认网页原生标签"本质上并不是真实的原生网页标签，他们是react默认定义好的、内置的自定义组件标签，只不过这些标签刚好和原生标签的作用，功能，名称一模一样而已。</p>
+<p>2、自定义组件如果不希望设定最外层的标签，那么可以使用react(16+版本)提供的占位符Fragment来充当最外层标签；</p>
+<pre><code>import React,{Component,Fragment} from 'react';  
+类组件：render(){return &lt;Fragment&gt;xxxxxxx&lt;/Fragment&gt;}  
+函数组件：return &lt;Fragment&gt;xxxxxxx&lt;/Fragment&gt;
+</code></pre>
+<p>在最新的react版本中，也可以直接使用&lt;&gt;&lt;/&gt;来代替Fragment。其中&lt;&gt;唯一可以拥有的属性为key。即&lt; key='xxx'&gt;&lt;/&gt;</p>
+<p>3、使用数组map循环更新li，一定要给li添加对应的key值，否则虽然正常运行，但是会报错误警告。不建议直接使用index作为key值。</p>
+<p>4、在最新的react版本中，为了提高更新性能，推荐采用异步的方式更新数据。具体使用方式为：setXxx((prevData) =&gt; {return xxx})。其中参数prevData指之前的变量值，return的对象指修改之后的数据值。</p>
+<p>可以将上面代码简写为：setXxx(prevData =&gt; xxx)
+若没有用到prevData参数，还可以省略，即 setXxx(() =&gt; xxx);</p>
+<p>异步的目的是为了优化更新性能，react短期内发现多条数据变量发生修改，那么他会将所有修改合并成一次修改再最终执行。</p>
+<p>5、在JSX中写注释，格式为：{/* xxxxx */}或{//xxxx}，注意如果使用单行注释，最外的大括号必须单独占一行。注释尽在开发源代码中显示，在导出的网页中不会有该注释。</p>
+<p>6、给标签添加样式时，推荐使用className，不推荐使用class。如果使用class虽然运行没问题，但是会报错误警告，因为样式class这个关键词和js中声明类的class冲突。类似的还有标签中for关键词，推荐改为htmlFor。</p>
+<p>7、通常情况下，react是针对组件开发，并且只负责对html中某一个div进行渲染，那么意味着该html其他标签不受影响，这样引申出来一个结果：一个html既可以使用react，也可以使用vue，两者可以并存。</p>
+<p>8、为了方便调试代码，可以在谷歌浏览器中安装React Developer Tools插件。安装后可在谷歌浏览器调试模式下，查看component标签下的内容。  若访问本机react调试网页则该插件图标为红色、若访问导出版本的React网页则该插线显示为蓝色、若访问的网页没使用react框架则为灰色。</p>
+<p>9、给组件设定属性，只有属性名没有属性值，那么默认react会将该属性值设置为true。在ES6中如果只有一个属性对象没有属性值，通常理解为该属性名和属性值是相同的。 为了避免混淆，不建议不给属性不设置属性值。</p>
+<p>10、ReactDOM.createPortal()用来将元素渲染到任意DOM元素中(包括顶级组件之外的其他DOM中)。</p>
+<h2 id="纯函数-概念解释"><a class="header" href="#纯函数-概念解释">"纯函数" 概念解释</a></h2>
+<p>JS中定义的所有函数都可以增加参数，所谓"纯函数"是指函数内部并未修改过该参数的函数。</p>
+<p>例如以下函数：function myFun(a){let c=a }，该函数内部从未更改过参数a，那么这个函数就是纯函数。</p>
+<p>反例，非纯函数 例如：function myFun(a){a=a+2; let c=a}，该函数内部修改过参数a，那么这个函数就不再是纯函数了。</p>
+<p>纯函数的特殊意义是什么？<br />
+因为纯函数内部从不会直接修改参数，那么无论运行多少次，执行结果永远是一致的。</p>
+<p>若仅仅有一个函数，那么也无所谓，但是如果有多个函数都是都需要调用执行同一个变量(参数)，为了确保多个函数执行结果是符合预期的，那么就要求每个函数都不能在自己内部修改该变量(参数)。</p>
+<p>这就是为什么react不允许直接修改某变量的原因。</p>
+<h2 id="受控组件-概念解释"><a class="header" href="#受控组件-概念解释">"受控组件" 概念解释</a></h2>
+<p>像input、select、textarea、form等将自身value与某变量进行绑定的组件，称之为受控组件。</p>
+<p>"受控"即这些组件的可以值受到某变量的控制。</p>
+<p>与之对应的是"非受控组件"，即该组件对应的值并不能被某变量控制。</p>
+<p>例如"&lt;input type='file'/&gt;"，该组件的值为用户选中本地的文件信息，该值并不能直接通过某变量来进行value值的设定，因此该组件属于"非受控组件"。</p>
+<h2 id="声明式开发-概念解释"><a class="header" href="#声明式开发-概念解释">"声明式开发" 概念解释</a></h2>
+<p>"声明式开发"：基于数据定义和数据改变，视图层自动更新。<br />
+"命令式开发"：基于具体执行命令更改视图，例如DOM操作修改。</p>
+<p>注意：声明式开发并不是不进行DOM操作，而是把DOM操作频率降到最低。</p>
+<h2 id="单项数据流-概念解释"><a class="header" href="#单项数据流-概念解释">"单项数据流" 概念解释</a></h2>
+<p>react框架的原则中规定，子组件只可以使用父组件传递过来的xxx属性对应的值或方法，不可以改变。</p>
+<p>数据只能单向发生传递(父传向子，不允许子直接修改父)，若子组件想修改父组件中的数据，只能通过父组件暴露给子组件的函数(方法)来间接修改。</p>
+<p>react框架具体实现方式是设置父组件传递给子组件的"数据值或方法"仅仅为可读，但不可修改。</p>
+<p>为什么要做这样的限制？<br />
+因为一个父组件可以有多个子组件，如果每个子组件都可修改父组件中的数据(子组件之间彼此共用父组件的数据)，一个子组件的数据修改会造成其他子组件数据更改，最终会让整个组件数据变得非常复杂。</p>
+<p>为了简化数据操作复杂程度，因此采用单向数据流策略，保证父组件数据的唯一最终可修改权归父组件所有。</p>
+<h2 id="视图层渲染框架-概念解释"><a class="header" href="#视图层渲染框架-概念解释">"视图层渲染框架" 概念解释</a></h2>
+<p>react框架自身定位是"视图层渲染框架"，单向数据流概念很好，但是实际项目中页面会很复杂。</p>
+<p>例如顶级组件Root中分别使用了组件A(由子组件A0、A1、A2构成)、组件B(由子组件A0、A1、A2构成)、组件C(由子组件C0、C1、C2构成)，若此时组件A的子组件A2想和组件C的子组件C1进行数据交互，那么按照单向数据流的规范，数据操作流程为 A2 -&gt; A -&gt; Root -&gt; C - C1，可以看出操作流程非常复杂。</p>
+<p>所以实际开发中，React框架也许会结合其他"数据层框架"(例如Redux、Flux等)，但是请注意，只从有了hook以后，可以通过useReducer+useContext来实现类似Redux的功能。</p>
+<h2 id="函数式编程-概念解释"><a class="header" href="#函数式编程-概念解释">"函数式编程" 概念解释</a></h2>
+<p>react自定义组件的各种交互都在内部定义不同的函数(js语法规定：类class中定义的函数不需要在前面写 function关键词)，因此成为函数式编程。不像原生JS和html交互那样，更多侧重html标签、DOM操作来实现视图和交互。</p>
+<p>函数式编程的几点好处：<br />
+1、可以把复杂功能的处理函数拆分成多个细小的函数。<br />
+2、由于都是通过函数来进行视图层渲染和数据交互，更加方便编写"前端自动化测试"代码。</p>
+<h2 id="虚拟dom-概念解释"><a class="header" href="#虚拟dom-概念解释">"虚拟DOM" 概念解释</a></h2>
+<p>虚拟DOM(Virtual Dom)就是一个JS对象(数组对象)，用来描述真实DOM。相对通过html标签创建的真实DOM，虚拟DOM是保存在客户端内存里的一份JS表述DOM的数组对象。</p>
+<p>用最简单的一个div标签来示意两者的差异，数据格式如下：</p>
+<pre><code>//真实DOM数据格式(网页标签)
+&lt;div id='mydiv'&gt;hell react&lt;/div&gt;
+
+//虚拟DOM数据格式(JS数组对象)
+//虚拟DOM数组对象格式为：标签名+属性集合+值
+['div',{id:'mydiv'},'hell react']
+
+//在JSX的创建模板代码中，通常代码格式为
+render(){return &lt;div id='mydiv'&gt;hello react&lt;/&gt;}
+
+//还可以使用react提供的，更加底层的方法来实现
+render(){return React.createElement('div',{id:'mydiv'},'hello react')}
+</code></pre>
+<p>虚拟DOM更新性能快的原因并不是因为在内存中(理论上任何软件都是运行在内存中)，而是因为虚拟DOM储存的数据格式为JS对象，用JS来操作(生成/查询/对比/更新)JS对象很容易。用JS操作(生成/查询/对比/更新)真实DOM则需要调用Web Action层的API，性能相对就慢。</p>
+<p>react运行(更新)步骤，大致为：<br />
+1、定义组件数据变量<br />
+2、定义组件模板JSX<br />
+3、数据与模板结合，生成一份虚拟DOM<br />
+4、将虚拟DOM转化为真实DOM<br />
+5、将得到的真实DOM挂载到html中(通过真实DOM操作)，用来显示<br />
+6、监听变量发生改变，若有改变重新执行第3步(数据与模板结合，生成另外一份新的虚拟DOM)<br />
+7、在内存中对比前后两份虚拟DOM，找出差异部分(diff算法)<br />
+8、将差异部分转化为真实的DOM<br />
+8、将差异化的真实DOM，通过真实DOM操作进行更新</p>
+<p>当变量发生更改时，虚拟DOM减少了真实DOM的创建和对比次数(通过虚拟DOM而非真实DOM)，从而提高了性能。</p>
+<h2 id="diff算法-概念解释"><a class="header" href="#diff算法-概念解释">"Diff算法" 概念解释</a></h2>
+<p>当变量发生改变时，需要重新生成新的虚拟DOM，并且对旧的虚拟DOM进行差异化比对。<br />
+Diff算法就是这个差异化比对的算法。</p>
+<p>Diff算法为了提高性能，优化算法，通常原则为：</p>
+<h5 id="同层同级虚拟dom比对"><a class="header" href="#同层同级虚拟dom比对">同层(同级)虚拟DOM比对</a></h5>
+<p>先从两个虚拟DOM(JS对象)同层(即顶层)开始比对，如果发现同层就不一致，那么就直接放弃下一层(级别)的对比，采用最新的虚拟DOM。</p>
+<p>疑问点：假如两心虚拟DOM顶层不一致，但下一级别以及后面的更多级别都一致，如果仅仅因为顶层不一致而就该放弃下一级别，重新操作真实DOM从头渲染，岂不是性能浪费？</p>
+<p>答：同层(同级)虚拟DOM比对，"比对"算法相对简单，比对速度快。如果采用多层(多级)比对，"比对"算法会相对复杂，比对速度慢。 同层虚拟DOM比对就是利用了比对速度快的优势来抵消"操作真实DOM操作性能上的浪费"。</p>
+<h5 id="列表元素使用key值进行比对"><a class="header" href="#列表元素使用key值进行比对">列表元素使用key值进行比对</a></h5>
+<p>这里的key值是值"稳定的key值(是有规律的字符串，非数字)"，若key值为索引数字index，那么顺序发生改变时，索引数字也会发生变化，无法判断之前的和现在的是否是同一个对象。</p>
+<p>如果key值是稳定的，那么在比对的时候，比较容易比对出是否发生变化，以及具体的变化是什么。</p>
+<p>Diff算法还有非常多的其他性能优化算法，以上列出的"同层比对、key值比对"仅仅为算法举例。</p>
+<h2 id="高阶组件-概念解释"><a class="header" href="#高阶组件-概念解释">"高阶组件" 概念解释</a></h2>
+<p>高阶组件是一种组件设计方式(设计模式)，就是将一个组件作为参数传递给一个函数，该函数接收参数(组件)后进行处理和装饰，并返回出一个新的组件。</p>
+<p>简单来说就是，普通组件是根据参数(props)生成一个UI(JSX语法支持的标签)。而高阶组件是根据参数(组件)生成一个新的组件。</p>
+<h2 id="生命周期函数-概念解释"><a class="header" href="#生命周期函数-概念解释">"生命周期函数" 概念解释</a></h2>
+<p>生命周期函数指在某一时刻组件会自动调用执行的函数。</p>
+<p>这里的"某一时刻"可以是指组件初始化、挂载到虚拟DOM、数据更改引发的更新(重新渲染)、从虚拟DOM卸载这4个阶段。</p>
+<h4 id="生命周期4个阶段和该阶段内的生命周期函数"><a class="header" href="#生命周期4个阶段和该阶段内的生命周期函数">生命周期4个阶段和该阶段内的生命周期函数：</a></h4>
+<h5 id="初始化initialization"><a class="header" href="#初始化initialization">初始化(Initialization)</a></h5>
+<p>constructor()是JS中原生类的构造函数，理论上他不专属于组件的初始化，但是如果把它归类成组件组初始化也是可以接受的。</p>
+<h5 id="挂载mounting"><a class="header" href="#挂载mounting">挂载(Mounting)</a></h5>
+<p>componentWillMount(即将被挂载)、render(挂载)、componentDidMount(挂载完成)</p>
+<h5 id="更新updation"><a class="header" href="#更新updation">更新(Updation)：</a></h5>
+<p>props发生变化后对应的更新过程：componentWillReceiveProps(父组件发生数据更改，父组件的render重新被执行，子组件预测到可能会发生替换新数据)、shouldComponentUpdate(询问是否应该更新？返回true则更新、返回flash则不更新)、componentWillUpate(准备要开始更新)、render(更新)、componentDidUpdate(更新完成)</p>
+<p>变量数据发生变化后对应的更新过程：shouldComponentUpdate(询问是否应该更新？返回true则更新、返回flash则不更新)、conponentWillUpdate(准备要开始更新)、、render(更新)、componentDidUpdate(更新完成)</p>
+<p>props和states发生变化后的更新过程，唯一差异是props多了一个 componentWillReceiveProps生命周期函数。</p>
+<p>componentWillReceiveProps触发的条件是：<br />
+1、一个组件要从父组件接收参数，并且已存在父组件中(子组件第一次被创建时是不会执行componentWillReceiveProps的)<br />
+2、只要父组件的render函数重新被执行(父组件发生数据更改，子组件预测到可能会发生替换新数据)，componentWillReceiveProps就会被触发</p>
+<h5 id="捕获子组件错误"><a class="header" href="#捕获子组件错误">捕获子组件错误：</a></h5>
+<p>componentDidCatch(捕获到子组件错误时被触发)</p>
+<h5 id="卸载unmounting"><a class="header" href="#卸载unmounting">卸载(Unmounting)：</a></h5>
+<p>componentWillUnmount(即将被卸载)</p>
+<p>备注：类组件继承自Component组件，Component组件内置了除render()以外的所有生命周期函数。因此自定义组件render()这个生命周期函数必须存在，其他的生命周期函数都可以忽略不写。 而使用了hook的函数组件，简化了生命周期函数调用的复杂程度。</p>
+<h5 id="生命周期函数的几个应用场景"><a class="header" href="#生命周期函数的几个应用场景">生命周期函数的几个应用场景：</a></h5>
+<p>对于类组件(由class创建的)和函数组件(由function创建的)，他们对于生命周期的调用方法不同。</p>
+<p>1、只需要第一次获取数据的Ajax请求<br />
+如果类组件有ajax请求(只需请求一次)，那么最好把ajax请求写在componentDidMount中(只执行一次)。因为"初始化、挂载、卸载"在一个组件的整个生命周期中只会发生一次，而"更新"可以在生命周期中多次执行。<br />
+如果是函数组件，则可以写在useEffect()中，并且将第2个参数设置为空数组，这样useEffect只会执行一次。</p>
+<p>2、防止子组件不必要的重新渲染<br />
+如果是类组件，父组件发生变量改变，那么会调用render()，会重新渲染所有子组件。但是如果变量改变的某个值与某子组件并不相关，如果此时也重新渲染该子组件会造成性能上的浪费。为了解决这个情况，可以在子组件中的shouldComponentUpdate生命周期函数中，做以下操作:</p>
+<pre><code>shouldComponentUpdate(nextProps,nextStates){
+  //判断xxx值是否相同，如果相同则不进行重新渲染
+  return (nextProps.xxx !== this.props.xxx); //注意是 !== 而不是 !=
+}
+</code></pre>
+<p>还可以让组件继承由React.Component改为React.PureComponent，react会自动帮我们在shouldComponentUpdate生命周期函数中做浅对比。</p>
+<p>如果是函数组件，则在子组件导出时，使用React.memo()进行包裹，同时结合useCallback来阻止无谓的渲染，实现提高性能。</p>
+<h1 id="react中设置样式的几种形式"><a class="header" href="#react中设置样式的几种形式">React中设置样式的几种形式</a></h1>
+<h5 id="第一种引用外部css样式"><a class="header" href="#第一种引用外部css样式">第一种：引用外部css样式</a></h5>
+<p>伪代码示例：<br />
+import from './xxx.css';<br />
+return &lt;div className='xxx' /&gt;</p>
+<p>注意：在jsx语法中，使用驼峰命名。例如原生html中的classname需要改成className、background-color要改成backgroundColor。</p>
+<h5 id="第二种内部样式"><a class="header" href="#第二种内部样式">第二种：内部样式</a></h5>
+<p>伪代码示例：<br />
+return &lt;div style={{backgroundColor:'green',width:'100px'}} /&gt;</p>
+<p>注意：内联样式值为一个对象，对象属性之间用","分割而不是原生html中的";"。<br />
+因为是一个对象，因此下面代码也是可行的：<br />
+const mystyle = {backgroundColor:'green',width:'100px'};
+return &lt;div style={mystyle} /&gt;</p>
+<h1 id="hook用法"><a class="header" href="#hook用法">Hook用法</a></h1>
+<p>Hook是react16.8以上版本才出现的新特性，可以在函数组件中使用组件生命周期函数，且颗粒度更加细致。</p>
+<p>可以把Hook逻辑从组件中抽离出来，多个组件可以共享该hook逻辑。</p>
+<p><strong>请注意hook本质上是为了解决组件之间共享逻辑，并不是单纯为了解决组件之间共享数据。</strong></p>
+<p>hook表现出来特别像一个普通的JS函数(仅仅是表现出来但绝不是真的普通JS函数)。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="react扩展阅读"><a class="header" href="#react扩展阅读">React扩展阅读</a></h1>
+<h4 id="youtube中codevolution专栏下的react-hooks-tutorial系列视频"><a class="header" href="#youtube中codevolution专栏下的react-hooks-tutorial系列视频">Youtube中Codevolution专栏下的React Hooks Tutorial系列视频</a></h4>
+<p>链接：<a href="https://pan.baidu.com/s/1Lj_kN-FuO5bbZ2rqMVz6xw">https://pan.baidu.com/s/1Lj_kN-FuO5bbZ2rqMVz6xw</a><br />
+提取码：70ni</p>
+<h4 id="自定义-hook-大全"><a class="header" href="#自定义-hook-大全">自定义 Hook 大全</a></h4>
+<p>必不可少的 React Hooks集合。<br />
+<a href="https://github.com/zenghongtu/react-use-chinese">https://github.com/zenghongtu/react-use-chinese</a></p>
+<h4 id="react技术揭秘"><a class="header" href="#react技术揭秘">React技术揭秘</a></h4>
+<p>卡颂写的 React 源码分析。<br />
+<a href="https://react.iamkasong.com/">https://react.iamkasong.com/</a></p>
+<h4 id="阿里-ahooks-工具库"><a class="header" href="#阿里-ahooks-工具库">阿里 ahooks 工具库</a></h4>
+<p>蚂蚁umi团队、淘系ice团队、阿里体育共同建设的 React Hooks 工具库<br />
+<a href="https://ahooks.js.org/zh-CN">https://ahooks.js.org/zh-CN</a></p>
+<h4 id="网易云音乐前端团队-react-hooks-最佳实践"><a class="header" href="#网易云音乐前端团队-react-hooks-最佳实践">网易云音乐前端团队 React Hooks 最佳实践</a></h4>
+<p>实际项目中总结出的 React Hooks 实用经验<br />
+<a href="https://mp.weixin.qq.com/s/HwlnvAh18saKwXC_nZwSHw">https://mp.weixin.qq.com/s/HwlnvAh18saKwXC_nZwSHw</a></p>
+<h4 id="react-300问"><a class="header" href="#react-300问">React 300问</a></h4>
+<p>React 300多道面试题和答案<br />
+<a href="https://github.com/semlinker/reactjs-interview-questions">https://github.com/semlinker/reactjs-interview-questions</a></p>
+<h4 id="阿里推出的react框架antd"><a class="header" href="#阿里推出的react框架antd">阿里推出的React框架：antd</a></h4>
+<p>antd 4.0版本全部采用函数组件开发而成。<br />
+<a href="https://ant.design/docs/react/introduce-cn">https://ant.design/docs/react/introduce-cn</a></p>
+<h4 id="京东推出的多端统一开发框架taro"><a class="header" href="#京东推出的多端统一开发框架taro">京东推出的多端统一开发框架：taro</a></h4>
+<p>Taro是一套遵循React语法规范的多端开发解决方案。<br />
+<a href="https://taro-docs.jd.com/taro/">https://taro-docs.jd.com/taro/</a></p>
+<h4 id="学习react的几个好的微信公众号"><a class="header" href="#学习react的几个好的微信公众号">学习React的几个好的微信公众号</a></h4>
+<p>React中文社区、不知非攻、魔术师卡颂</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

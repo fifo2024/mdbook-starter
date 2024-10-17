@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>useEffect高级用法 - React Hooks学习</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html" class="active"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="05-useeffect高级用法"><a class="header" href="#05-useeffect高级用法">05 useEffect高级用法</a></h1>
+<p>所谓高级用法，只不过是一些深层知识点和实用技巧，你甚至可以把本章当做对前面知识点的一个巩固和学习。</p>
+<h2 id="让useeffect只在挂载后和卸载前执行一次"><a class="header" href="#让useeffect只在挂载后和卸载前执行一次">让useEffect只在挂载后和卸载前执行一次</a></h2>
+<p>让我们实现 “04 useEffect基础用法” 中 举例2 提到的功能。</p>
+<p>组件需求：<br />
+1、若某类组件中有变量a，默认值为0，当组件第一次被挂载后或组件重新渲染后，将网页标题显示为a的值。<br />
+2、当组件第一次被挂载后执行一个自动累加器 setInterval，每1秒 a 的值+1。为了防止内存泄露，我们在该组件即将被卸载前清除掉该累加器。</p>
+<p>需求分析：<br />
+关于自动累加器的操作，只关联 “组件挂载后和组件卸载前” 这2个生命周期函数中，那useEffect还包含了每次组件重新渲染后，这该怎么办？</p>
+<p>答：useEffect函数的第2个参数表示该依赖关系，<strong>将useEffect的第2个参数，设置为空数组 []</strong>，即表示告诉React，这个useEffect不依赖任何变量的更新所引发的组件重新渲染，以后此组件再更新也不需要调用此useEffect。</p>
+<p>这样就可以实现只在第一次挂载后和卸载前调用此useEffect的目的。</p>
+<pre><code>import React, { useState,useEffect} from 'react';
+
+function Component() {
+  const [a, setA] = useState(0);//定义变量a，并且默认值为0
+
+  //定义第1个useEffect，专门用来处理自动累加器
+  useEffect(() =&gt; {
+    let timer = setInterval(() =&gt; {setA(a+1)},1000);// &lt;-- 请注意这行代码，暗藏玄机
+    return () =&gt; {
+        clearInterval(timer);
+    }
+  }, []);//此处第2个参数为[]，告知React以后该组件任何更新引发的重新渲染都与此useEffect无关
+
+  //定义第2个useEffect，专门用来处理网页标题更新
+  useEffect(() =&gt; {
+    document.title = `${a} - ${Math.floor(Math.random()*100)}`;
+  },[a])
+  return &lt;div&gt; {a} &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>以上代码实际运行正确吗？<br />
+答：不正确！</p>
+<p>？<br />
+小朋友，脸上是否有很多问号？？？</p>
+<p>实际运行会发现，当组件挂载后，确实会执行一次 setA(a+1)，a 的值修改为了 1，然后... a 的值一直为 1，并没有继续累加。</p>
+<p>上述代码会收到react的一个错误警告提示：Either include it or remove the dependency array. You can also do a functional update 'setA(a =&gt; ...)' if you only need 'a' in the 'setA' call.<br />
+该错误警告意思是：如果你确认你传入的第2个参数是空数组，那么你可能会用到 setA(a =&gt; ...) 这种方式来更新a的值。</p>
+<p>问题出在哪里？</p>
+<p>让我们再看看那行有玄机的代码：</p>
+<pre><code>let timer = setInterval(() =&gt; {setA(a+1)},1000);  
+</code></pre>
+<p>再看看 react 给我们的错误警告提示：You can also do a functional update 'setA(a =&gt; ...)' if you only need 'a' in the 'setA' call.  你可能会用到 setA(a =&gt; ...) 这种方式来更新a的值。</p>
+<p>setA(a =&gt; ...)  这是在 “03 useState高级用法”中，解决数据异步 时讲的更新方式。</p>
+<p>那我们就按照提示，将那行代码修改为：</p>
+<pre><code>let timer = setInterval(() =&gt; {setA(a =&gt; a+1)},1000);  
+</code></pre>
+<p>再次执行，错误提示警告没有了，组件也完全按照我们的预期来执行了。react自带的语法检查真的好智能。</p>
+<h5 id="为什么会有这个问题"><a class="header" href="#为什么会有这个问题">为什么会有这个问题？</a></h5>
+<p>关于刚才setInterval中累加 a 的值遇到的问题，React官方文档中也有类似示例，只不过他们用的变量是count，而我们这里用的变量是 a。</p>
+<p>我们看看从React官方文档中引用的话：</p>
+<blockquote>
+<p>有时候，你的 effect 可能会使用一些频繁变化的值。你可能会忽略依赖列表中 state，但这通常会引起 Bug，传入空的依赖数组 []，意味着该 hook 只在组件挂载时运行一次，并非重新渲染时。但如此会有问题，在 setInterval 的回调中，count 的值不会发生变化。因为当 effect 执行时，我们会创建一个闭包，并将 count 的值被保存在该闭包当中，且初值为 0。每隔一秒，回调就会执行 setCount(0 + 1)，因此，count 永远不会超过 1。</p>
+</blockquote>
+<p>再次重复一遍：如果useEffect函数第2个参数为空数组，那么react会将该useEffect的第1个参数 effect 建立一个闭包，该闭包里的变量 a 被永远设定为当初的值，即 0。尽管setInterval正常工作，每次都“正常执行了”，可是 setA(a+1)中 a 的值一直没变化，一直都是当初的0，所以造成 0 + 1 一直都等于 1 的结果。</p>
+<p>而如果修改成 setA(a =&gt; a+1) 的形式，那么就解决了 a 数据异步的问题，每次都是读取最新当前 a 的值。</p>
+<p>这个点是使用 useEffect 很容易掉进去的一个坑，切记切记。</p>
+<p>或者以后养成都用异步更新数据的习惯。</p>
+<h2 id="性能优化"><a class="header" href="#性能优化">性能优化</a></h2>
+<p>通过上面的例子，我们其实已经实现了 前文中 举例2 和举例3 的效果。</p>
+<p>咦~ 刚才讲的是举例2，没有将举例3啊... 因为举例3中提到的类组件中有多个变量数据，在函数组件中这个问题本身是靠useState来解决的，跟useEffect无关。</p>
+<p>接下来讲一下useEffect函数第2个参数提高性能的正确用法。</p>
+<p>举例：若一个组件中有一个自定义变量obj，obj有两个属性a、b，当a发生变化时，网页标题也跟着a发生变化。<br />
+补充说明：<br />
+1、我们为了让a、b都可以发生变化，将在组件中创建2个按钮，点击之后分别可以修改a、b的值；<br />
+2、为了更加清楚看到每次渲染，我们在网页标题中 a 的后面再增加一个随机数字；</p>
+<p>我们首先看以下代码：</p>
+<pre><code>import React, { useState,useEffect} from 'react';
+function Component() {
+  const [obj,setObj] = useState({a:0,b:0});
+  useEffect(() =&gt; {
+    document.title = `${obj.a} - ${Math.floor(Math.random()*50)}`;
+  }); //注意此时我们并未设置useEffect函数的第2个参数
+
+  //如果下面代码看不懂，你需要重新去温习useState高级用法中的“数据类型为Objcet，修改方法”
+  return &lt;div&gt;
+    {JSON.stringify(obj)}
+    &lt;button onClick={() =&gt; {setObj({...obj,a:obj.a+1})}}&gt;a+1&lt;/button&gt; 
+    &lt;button onClick={() =&gt; {setObj({...obj,b:obj.b+1})}}&gt;b+1&lt;/button&gt;
+  &lt;/div&gt;
+}
+export default Component;
+</code></pre>
+<p>由于我们在网页标题中添加了随机数，因此实际运行你会发现即使修改b的值，也会引发网页标题重新“变更一次”。</p>
+<p>理由显而易见，修改b的值也会触发组件重新渲染，进而触发useEffect中的代码。</p>
+<p>正确的做法应该是我们给useEffect添加上第2个参数：[obj.a]，明确告诉React，只有当obj.a变更引发的重新渲染才执行本条useEffect。</p>
+<pre><code>useEffect(() =&gt; {
+   document.title = `${obj.a} - ${Math.floor(Math.random()*50)}`;
+ },[obj.a]); //第2个参数为数组，该数组中可以包含多个变量
+</code></pre>
+<p>添加过[obj.a]之后，再次运行，无论obj.b或者其他数据变量引发的组件重新渲染，都不会执行该useEffect。</p>
+<p>因此达到提高性能的目的。</p>
+<hr />
+<p>至此，关于useEffect高级用法已经讲完，相信useState和useEffect的组合使用，已经能够让你写出一些简单的React Hook 组件。</p>
+<p>接下来学习第3个Hook函数useContext。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/06%20useContext%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useContext基本用法</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="04_useEffect_base.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="06_useContext_base.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="04_useEffect_base.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="06_useContext_base.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

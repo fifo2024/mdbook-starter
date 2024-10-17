@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>useContext基础用法 - React Hooks学习</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html" class="active"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="06-usecontext基础用法"><a class="header" href="#06-usecontext基础用法">06 useContext基础用法</a></h1>
+<h2 id="usecontext概念解释"><a class="header" href="#usecontext概念解释">useContext概念解释</a></h2>
+<p>我们第三个要学习的Hook(钩子函数)是useContext，他的作用是“勾住”获取由React.createContext()创建、&lt;XxxContext.Provider&gt;添加设置的共享数据value值。useContext可以替代&lt;XxxContext.Consumer&gt;标签，简化获取共享数据的代码。</p>
+<p>我们知道，原本不同级别的组件之间传递属性值，必须逐层传递，即使中间层的组件不需要这些数据。<br />
+注意：这里说的组件指React所有组件，包含类组件和函数组件。</p>
+<p>数据层层传递增加了组件的复杂性，降低了可复用性。为了解决这个问题，我们可以使用以下方式：<br />
+1、在组件顶层或单独的模块中，由React.createContext()创建一个共享数据对象；<br />
+2、在父组件中添加共享数据对象的引用，通过且只能通过&lt;XxxContext.provider value={{xx:'xxx'}}&gt;&lt;/XxxContext.provider&gt;的形式将数据传递给子组件。请注意传值必须使用value={obj}这种形式；<br />
+3、若下一层的子组件用不到共享数据对象中的数据，则可以不做任何属性标签传递；<br />
+4、若某一层的子组件需要用到共享数据对象的数据，则可通过&lt;XxxContext.Consumer&gt;&lt;/XxxContext.Consumer&gt;获取到数据；<br />
+5、在类组件中除了&lt;XxxContext.Consumer&gt;标签，还有另外一种获取共享数据方式：static xxx = XxxContext; 但是这种形式在函数组件中无法使用。</p>
+<p>简而言之&lt;XxxContext.Provider&gt;用来添加共享数据、&lt;XxxContext.Consumer&gt;用来获取共享数据。<br />
+备注：provider单词本意为供应者、consumer单词本意为消费者，刚好对应他们相对于共享数据的关系。</p>
+<p>上面简单描述了React.createContext()的用法，由于本系列文章主要讲Hook的使用方法，React本身的知识点并不是重点讲解对象。若你对React.createContext()、&lt;XxxContext.Provider&gt;、&lt;XxxContext.Consumer&gt;的用法还不太明白，请通过其他途径自行学习。</p>
+<p>让我们回到useContext学习中。</p>
+<h2 id="usecontext是来解决什么问题的"><a class="header" href="#usecontext是来解决什么问题的">useContext是来解决什么问题的？</a></h2>
+<p>答：useContext是&lt;XxxContext.Consumer&gt;的替代品，可以大量简化获取共享数据值的代码。</p>
+<p>补充说明：<br />
+1、函数组件和类组件，对于&lt;XxxContext.Provider&gt;、&lt;XxxContext.Consumer&gt;使用方式没有任何差别。<br />
+2、你可以在函数组件中不使用useContext，继续使用&lt;XxxContext.Consumer&gt;，这都没问题。只不过使用useContext后，可以让获取共享数据相关代码简单一些。</p>
+<h2 id="usecontext函数源码"><a class="header" href="#usecontext函数源码">useContext函数源码：</a></h2>
+<p>回到useContext的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useContext&lt;T&gt;(
+  Context: ReactContext&lt;T&gt;,
+  unstable_observedBits: number | boolean | void,): T {
+  const dispatcher = resolveDispatcher();
+  if (__DEV__) {
+    if (unstable_observedBits !== undefined) {
+      console.error(
+        'useContext() second argument is reserved for future ' +
+        'use in React. Passing it is not supported. ' +
+        'You passed: %s.%s',
+        unstable_observedBits,
+        typeof unstable_observedBits === 'number' &amp;&amp; Array.isArray(arguments[2])
+        ? '\n\nDid you call array.map(useContext)? ' +
+          'Calling Hooks inside a loop is not supported. ' +
+          'Learn more at https://fb.me/rules-of-hooks'
+        : '',
+      );
+  }
+
+  // TODO: add a more generic warning for invalid values.
+  if ((Context: any)._context !== undefined) {
+    const realContext = (Context: any)._context;
+    // Don't deduplicate because this legitimately causes bugs
+    // and nobody should be using this in existing code.
+    if (realContext.Consumer === Context) {
+      console.error(
+        'Calling useContext(Context.Consumer) is not supported, may cause bugs, and will be ' +
+          'removed in a future major release. Did you mean to call useContext(Context) instead?',
+      );
+    } else if (realContext.Provider === Context) {
+      console.error(
+        'Calling useContext(Context.Provider) is not supported. ' +
+          'Did you mean to call useContext(Context) instead?',
+      );
+    }
+  }
+}
+  return dispatcher.useContext(Context, unstable_observedBits);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。之所以贴出源码只是想让你看懂以后告诉我，反正我是没看懂。^_^</p>
+<h2 id="usecontext基本用法"><a class="header" href="#usecontext基本用法">useContext基本用法</a></h2>
+<p>useContext(context)函数可以传入1个参数，该参数为共享数据对象的实例，useContext函数会返回该共享对象实例的value值。</p>
+<h5 id="代码形式"><a class="header" href="#代码形式">代码形式：</a></h5>
+<pre><code>import GlobalContext from './global-context'; //引入共享数据对象
+
+function Component(){
+  const global = useContext(GlobalContext); //在函数组件中声明一个变量来代表该共享数据对象的value值
+
+  //若想获取共享数据对象中的属性xxx的值，直接使用global.xxx即可
+  return &lt;div&gt;
+    {global.xxx}
+  &lt;/div&gt;
+}
+</code></pre>
+<h5 id="拆解说明"><a class="header" href="#拆解说明">拆解说明：</a></h5>
+<p>1、子组件(函数组件)需要先引入共享数据对象GlobalContext；<br />
+2、内部定义一个常量global，用来接收useContext函数返回GlobalContext的value值；<br />
+3、函数组件在return时，可以不使用&lt;GlobalCount.Customer&gt;标签，而是直接使用global.xx来获取共享数据；<br />
+4、请注意，这里执行的依然是单向数据流，只可以获取global.xx，不可以直接更改global.xx;</p>
+<h4 id="引入globalcontext补充说明"><a class="header" href="#引入globalcontext补充说明">'引入GlobalContext'补充说明</a></h4>
+<p>示例中是通过import方式引入的，如果直接把GlobalContext定义在该组件内部，那不是就不用import了吗？<br />
+答：是的，你可以这么做。只不过定义在外部单独的模块中，各个组件都可以引用。</p>
+<h4 id="global补充说明"><a class="header" href="#global补充说明">'global'补充说明</a></h4>
+<p>为了代码语义化，上述代码中使用到了global这个单词，但是请注意，该单词和原生JS中global(全局变量)无任何关联。实际项目中你可以使用任意具有语义的相关单词。比如定义用户共享数据你可以定义为UserContext、新闻共享数据你可以定义为NewsContext等。</p>
+<h2 id="usecontext使用示例"><a class="header" href="#usecontext使用示例">useContext使用示例：</a></h2>
+<p>举例：若某React组件一共由3层组件嵌套而成，从外到里分别是AppComponent、MiddleComponent、ChildComponent。AppComponent需要传递数据给ChildComponent。</p>
+<p>若使用useContext来实现，代码示例如下：</p>
+<pre><code>//global-context.js
+import React from 'react';
+const GlobalContext = React.createContext(); //请注意，这里还可以给React.createContext()传入一个默认值
+//例如：const GlobalContext = React.createContext({name:'Yang',age:18})
+//假如&lt;GlobalContext.Provider&gt;中没有设置value的值，就会使用上面定义的默认值
+export default GlobalContext;
+
+...
+
+//component.js
+import React, { useContext } from 'react';
+import GlobalContext from './global-context';
+
+function AppComponent() {
+  //标签&lt;GlobalContext.Provider&gt;中向下传递数据，必须使用value这个属性，且数据必须是键值对类型的object
+  //如果不添加value，那么子组件获取到的共享数据value值是React.createContext(defaultValues)中的默认值defaultValues
+  return &lt;div&gt;
+    &lt;GlobalContext.Provider value={{name:'puxiao',age:34}}&gt;
+        &lt;MiddleComponent /&gt;
+    &lt;/GlobalContext.Provider&gt;
+  &lt;/div&gt;
+}
+
+function MiddleComponent(){
+  //MiddleComponent 不需要做任何 “属性数据传递接力”，因此降低该组件数据传递复杂性，提高组件可复用性
+  return &lt;div&gt;
+    &lt;ChildComponent /&gt;
+  &lt;/div&gt;
+}
+
+function ChildComponent(){
+  const global = useContext(GlobalContext); //获取共享数据对象的value值
+  //忘掉&lt;GlobalContext.Consumer&gt;标签，直接用global获取需要的值
+  return &lt;div&gt;
+    {global.name} - {global.age}
+  &lt;/div&gt;
+}
+
+export default AppComponent;
+</code></pre>
+<p>假如ChildComponent不使用useContext，而是使用&lt;GlobalContext.Consumer&gt;标签，那么代码相应修改为：</p>
+<pre><code>function ChildComponent(){
+  return &lt;GlobalContext.Consumer&gt;
+    {
+        global =&gt; {
+            return &lt;div&gt;{global.name} - {global.age}&lt;/div&gt;
+        }
+    }
+  &lt;/GlobalContext.Consumer&gt;
+}
+</code></pre>
+<p>使用useContext可以大大降低获取数据代码复杂性。</p>
+<p>请注意：useContext只是简化了获取共享数据value的代码，但是对于&lt;XxxContext.Provider&gt;的使用没有做任何改变，如果组件需要设置2个XxxContext，那么依然需要进行&lt;XxxContext.Provider&gt;嵌套。</p>
+<p>上述代码中AppComponent只向下传递出去1个共享数据对象value值，那如果需要同时传递多个共享数据对象的value值，那该如何实现？<br />
+关于这个问题，会在 useContext高级用法中讲解。</p>
+<hr />
+<p>至此，关于useContext基础用法已经讲完。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/07%20useContext%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">useContext高级用法</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="05_useEffect_advanced.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="07_useContext_advanced.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="05_useEffect_advanced.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="07_useContext_advanced.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

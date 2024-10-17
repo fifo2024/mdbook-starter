@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>useState基础用法 - React Hooks学习</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html" class="active"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="02-usestate基础用法"><a class="header" href="#02-usestate基础用法">02 useState基础用法</a></h1>
+<h2 id="usestate概念解释"><a class="header" href="#usestate概念解释">useState概念解释</a></h2>
+<p>我们第一个要学习的Hook(钩子函数)是useState，他的作用是“勾住”函数组件中自定义的变量。</p>
+<p>“勾住”？<br />
+回顾一下 “React Hook 简介” 文中那句话：Hook本身单词意思是“钩子”，作用就是“勾住某些生命周期函数或某些数据状态，并进行某些关联触发调用”。</p>
+<p>“如何勾住”？
+在React底层代码中，是通过自定义dispatcher，采用“发布订阅模式”实现的。</p>
+<p>关于“钩子”、“勾住”、“如何勾住”的概念以后在学习其他Hook函数时不再做解释。</p>
+<h2 id="usestate是来解决类组件什么问题的"><a class="header" href="#usestate是来解决类组件什么问题的">useState是来解决类组件什么问题的？</a></h2>
+<p>答：useState能够解决类组件 <strong>所有自定义变量只能存储在this.state</strong> 的问题。</p>
+<p>举例：若某组件需要有2个自定义变量name和age，那么在类组件中只能如下定义</p>
+<pre><code>constructor(props) {
+    super(props);
+    this.state = {
+      name:'puxiao',
+      age:34
+    }
+}
+</code></pre>
+<p>name和age只能作为this.state的一个属性。</p>
+<p>没有对比就没有伤害，看一下使用useState后，函数组件是如何实现上述需求的</p>
+<pre><code>const [name,setName] = useState('puxiao');
+const [age,setAge] = useState(34);
+</code></pre>
+<p>1、函数组件本身是一个函数，不是类，因此没有构造函数constructor(props)；<br />
+2、任何你想定义的变量都可以单独拆分出去，独立定义，互不影响；</p>
+<p>两段代码对比之下，你就会发现使用Hook的useState后，会让我们定义的变量相对独立，清晰简单，便于管理。</p>
+<p>接下来开始学习useState。</p>
+<h2 id="usestate函数源码"><a class="header" href="#usestate函数源码">useState函数源码：</a></h2>
+<p>首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useState&lt;S&gt;(
+  initialState: (() =&gt; S) | S,
+): [S, Dispatch&lt;BasicStateAction&lt;S&gt;&gt;] {
+  const dispatcher = resolveDispatcher();
+  return dispatcher.useState(initialState);
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。之所以贴出源码只是为了显得本文比较有深度。^_^</p>
+<p><strong>更新于2020.11.10，这里强调一下：React 源码中使用的是 flow 语法，根本不是 TypeScript 语法，只不过 2 者实在是太像了，以至于让我之前一直误以为 React 源码中是 TS。不过你完全可以将 TS 的泛型知识去套用到 flow 中。在此特别说明一下，至于后续章节中就不再做提醒和修改了，你就当成 TS 语法去理解也行。</strong></p>
+<h5 id="补充一些typescript常识"><a class="header" href="#补充一些typescript常识">补充一些TypeScript常识：</a></h5>
+<p>1、react 本身采用TypeScript编写，还是补充点TS常识，方便对各个 hook 函数源码的理解。<br />
+2、对于useState以及以后要学习的其他hook函数源码，函数参数中会反复出现&lt;S&gt;、&lt;T&gt;、&lt;P&gt;、&lt;I&gt;、&lt;I&gt;，这些大写字母，react约定他们对应的单词如下：<br />
+state -&gt; S -&gt; 约定表示某种“数据”<br />
+type -&gt; T -&gt; 约定表示某种“类型”<br />
+props -&gt; P -&gt; 约定表示“属性传值对应的props”<br />
+initial -&gt; I -&gt; 约定表示某个“初始值”</p>
+<p>1、这种用&lt;X&gt;包裹起来的类型声明，在TS中成为“泛型”。理论上是可以使用任意单词的，上面那些缩写只是react自己约定单词缩写。<br />
+2、对于一段TS代码，如果出现了&lt;S&gt;，那么后面所有的&lt;S&gt;都将表示“某种相同类型的数据”。对于TypeScript的泛型相关知识，请自己百度学习。</p>
+<h2 id="usestate基本用法"><a class="header" href="#usestate基本用法">useState基本用法</a></h2>
+<p>useState(value)函数会返回一个数组，该数组包含2个元素：第1个元素为我们定义的变量，第2个元素为修改该变量对应的函数名称。</p>
+<h5 id="代码形式"><a class="header" href="#代码形式">代码形式：</a></h5>
+<pre><code>const [variable,setVariable] = useState(value);
+//....
+setVariable(newValue);//修改variable的值
+</code></pre>
+<h5 id="拆解说明"><a class="header" href="#拆解说明">拆解说明：</a></h5>
+<p>1、const [a,b] = [a,b] 这种形式为ES6的“解构赋值”；<br />
+2、'variable'为函数组件中自定义的变量名；<br />
+3、'setVariable'为修改'variable'对应的函数名；<br />
+4、'useState'为本次学习的Hook函数；<br />
+5、'value'为变量默认值<br />
+6、'setVariable(newValue)'为调用setVariable并将新的值newValue赋值给variable；</p>
+<h4 id="variable补充说明"><a class="header" href="#variable补充说明">'variable'补充说明</a></h4>
+<p>1、variable为变量名，实际使用中可以修改成任意变量名，比如name、age、count等等；<br />
+2、但是，函数组件接收父级组件属性传值的变量名为props，因此建议你不要将变量名定为props，以免混淆；<br />
+3、我不听话，我就非要将变量名定义成props，那又会怎么样？答案是不会有什么问题，不仅不会报错而且还会正常执行。</p>
+<h5 id="setvariable补充说明"><a class="header" href="#setvariable补充说明">'setVariable'补充说明：</a></h5>
+<p>1、该名称采用 "set"+"变量名" 的驼峰命名形式，只是为了提高代码可读性。<br />
+2、一般React项目都约定使用此种命名方式，所以推荐你也如此使用。<br />
+3、当然你也可以使用任意你喜欢的命名风格，但是切记不能以数字开头。</p>
+<h5 id="value补充说明"><a class="header" href="#value补充说明">'value'补充说明：</a></h5>
+<p>1、必填项，不可缺省，若缺省则实际运行时会提示变量名未定义；<br />
+2、值的类型可以是字符串、数字、数组、对象；<br />
+3、值还可以为null，但不可以为undefined；</p>
+<h5 id="newvalue补充说明非常重要"><a class="header" href="#newvalue补充说明非常重要">'newValue'补充说明(非常重要)：</a></h5>
+<p>setVariable采用 “异步直接赋值” 的形式，并不会像类组件中的setState()那样做“异步对比累加赋值”。</p>
+<p>“异步”？<br />
+这里的“异步”和类组件中setState中的异步是同一个意思，都是为了优化React渲染性能而故意为之。</p>
+<p>"直接赋值"？<br />
+1、在Hook中，对于简单类型数据，比如number、string类型，可以直接通过setVariable(newValue)直接进行赋值。<br />
+2、但对于复杂类型数据，比如array、object类型，若想修改其中某一个属性值而不影响其他属性，则需要先复制出一份，修改某属性后再整体赋值。具体如何做，请看下一篇“useState高级用法”中“数据类型为Objcet/Array修改方法”内容。</p>
+<p>如果新值和当前值完全一样，那么会引发React重新渲染吗？请看下一篇“useState高级用法”中“性能优化”内容。</p>
+<p>停！上面的信息量有点多，让我们把思绪先回到最基础的用法上。</p>
+<h2 id="usestate使用示例"><a class="header" href="#usestate使用示例">useState使用示例：</a></h2>
+<pre><code>//函数组件内定义变量name
+const [name,setName] = useState('nodejs'); //name默认值为nodejs
+
+//在函数组件内，某些事件交互处理函数中修改name的值，例如某次鼠标点击的处理函数handleClick
+const handleClick = () =&gt; {
+  setName('koa');
+  //请注意，setName('koa')是异步修改的，如果此时执行console.log(name) 输出的值依然是nodejs
+  //请留意下一篇文章 “03 useState高级用法” 中 “解决数据异步” 相关部分
+}
+</code></pre>
+<p>上述代码中，我们进行了以下操作：<br />
+1、声明一个变量name、修改name的方法setName、并将name默认值设置为'nodejs'；<br />
+2、通过setName将name值修改为'koa'；</p>
+<p>注意：在一个组件中，可以不限次数使用useState()，因此，我们可以声明多个变量，例如下面代码：</p>
+<pre><code>const [name,setName] = useState('puxiao');
+const [age,setAge] = useState(34);
+</code></pre>
+<p>在该代码片段中，我们分别定义了2个变量：name、age 以及他们对应的修改函数setName、setAge。</p>
+<h2 id="练习题"><a class="header" href="#练习题">练习题</a></h2>
+<p>用useState实现一个计数器，默认为0，每次点击+1。</p>
+<h5 id="完整示例"><a class="header" href="#完整示例">完整示例：</a></h5>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+
+  const [count, setCount] = useState(0);
+
+  function clickHandler(){
+    setCount(count+1);
+  }
+
+  return &lt;div onClick={clickHandler}&gt;
+    {count}
+  &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>请注意上述代码中，没有用到this，这就是函数组件中使用Hook的魅力之一，再也不用去关心烦人的this到底指向谁这个问题了。</p>
+<p>实际代码中，本人更加倾向于使用箭头函数来定义方法，所以上述 function clickHandler() 会写成：</p>
+<pre><code>const clickHandler = () =&gt; {
+  setCount(count+1);
+}
+</code></pre>
+<hr />
+<p>至此，关于useState基础用法已经讲完。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/03%20useState%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">useState高级用法</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="01_react_hooks_brief.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="03_useState_advanced.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="01_react_hooks_brief.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="03_useState_advanced.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

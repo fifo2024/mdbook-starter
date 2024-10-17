@@ -1,0 +1,417 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>useState高级用法 - React Hooks学习</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html" class="active"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="03-usestate高级用法"><a class="header" href="#03-usestate高级用法">03 useState高级用法</a></h1>
+<p>所谓高级用法，只不过是一些深层知识点和实用技巧，你甚至可以把本章当做对前面知识点的一个巩固和学习。</p>
+<h2 id="恢复默认值"><a class="header" href="#恢复默认值">恢复默认值</a></h2>
+<p>组件需求：实现一个计数器，有3个按钮，点击后分别实现：恢复默认值、点击+1、点击-1</p>
+<p>实现代码：</p>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+  const initCount = 0;
+  const [count, setCount] = useState(initCount);
+
+  return &lt;div&gt;
+    {count}
+    &lt;button onClick={() =&gt; {setCount(initCount)}}&gt;init&lt;/button&gt;
+    &lt;button onClick={() =&gt; {setCount(count+1)}}&gt;+1&lt;/button&gt;
+    &lt;button onClick={() =&gt; {setCount(count-1)}}&gt;-1&lt;/button&gt;
+  &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<p>代码分析：<br />
+1、通过额外定义一个变量initCount=0，作为count的默认值；<br />
+2、任何时候想恢复默认值，直接将initCount赋值给count；</p>
+<h2 id="解决数据异步"><a class="header" href="#解决数据异步">解决数据异步</a></h2>
+<p>还是基于上面那个示例，假设现在新增1个按钮，点击该按钮后执行以下代码：</p>
+<pre><code>for(let i=0; i&lt;3; i++){
+  setCount(count+1);
+}
+</code></pre>
+<p>通过for循环，执行了3次setCount(count+1)，那么你觉得count会 +3 吗？<br />
+答案是：肯定不会</p>
+<p>无论for循环执行几次，最终实际结果都将是仅仅执行一次 +1。</p>
+<p>为什么？<br />
+类组件中setState赋值过程是异步的，同样在Hook中 setXxx 赋值也是异步的，比如上述代码中的setCount。</p>
+<p>虽然执行了3次setCount(count+1)，可是每一次修改后的count并不是立即生效的。当第2次和第3次执行时获取到count的值和第1次获取到的count值是一样的，所以最终其实相当于仅执行了1次。</p>
+<h5 id="解决办法"><a class="header" href="#解决办法">解决办法：</a></h5>
+<p>你肯定第一时间想到的是这样解决方式：</p>
+<pre><code>let num = count;
+for(let i=0; i&lt;3; i++){
+  num +=1;
+}
+setCount(num);
+</code></pre>
+<p>这样做肯定没问题，只不过有更简便、性能更高的方式。</p>
+<p>和类组件中解决异步的办法类似，就是不直接赋值，而是采用“箭头函数返回值的形式”赋值。</p>
+<p>把代码修改为：</p>
+<pre><code>for(let i=0; i&lt;3; i++){
+  setCount(prevData =&gt; {return prevData+1});
+  //可以简化为 setCount(prevData =&gt; prevData+1);
+}
+</code></pre>
+<p>代码分析：<br />
+1、prevData为我们定义的一个形参，指当前count应该的值；<br />
+2、{return prevData+1} 中，将 prevData+1，并将运算结果return出去。当然也非常推荐使用更加简化的写法：setCount(prevData =&gt; prevData+1)；<br />
+3、最终将prevData赋值给count；</p>
+<p>补充说明：你可以将prevData修改成任意你喜欢的变量名称，比如prev，只需要确保和后面return里的一致即可。</p>
+<h2 id="数据类型为objcet的修改方法"><a class="header" href="#数据类型为objcet的修改方法">数据类型为Objcet的修改方法</a></h2>
+<p>之前的示例中，每个useState对应的值都是简单的string或number，如果对应的值是object，又该如何处理呢？</p>
+<p>例如：</p>
+<pre><code>const [person, setPerson] = useState({name:'puxiao',age:34});
+</code></pre>
+<p>若想将age的值修改为18，该怎么写？</p>
+<p>如果你有类组件编程经验，你肯定第一时间想是这样的：</p>
+<pre><code>setPerson({age:18});
+</code></pre>
+<p>在类组件中，setState是执行的是“异步对比累加赋值”，何为“对比”？  就是先对比之前数据属性中是否有age，如果有则修改age值，同时不会影响到其他属性的值。我猜测react是使用ES6中新增加的Object.assign()这个函数来实现这一步的。</p>
+<p>但是，用useState定义的修改函数 setXxxx，例如setPerson中，执行的是 “异步直接赋值”。</p>
+<p>请看实际执行的结果：</p>
+<pre><code>console.log(person);//{name:'puxiao',age:34}
+setPerson({age:18});
+console.log(person);//{age:18}
+</code></pre>
+<p>没错，虽然只是希望修改age的值，但是由于是“直接赋值”，导致{age:18}替换了整个{name:'puxiao',age:34}</p>
+<h5 id="正确的做法"><a class="header" href="#正确的做法">正确的做法：</a></h5>
+<p>我们需要先将person拷贝一份，修改之后再进行赋值。</p>
+<pre><code>let newData = {...person};
+newData.age = 18;
+setPerson(newData);
+</code></pre>
+<p>以上代码还有一种简写形式：</p>
+<pre><code>setPerson({...person,age:18}); //这种简写是解构赋值带来的，并不是React提供的
+</code></pre>
+<p>代码分析：<br />
+1、先通过...person，将原有person做一次解构，得到一份复制品(浅拷贝)；<br />
+2、修改age的值；<br />
+3、将修改过后的新数据，通过setPerson赋值给person；</p>
+<p>完整示例：</p>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+
+  const [person, setPerson] = useState({name:'puxiao',age:34});
+
+  const nameChangeHandler = (eve) =&gt; {
+    setPerson({...person,name:eve.target.value});
+  }
+
+  const ageChangeHandler = (eve) =&gt; {
+    setPerson({...person,age:eve.target.value});
+  }
+
+  return &lt;div&gt;
+    &lt;input type='text' value={person.name} onChange={nameChangeHandler} /&gt;
+    &lt;input type='number' value={person.age} onChange={ageChangeHandler} /&gt;
+    {JSON.stringify(person)}
+  &lt;/div&gt;
+}
+export default Component;
+</code></pre>
+<h2 id="数据类型为array的修改方法"><a class="header" href="#数据类型为array的修改方法">数据类型为Array的修改方法</a></h2>
+<p>和数据类型为Object相似，都是需要通过先拷贝一次，修改后再整体赋值。</p>
+<p>这里举一个简单的小例子，以下代码实现了一个类似学习计划列表的功能组件。</p>
+<pre><code>import React, { useState } from 'react';
+
+function Component() {
+
+  const [str, setStr] = useState('');
+  const [arr, setArr] = useState(['react', 'Koa']);
+
+  const inputChangeHandler = (eve) =&gt; {
+    setStr(eve.target.value);
+  }
+
+  const addHeadHandler = (eve) =&gt; {
+    setArr([str,...arr]);//添加至头
+    setStr('');
+  }
+
+  const addEndHandler = (eve) =&gt; {
+    setArr([...arr, str]);//添加至尾
+    setStr('');
+  }
+
+  const delHeadHandler = (eve) =&gt; {
+    let new_arr = [...arr];
+    new_arr.shift();//从头删除1项目
+    setArr(new_arr);
+  }
+
+  const delEndHandler = (eve) =&gt; {
+    let new_arr = [...arr];
+    new_arr.pop();//从尾删除1项目
+    setArr(new_arr);
+  }
+
+  const delByIndex = (eve) =&gt; {
+    let index = eve.target.attributes.index.value;
+    let new_arr = [...arr];
+    new_arr.splice(index,1);//删除当前项
+    setArr(new_arr);
+  }
+
+  return &lt;div&gt;
+    &lt;input type='text' value={str} onChange={inputChangeHandler} /&gt;
+    &lt;button onClick={addHeadHandler} &gt;添加至头&lt;/button&gt;
+    &lt;button onClick={addEndHandler} &gt;添加至尾&lt;/button&gt;
+    &lt;button onClick={delHeadHandler} &gt;从头删除1项&lt;/button&gt;
+    &lt;button onClick={delEndHandler} &gt;从尾删除1项&lt;/button&gt;
+    &lt;ul&gt;
+        {arr.map(
+            (item, index) =&gt; {
+                return &lt;li key={`item${index}`}&gt;学习{index} -  {item}
+                    &lt;span index={index} onClick={delByIndex} style={{ cursor: 'pointer' }}&gt;删除&lt;/span&gt;
+                &lt;/li&gt;
+            }
+        )}
+    &lt;/ul&gt;
+  &lt;/div&gt;
+}
+
+export default Component;
+</code></pre>
+<h2 id="性能优化"><a class="header" href="#性能优化">性能优化</a></h2>
+<p>通过 setXxx 设置新值，但是如果新值和当前值完全一样，那么会引发React重新渲染吗？</p>
+<p>通过React官方文档可以知道，当使用 setXxx 赋值时，Hook会使用Object.is()来对比当前值和新值，结果为true则不渲染，结果为flash就会重新渲染。</p>
+<pre><code>let str='a';
+Object.is(str,'a'); //true
+
+let str='18';
+Object.is(str,18); //str为String类型，18为Number类型，因此结果为false
+
+let obj={name:'a'};
+Object.is(obj,{name:'a'}); //false
+//虽然obj和{name:'a'}字面上相同，但是obj==={name:'a'}为false，并且在Object.is()运算下认为两者不是同一个对象
+//事实上他们确实不是同一个对象，他们各自占用了一份内存
+
+let obj={name:'a'};
+let a=obj;
+let b=obj;
+Object.is(a,b); //因为a和b都指向obj，因此结果为true
+</code></pre>
+<p>由上面测试可以看出：<br />
+1、对于简单类型的值，例如String、Number 新旧值一样的情况下是不会引起重新渲染的；<br />
+2、对于复杂类型的值，即使新旧值 “看上去是一样的” 也会引起重新渲染。除非新旧值指向同一个对象，或者可以说成新旧值分别是同一个对象的引用；</p>
+<p>采用复杂类型的值不是不可以用，很多场景下都需要用到，但是请记得上面的测试结果。</p>
+<p>为了可能存在的性能问题，如果可以，最好避免使用复杂类型的值。</p>
+<h2 id="自定义hook"><a class="header" href="#自定义hook">自定义Hook</a></h2>
+<p>所谓自定义Hook，就是将Hook函数从函数组件中抽离，抽离之后多个函数组件可以共用该自定义Hook，共享该Hook的逻辑。</p>
+<p>因为目前仅学习了useState，再多学习几个Hook函数后，会单独拿出一个篇章来讲解如何自定义Hook。</p>
+<hr />
+<p>至此，关于useState高级用法已经讲完，相信你已经掌握了useState的使用方法。</p>
+<p>useState是本系列文章讲解的第一个Hook函数，同时也是使用频率最高的Hook，甚至可以说useState是函数组件开发的基石，因此本章稍显啰嗦，但目的就是希望你能理解透彻。</p>
+<p>在后面讲解其他Hook函数时，将会尽量使用简洁、高冷的文章风格。</p>
+<p>接下来学习第2个Hook函数useEffect。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/04%20useEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">useEffect基本用法</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="02_useState_base.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="04_useEffect_base.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="02_useState_base.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="04_useEffect_base.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

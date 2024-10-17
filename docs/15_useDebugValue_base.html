@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>useDebugValue基础用法 - React Hooks学习</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html" class="active"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="15-usedebugvalue基础用法"><a class="header" href="#15-usedebugvalue基础用法">15 useDebugValue基础用法</a></h1>
+<h2 id="usedebugvalue概念解释"><a class="header" href="#usedebugvalue概念解释">useDebugValue概念解释</a></h2>
+<p>我们第十个要学习的Hook(钩子函数)是useDebugValue，他的作用是“勾住”React开发调试工具中的自定义hook标签，让useDebugValue勾住的自定义hook可以显示额外的信息。</p>
+<h5 id="react开发调试工具是什么"><a class="header" href="#react开发调试工具是什么">“React开发调试工具”是什么？</a></h5>
+<p>答：谷歌浏览器中的一个扩展插件，名字叫“React Developer Tools”，方便我们在谷歌浏览器上进行react项目调试。</p>
+<p>如何安装？<br />
+答：可在Chrome扩展程序商店搜索并安装。由于国内网络原因，如果你不会科学上网，那么可以通过国内的一些Chrome扩展程序商店网站，下载“React Developer Tools”离线的crx安装文件进行安装。具体办法可以自己百度。</p>
+<p>“React开发调试工具”的使用简单说明：<br />
+如果该扩展程序安装成功，那么会有以下几种情况：<br />
+1、对于本机开发调试的项目网页，该插件图标会变成橘黄色，且图标中间有一个小虫子，表示可以进行react源码式的调试，当代码出现错误时会精准定位出错的代码位置。</p>
+<p>2、对于别人开发的项目网页，该插件图标会变成蓝色，表示该网页由react开发，当代码出现错误时不能精准定位出错的代码位置。<br />
+例如阿里云后台、腾讯云后台、百度翻译这些网页都是用react开发，访问这些网页你就会看到 调试工具图光标为蓝色。  这些大厂都用react，所以虽然学习过程中很痛苦，但是是值得的。</p>
+<p>3、对于没有使用react的网页，该插件图标会变成灰色。</p>
+<p>让我们回到useDebugValue基础学习中。</p>
+<h2 id="usedebugvalue是来解决什么问题的"><a class="header" href="#usedebugvalue是来解决什么问题的">useDebugValue是来解决什么问题的？</a></h2>
+<p>答：useDebugValue的目的是“在react开发者工具自定义hook标签中显示额外信息”，方便我们“一眼就能找到”对应的自定义hook。</p>
+<p>补充说明：<br />
+1、react官网文档中明确表示，在普通项目开发中不推荐使用useDebugValue，默认的调试输出已经很清晰可用了。<br />
+2、除非你的自定义 hook 是作为共享库中的一部分才有价值。这样其他人更容易注意到你自定义的hook状态变化。</p>
+<h5 id="自定义hook"><a class="header" href="#自定义hook">自定义hook？</a></h5>
+<p>你可能注意到本章中提到了“自定义hook”，没错。像之前学习的useState、useContext等等都是react自带的hook，这些默认的hook是我们项目开发所需要用到的各种钩子函数。</p>
+<p>但是实际开发中，我们需要借助这些基础的、默认的、自带的hook函数，通过组合以及添加业务逻辑代码，形成自己的hook函数。</p>
+<p>具体如何自定义hook，稍后会单独有一章如何“自定义hook”中详细讲述。</p>
+<h2 id="usedebugvalue函数源码"><a class="header" href="#usedebugvalue函数源码">useDebugValue函数源码：</a></h2>
+<p>回到useDebugValue的学习中，首先看一下React源码中的<a href="https://github.com/facebook/react/blob/master/packages/react/src/ReactHooks.js">ReactHooks.js</a>。</p>
+<pre><code>//备注：源码采用TypeScript编写，如果不懂TS代码，阅读起来稍显困难
+export function useDebugValue&lt;T&gt;(
+  value: T,
+  formatterFn: ?(value: T) =&gt; mixed,
+): void {
+    if (__DEV__) {
+    const dispatcher = resolveDispatcher();
+    return dispatcher.useDebugValue(value, formatterFn);
+  }
+}
+</code></pre>
+<p>上述代码看不懂没关系，本系列教程只是讲述“如何使用Hook”，并不是“Hook源码分析”。^_^</p>
+<h2 id="usedebugvalue基本用法"><a class="header" href="#usedebugvalue基本用法">useDebugValue基本用法</a></h2>
+<p>useDebugValue(value,formatterFn)函数第1个参数为我们要额外显示的内容变量。第2个参数是可选的，是对第1个参数值的数据化格式函数。</p>
+<p>请注意：<br />
+1、useDebugValue应该在自定义hook中使用，如果直接在组件内使用是无效的，不会报错也不会有任何额外信息展示。<br />
+1、一般调试不需要使用useDebugValue，除非你编写的hook是公共库中的一部分，实在是想凸显额外信息，引起别人注意。<br />
+2、如果使用useDebugValue，最好设置第2个参数，向react开发调试工具讲清楚如何格式化展示第1个参数。</p>
+<h5 id="代码形式"><a class="header" href="#代码形式">代码形式：</a></h5>
+<pre><code>useDebugValue(xxx, xxx =&gt; xxxxx)
+</code></pre>
+<h5 id="拆解说明"><a class="header" href="#拆解说明">拆解说明：</a></h5>
+<p>1、xxx 为我们要重点关注的变量。<br />
+2、xxx =&gt; xxxxx 是 (xxx) =&gt; {return xxxxx} 的简写。表明如何格式化变量xxx。</p>
+<h2 id="如何在react调试工具中查看usedebugvalue表现形式"><a class="header" href="#如何在react调试工具中查看usedebugvalue表现形式">如何在react调试工具中查看useDebugValue表现形式</a></h2>
+<p>前提条件：<br />
+1、在谷歌浏览器中成功安装了react开发调试工具<br />
+2、react项目中使用了自定义hook，且hook中使用了useDebugValue</p>
+<p>那么你可以进行一下步骤：<br />
+1、打开react调试网页，例如http://localhost:3000/<br />
+2、打开谷歌浏览器调试面板(快捷键为F12)<br />
+3、找到并点击“Components”一栏<br />
+4、在右侧窗口中，找到“hooks”，在“hooks”下就能看到自定义hook中useDebugValue自定义显示的信息。</p>
+<p>具体还是以下面实际例子来说明。</p>
+<h2 id="usedebugvalue使用示例"><a class="header" href="#usedebugvalue使用示例">useDebugValue使用示例：</a></h2>
+<p>举例：useTime是我们自定义的一个hook函数，那么在这个自定义hook中，可以通过useDebugValue对变量time进行额外信息展示。</p>
+<p>代码示例如下：</p>
+<pre><code>//自定义hook：useTime
+function useTime(date){
+  const [time,setTime] = useState(date);
+  useDebugValue(time,time =&gt; new Date(time));//请注意这一行代码
+  return [time,setTime];
+}
+
+//组件中使用useTime，伪代码片段
+const [time,setTime] = useTime(Date.now());//请注意此处使用的是自定义hook：useTime
+</code></pre>
+<p>代码分析：<br />
+1、我们在自定义hook中，使用了useDebugValue<br />
+2、useDebugValue第1个参数是time，向react开发调试工具表明要重点关注的变量是time。<br />
+3、第2个参数是对time的一个格式化函数。由于time实际为一个时间戳数字，通过time =&gt; new Date(time)将时间戳转化成具体的可读时间字符串，例如此时此刻：Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)</p>
+<h5 id="具体表现"><a class="header" href="#具体表现">具体表现</a></h5>
+<p>在谷歌浏览器调试面板的“Component”右侧，你会看到：</p>
+<pre><code>hooks  
+  time:Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)  
+    State:1589178459090  
+</code></pre>
+<p>假设不使用useDebuValue，默认看到的是：</p>
+<pre><code>hooks  
+  time: 
+    State:1589178459090  
+</code></pre>
+<p>“Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)  ”就是useDebugValue额外展示出的信息。</p>
+<p>你甚至还可以使用模板字符串，对格式化数据进行修改，比如将原本的第2个参数 time =&gt; new Date(time) 修改为：time =&gt; `看这里 ${new Date(time)}`</p>
+<p>在谷歌浏览器调试面板的“Component”右侧，你会看到：</p>
+<pre><code>hooks  
+  time:看这里 Mon May 11 2020 14:27:39 GMT+0800 (中国标准时间)  
+    State:1589178459090  
+</code></pre>
+<h5 id="再次强调对于一般性的项目开发是不需要使用usedebugvalue来额外标记某些变量的默认的调试输出足够我们使用了"><a class="header" href="#再次强调对于一般性的项目开发是不需要使用usedebugvalue来额外标记某些变量的默认的调试输出足够我们使用了">再次强调，对于一般性的项目开发，是不需要使用useDebugValue来额外标记某些变量的，默认的调试输出足够我们使用了。</a></h5>
+<hr />
+<p>至此，关于useDebugValue基础用法已经讲完，没有高级用法，直接进入下一个Hook。</p>
+<p>不！基于react 16.13版本的全部 hook，终于讲完了，没有下一个hook了。</p>
+<p>能坚持到现在，真的不容易，默认自带的 react hook 学完后，还需要学习如何自定义hook...<br />
+扶我起来，再坚持一下。</p>
+<p>欢迎进入下一章节：<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/16%20%E8%87%AA%E5%AE%9A%E4%B9%89hook.md">自定义hook</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="14_useLayoutEffect_base.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="16_Custom_hook.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="14_useLayoutEffect_base.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="16_Custom_hook.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

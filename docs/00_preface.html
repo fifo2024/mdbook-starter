@@ -1,0 +1,281 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>前言 - React Hooks学习</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="00_preface.html" class="active"><strong aria-hidden="true">1.</strong> 前言</a></li><li class="chapter-item expanded "><a href="01_react_hooks_brief.html"><strong aria-hidden="true">2.</strong> React Hooks简介</a></li><li class="chapter-item expanded "><a href="02_useState_base.html"><strong aria-hidden="true">3.</strong> useState基础用法</a></li><li class="chapter-item expanded "><a href="03_useState_advanced.html"><strong aria-hidden="true">4.</strong> useState高级用法</a></li><li class="chapter-item expanded "><a href="04_useEffect_base.html"><strong aria-hidden="true">5.</strong> useEffect基础用法</a></li><li class="chapter-item expanded "><a href="05_useEffect_advanced.html"><strong aria-hidden="true">6.</strong> useEffect高级用法</a></li><li class="chapter-item expanded "><a href="06_useContext_base.html"><strong aria-hidden="true">7.</strong> useContext基础用法</a></li><li class="chapter-item expanded "><a href="07_useContext_advanced.html"><strong aria-hidden="true">8.</strong> useContext高级用法</a></li><li class="chapter-item expanded "><a href="08_useReducer_base.html"><strong aria-hidden="true">9.</strong> useReducer基础用法</a></li><li class="chapter-item expanded "><a href="09_useReducer_advanced.html"><strong aria-hidden="true">10.</strong> useReducer高级用法</a></li><li class="chapter-item expanded "><a href="10_useCallback_base.html"><strong aria-hidden="true">11.</strong> useCallback基础用法</a></li><li class="chapter-item expanded "><a href="11_useMemo_base.html"><strong aria-hidden="true">12.</strong> useMemo基础用法</a></li><li class="chapter-item expanded "><a href="12_useRef_base.html"><strong aria-hidden="true">13.</strong> useRef基础用法</a></li><li class="chapter-item expanded "><a href="13_useImperativeHandle_base.html"><strong aria-hidden="true">14.</strong> useImperativeHandle基础用法</a></li><li class="chapter-item expanded "><a href="14_useLayoutEffect_base.html"><strong aria-hidden="true">15.</strong> useLayoutEffect基础用法</a></li><li class="chapter-item expanded "><a href="15_useDebugValue_base.html"><strong aria-hidden="true">16.</strong> useDebugValue基础用法</a></li><li class="chapter-item expanded "><a href="16_Custom_hook.html"><strong aria-hidden="true">17.</strong> 自定义hook</a></li><li class="chapter-item expanded "><a href="17_hooks_summary.html"><strong aria-hidden="true">18.</strong> React Hook 总结</a></li><li class="chapter-item expanded "><a href="18_hooks_echarts.html"><strong aria-hidden="true">19.</strong> 示例：React使用Echarts所用到的hooks</a></li><li class="chapter-item expanded "><a href="attachment_01_base.html"><strong aria-hidden="true">20.</strong> 附01：React基础知识</a></li><li class="chapter-item expanded "><a href="attachment_02_extend.html"><strong aria-hidden="true">21.</strong> 附02：React扩展阅读</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                    </div>
+
+                    <h1 class="menu-title">React Hooks学习</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="前言"><a class="header" href="#前言">前言</a></h1>
+<blockquote>
+<p>以下信息更新于 2020.11.10</p>
+<p>最近学习了 JS 原型链、数据结构与算法，以及在思否编程课上，看了一些 卡颂(微信公众号：魔术师卡颂) 录制的《<a href="https://ke.sifou.com/course/1650000023864436">自顶向下学 React 源码</a>》课程，对 React 又有了更深的认识。</p>
+<p>此时再回顾我半年前写的这系列文章，有几点现需要补充说明一下：</p>
+<ol>
+<li>强烈建议你在学习 hook 之前，先学习了解一下：JS 原型链、数据与结构中的 “链” 和 “树”。<br />
+补充强调一点：在 react 源码中，并不是使用 TypeScript，而是使用和 TS 非常类似的 flow 语法，flow 是 facebook 推出的一种 JS 静态类型检查器。我之前一直误会以为 React 源码是用 TS 写的。</li>
+<li>强烈推荐你先阅读我的另外一篇文章：<a href="https://github.com/puxiao/notes/blob/master/%E3%80%8A%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E5%AD%A6%E4%B9%A0React%E3%80%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md">《自顶向下学习React源码》学习笔记#第一章：理念篇</a> ，不需要精读，只需要大体了解一下 React 设计理念，会更加容易让你去理解 React 的渲染逻辑，利于理解 hook 。</li>
+<li>本系列文章中，每一个 hook 中所列出来的该 hook 源码虽然出自 React 官方源码，但实际并不是真的 hook 源码，而仅仅是对 hook 实现的简单引用。</li>
+</ol>
+<p>以上信息更新于 2020.11.10</p>
+</blockquote>
+<h2 id="我是谁"><a class="header" href="#我是谁">我是谁？</a></h2>
+<p>你好，欢迎你来阅读我写的关于React Hook相关的文章。</p>
+<p>我是2020年4月才开始接触学习React的，起初摆在我面前的问题是该学习Vue还是React？</p>
+<p>网上关于Vue和React，有以下2条论断：<br />
+1、Vue相当于扩展了html、而React相当于扩展了js。<br />
+2、如果你希望快速构建应用，那么应选择Vue、如果你希望构建复杂的应用，那么应选择React。</p>
+<p>在做了一些了解后，我决定选择学习React。不是Vue不好，而是据我了解，国内一线大厂使用React的更多一些。</p>
+<h2 id="学习-react-hook-过程"><a class="header" href="#学习-react-hook-过程">学习 React Hook 过程</a></h2>
+<p>当我决定开始学习React时，我先下载了一些React视频教程，对React、类组件开发有了基础的掌握，这个时候我接触到了 React Hook，当我稍微深入了解之后，发现 React Hook 函数组件开发才是 React 的最新主流趋势。</p>
+<blockquote>
+<p>备注：React Hook 是 React 2019年2月在16.8版本中才正式发布的。</p>
+</blockquote>
+<p>当我满怀激动准备学习 React Hook 时才发现相关教程非常少。</p>
+<p>最具权威的React官方文档 翻译腔 比较重，对于 Hook 的讲解看了2遍之后依然懵懵懂懂，不明所以。 思否、掘金、雀语上面相关的文章不仅少，而且也不系统全面。</p>
+<p>此时我通过科学上网，在YouTube上找到了 Codevolution 专栏下的一套 “React Hooks Tutorial” 课程，开始了 React Hook 系统学习。</p>
+<p>其中useState、useEffect、useContext、useReducer、useCallback、useMemo、useRef、自定义Hook这些知识都来自这门课程。</p>
+<p>后期学习的useImperativeHandle、useLayoutEffect、useDebugValue这些知识来自于 Bitovi 专栏下的 “React Hooks — The Weird Ones” 视频课程。</p>
+<h2 id="为什么要写"><a class="header" href="#为什么要写">为什么要写？</a></h2>
+<p>在学习每一个Hook过程中，通常我是这样进行的：<br />
+1、看一遍视频教程<br />
+2、看一遍React官网文档<br />
+3、敲一遍示例代码<br />
+4、遇到理解不了的，去各大技术站点搜索一下<br />
+5、最后再以教给别人的口吻，写下对应Hook的教程文章</p>
+<p>通过这种方式，我对 React Hook 有了系统的学习，我把我写的教程文章分享出去，如果你正在准备学习 React Hook，希望能够帮助到你。</p>
+<h2 id="文章目录"><a class="header" href="#文章目录">文章目录</a></h2>
+<p><a href="https://github.com/puxiao/react-hook-tutorial/blob/master/00%20%E5%89%8D%E8%A8%80.md">00 前言</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/01%20React%20Hook%20%E7%AE%80%E4%BB%8B.md">01 React Hook 简介</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/02%20useState%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">02 useState基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/03%20useState%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">03 useState高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/04%20useEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">04 useEffect基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/05%20useEffect%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">05 useEffect高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/06%20useContext%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">06 useContext基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/07%20useContext%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">07 useContext高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/08%20useReducer%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">08 useReducer基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/09%20useReducer%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95.md">09 useReducer高级用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/10%20useCallback%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">10 useCallback基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/11%20useMemo%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">11 useMemo基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/12%20useRef%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">12 useRef基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/13%20useImperativeHandle%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">13 useImperativeHandle基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/14%20useLayoutEffect%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">14 useLayoutEffect基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/15%20useDebugValue%E5%9F%BA%E7%A1%80%E7%94%A8%E6%B3%95.md">15 useDebugValue基础用法</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/16%20%E8%87%AA%E5%AE%9A%E4%B9%89hook.md">16 自定义hook</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/17%20React%20Hook%20%E6%80%BB%E7%BB%93.md">17 React Hook 总结</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/18%20%E7%A4%BA%E4%BE%8B%EF%BC%9AReact%E4%BD%BF%E7%94%A8Echarts%E6%89%80%E7%94%A8%E5%88%B0%E7%9A%84hooks.md">18 示例：React使用Echarts所用到的hooks</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/%E9%99%8401%EF%BC%9AReact%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86.md">附01：React基础知识</a><br />
+<a href="https://github.com/puxiao/react-hook-tutorial/blob/master/%E9%99%8402%EF%BC%9AReact%E6%89%A9%E5%B1%95%E9%98%85%E8%AF%BB.md">附02：React扩展阅读</a></p>
+<h2 id="重要说明"><a class="header" href="#重要说明">重要说明</a></h2>
+<p>本系列 React Hook 教程里的观点、思维、解释、代码 均出自我个人学习 Hook 之后的感悟和总结，难免有不准确的地方。</p>
+<p>甚至个别的地方掺杂了我个人的一些习惯用语和思维模式，对于 hook 的有些概念解释，我使用了自己的语言习惯，这会和React官网文档的解释略有不同，但是这些不同地方我认为是没有问题的。</p>
+<p>恰恰是这些不同之处，有助你更加多角度理解 React Hook。</p>
+<p>我写的这些教程只能作为你学习React Hook 众多参考资料中的其中一种。</p>
+<h2 id="文章版权"><a class="header" href="#文章版权">文章版权</a></h2>
+<p>该系列文章没有任何版权，任何人都可以在不注明出处的情况下自由转载。</p>
+<h2 id="信息反馈"><a class="header" href="#信息反馈">信息反馈</a></h2>
+<p>若有错误欢迎指正，本人微信同QQ (78657141)，或通过邮件联系：yangpuxiao@gmail.com</p>
+<p>本系列文章在Github中的地址为：<a href="https://github.com/puxiao/react-hook-tutorial">https://github.com/puxiao/react-hook-tutorial</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="01_react_hooks_brief.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="01_react_hooks_brief.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
